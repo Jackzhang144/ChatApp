@@ -13,7 +13,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.easychat</groupId>
-    <artifactId>easychat</artifactId>
+    <artifactId>easychat-java</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
     <name>easychat</name>
