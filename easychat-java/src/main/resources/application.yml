@@ -1,0 +1,11 @@
+server:
+  port: 8710
+  servlet:
+    context-path: /api
+
+project:
+  folder: F:\code\EasyChat\folder
+
+log:
+  root:
+    level: info
