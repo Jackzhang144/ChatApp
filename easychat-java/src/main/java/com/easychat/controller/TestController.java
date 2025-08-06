@@ -9,4 +9,9 @@ public class TestController {
     public String test(){
         return "哈哈我成功了！";
     }
+
+    @RequestMapping("/testJrebel")
+    public String testJrebel(){
+        return "热部署成功";
+    }
 }
