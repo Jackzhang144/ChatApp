@@ -4,13 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="user_info表user_info_beauty表创建，以及基础代码生成">
+    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="配置文件添加所有需要的配置&amp;启动类加上必要的注解">
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/AccountController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/constants/Constants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/redis/RedisConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/redis/RedisUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8bec302f-1b55-4a8f-9126-d47e059533ad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/8bec302f-1b55-4a8f-9126-d47e059533ad.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8bec302f-1b55-4a8f-9126-d47e059533ad.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8bec302f-1b55-4a8f-9126-d47e059533ad/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8bec302f-1b55-4a8f-9126-d47e059533ad/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8bec302f-1b55-4a8f-9126-d47e059533ad/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8bec302f-1b55-4a8f-9126-d47e059533ad/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/EasyChatApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/EasyChatApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/UserInfoBeautyController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/UserInfoController.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +81,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.EasyChatApplication.executor": "JRebel Executor",
+    "Spring Boot.EasyChatApplication.executor": "JRebel Debug",
     "git-widget-placeholder": "后端",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "F:/code/EasyChat/easychat-java/src/main/resources",
@@ -84,7 +93,7 @@
     "project.structure.last.edited": "库",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "com.zeroturnaround.javarebel.idea.plugin.settings.StatisticsConfigurable",
     "vue.rearranger.settings.migration": "true",
     "应用程序.EasyChatApplication.executor": "Run",
     "应用程序.SocketClient.executor": "Run",
@@ -218,7 +227,8 @@
       <workItem from="1754406824122" duration="608000" />
       <workItem from="1754407522233" duration="6471000" />
       <workItem from="1754460032931" duration="137000" />
-      <workItem from="1754460204119" duration="5501000" />
+      <workItem from="1754460204119" duration="7207000" />
+      <workItem from="1754476688350" duration="4304000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始构建">
       <option name="closed" value="true" />
@@ -252,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754464364272</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="配置文件添加所有需要的配置&amp;启动类加上必要的注解">
+      <option name="closed" value="true" />
+      <created>1754465876471</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1754465876471</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,7 +291,8 @@
     <MESSAGE value="后端项目初始构建" />
     <MESSAGE value="socket练习回顾" />
     <MESSAGE value="user_info表user_info_beauty表创建，以及基础代码生成" />
-    <option name="LAST_COMMIT_MESSAGE" value="user_info表user_info_beauty表创建，以及基础代码生成" />
+    <MESSAGE value="配置文件添加所有需要的配置&amp;启动类加上必要的注解" />
+    <option name="LAST_COMMIT_MESSAGE" value="配置文件添加所有需要的配置&amp;启动类加上必要的注解" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
