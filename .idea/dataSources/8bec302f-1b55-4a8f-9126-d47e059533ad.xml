@@ -1029,7 +1029,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <schema id="291" parent="1" name="easychat">
       <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
       <LastIntrospectionLevel>3</LastIntrospectionLevel>
-      <LastIntrospectionLocalTimestamp>2025-08-06.07:01:26</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-08-06.07:29:16</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_general_ci</CollationName>
     </schema>
     <schema id="292" parent="1" name="information_schema">

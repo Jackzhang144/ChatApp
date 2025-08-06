@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="socket练习回顾">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="user_info表user_info_beauty表创建，以及基础代码生成">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8bec302f-1b55-4a8f-9126-d47e059533ad.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/8bec302f-1b55-4a8f-9126-d47e059533ad.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/TestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/test/SocketClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/test/SocketServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/EasyChatApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/EasyChatApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +75,7 @@
     "Spring Boot.EasyChatApplication.executor": "JRebel Executor",
     "git-widget-placeholder": "后端",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "F:/code/EasyChat/easychat-java/src",
+    "last_opened_file_path": "F:/code/EasyChat/easychat-java/src/main/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -101,6 +102,14 @@
   <component name="RebelAgentSelection">
     <selection>jr</selection>
   </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\code\EasyChat\easychat-java\src\main\resources" />
+      <recent name="F:\code\EasyChat\easychat-java\src\main\java\com\easychat" />
+      <recent name="F:\code\EasyChat\easychat-java\src" />
+      <recent name="F:\code\EasyChat\easychat-java\src\main" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
@@ -119,7 +128,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="应用程序.SocketClient">
+  <component name="RunManager" selected="Spring Boot.EasyChatApplication">
     <configuration name="EasyChatApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.easychat.EasyChatApplication" />
       <module name="easychat-java" />
@@ -174,9 +183,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.EasyChatApplication" />
         <item itemvalue="应用程序.SocketClient" />
         <item itemvalue="应用程序.SocketServer" />
-        <item itemvalue="Spring Boot.EasyChatApplication" />
         <item itemvalue="应用程序.EasyChatApplication" />
       </list>
     </recent_temporary>
@@ -209,7 +218,7 @@
       <workItem from="1754406824122" duration="608000" />
       <workItem from="1754407522233" duration="6471000" />
       <workItem from="1754460032931" duration="137000" />
-      <workItem from="1754460204119" duration="3974000" />
+      <workItem from="1754460204119" duration="5501000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始构建">
       <option name="closed" value="true" />
@@ -235,7 +244,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754461848279</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="user_info表user_info_beauty表创建，以及基础代码生成">
+      <option name="closed" value="true" />
+      <created>1754464364272</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1754464364272</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,7 +272,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="后端项目初始构建" />
     <MESSAGE value="socket练习回顾" />
-    <option name="LAST_COMMIT_MESSAGE" value="socket练习回顾" />
+    <MESSAGE value="user_info表user_info_beauty表创建，以及基础代码生成" />
+    <option name="LAST_COMMIT_MESSAGE" value="user_info表user_info_beauty表创建，以及基础代码生成" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
