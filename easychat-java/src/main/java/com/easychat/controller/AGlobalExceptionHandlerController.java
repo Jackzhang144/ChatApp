@@ -1,4 +1,5 @@
 package com.easychat.controller;
+
 import com.easychat.entity.enums.ResponseCodeEnum;
 import com.easychat.entity.vo.ResponseVO;
 import com.easychat.exception.BusinessException;
@@ -35,7 +36,7 @@ public class AGlobalExceptionHandlerController extends ABaseController {
             ajaxResponse.setCode(biz.getCode() == null ? ResponseCodeEnum.CODE_600.getCode() : biz.getCode());
             ajaxResponse.setInfo(biz.getMessage());
             ajaxResponse.setStatus(STATUC_ERROR);
-        } else if (e instanceof BindException|| e instanceof MethodArgumentTypeMismatchException) {
+        } else if (e instanceof BindException || e instanceof MethodArgumentTypeMismatchException) {
             //参数类型错误
             ajaxResponse.setCode(ResponseCodeEnum.CODE_600.getCode());
             ajaxResponse.setInfo(ResponseCodeEnum.CODE_600.getMsg());

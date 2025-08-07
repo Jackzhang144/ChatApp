@@ -15,6 +15,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAsync
 public class EasyChatApplication {
     public static void main(String[] args) {
-        SpringApplication.run(EasyChatApplication.class,args);
+        SpringApplication.run(EasyChatApplication.class, args);
     }
 }

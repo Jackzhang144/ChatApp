@@ -36,8 +36,8 @@ public enum UserContactTypeEnum {
                 return null;
             }
             prefix = prefix.substring(0, 1);
-            for (UserContactTypeEnum typeEnum:UserContactTypeEnum.values()){
-                if (typeEnum.getPrefix().equals(prefix)){
+            for (UserContactTypeEnum typeEnum : UserContactTypeEnum.values()) {
+                if (typeEnum.getPrefix().equals(prefix)) {
                     return typeEnum;
                 }
             }

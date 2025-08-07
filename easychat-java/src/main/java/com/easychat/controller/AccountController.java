@@ -59,15 +59,15 @@ public class AccountController extends ABaseController {
                                @NotEmpty @Email String email,
                                @NotEmpty String password,
                                @NotEmpty String nickName,
-                               @NotEmpty String checkCode){
+                               @NotEmpty String checkCode) {
         try {
-            if (!checkCode.equalsIgnoreCase((String) redisUtils.get(Constants.REDIS_KEY_CHECK_CODE + checkCodeKey))){
+            if (!checkCode.equalsIgnoreCase((String) redisUtils.get(Constants.REDIS_KEY_CHECK_CODE + checkCodeKey))) {
                 throw new BusinessException("图片验证码不正确");
             }
 
-            userInfoService.register(email,nickName,password);
+            userInfoService.register(email, nickName, password);
             return getSuccessResponseVO(null);
-        }finally {
+        } finally {
             redisUtils.delete(Constants.REDIS_KEY_CHECK_CODE + checkCodeKey);
         }
     }
@@ -76,15 +76,15 @@ public class AccountController extends ABaseController {
     public ResponseVO login(@NotEmpty String checkCodeKey,
                             @NotEmpty @Email String email,
                             @NotEmpty String password,
-                            @NotEmpty String checkCode){
+                            @NotEmpty String checkCode) {
         try {
-            if (!checkCode.equalsIgnoreCase((String) redisUtils.get(Constants.REDIS_KEY_CHECK_CODE + checkCodeKey))){
+            if (!checkCode.equalsIgnoreCase((String) redisUtils.get(Constants.REDIS_KEY_CHECK_CODE + checkCodeKey))) {
                 throw new BusinessException("图片验证码不正确");
             }
 
             UserInfoVO userInfoVO = userInfoService.login(email, password);
             return getSuccessResponseVO(userInfoVO);
-        }finally {
+        } finally {
             redisUtils.delete(Constants.REDIS_KEY_CHECK_CODE + checkCodeKey);
         }
     }

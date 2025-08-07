@@ -237,7 +237,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
 
         Long lastHeartBeat = redisComponent.getUserHeartBeat(userInfo.getUserId());
-        if (null != lastHeartBeat){
+        if (null != lastHeartBeat) {
             throw new BusinessException("此账号已经在别处登录，请退出后再登录");
         }
 
