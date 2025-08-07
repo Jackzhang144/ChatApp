@@ -49,7 +49,7 @@ spring:
 
 # 项目目录
 project:
-  folder: F:/Easychat/folder
+  folder: F:/Easychat/folder/
 
 # 日志级别配置
 log:
