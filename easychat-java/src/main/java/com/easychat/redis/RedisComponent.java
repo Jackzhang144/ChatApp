@@ -1,6 +1,7 @@
 package com.easychat.redis;
 
 import com.easychat.entity.constants.Constants;
+import com.easychat.entity.dto.SysSettingDto;
 import com.easychat.entity.dto.TokenUserInfoDto;
 import org.springframework.stereotype.Component;
 
@@ -30,4 +31,9 @@ public class RedisComponent {
         redisUtils.setex(Constants.REDIS_KEY_TOKEN_USERID + tokenUserInfoDto.getToken(), tokenUserInfoDto, Constants.REDIS_KEY_EXPIRES_DAY * 2);
     }
 
+    public SysSettingDto getSysSetting() {
+        SysSettingDto sysSettingDto = (SysSettingDto) redisUtils.get(Constants.REDIS_KEY_SYS_SETTING);
+        sysSettingDto = sysSettingDto == null ? new SysSettingDto() : sysSettingDto;
+        return sysSettingDto;
+    }
 }

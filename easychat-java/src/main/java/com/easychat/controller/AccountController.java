@@ -6,6 +6,7 @@ import com.easychat.entity.po.UserInfo;
 import com.easychat.entity.vo.ResponseVO;
 import com.easychat.entity.vo.UserInfoVO;
 import com.easychat.exception.BusinessException;
+import com.easychat.redis.RedisComponent;
 import com.easychat.redis.RedisUtils;
 import com.easychat.service.UserInfoService;
 import com.easychat.utils.CopyTools;
@@ -33,6 +34,9 @@ public class AccountController extends ABaseController {
 
     @Resource
     private UserInfoService userInfoService;
+
+    @Resource
+    private RedisComponent redisComponent;
 
     @RequestMapping("/checkCode")
     public ResponseVO checkCode() {
@@ -87,6 +91,11 @@ public class AccountController extends ABaseController {
         } finally {
             redisUtils.delete(Constants.REDIS_KEY_CHECK_CODE + checkCodeKey);
         }
+    }
+
+    @RequestMapping("/getSysSetting")
+    public ResponseVO getSysSetting() {
+        return getSuccessResponseVO(redisComponent.getSysSetting());
     }
 
 

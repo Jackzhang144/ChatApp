@@ -58,7 +58,7 @@ log:
 
 # 超级管理员id
 admin:
-  emails: admin@qq.com
+  emails: test@qq.com
 
 # 是否为开发环境
 dev: false
