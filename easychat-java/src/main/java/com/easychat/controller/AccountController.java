@@ -1,15 +1,12 @@
 package com.easychat.controller;
 
 import com.easychat.entity.constants.Constants;
-import com.easychat.entity.dto.TokenUserInfoDto;
-import com.easychat.entity.po.UserInfo;
 import com.easychat.entity.vo.ResponseVO;
 import com.easychat.entity.vo.UserInfoVO;
 import com.easychat.exception.BusinessException;
 import com.easychat.redis.RedisComponent;
 import com.easychat.redis.RedisUtils;
 import com.easychat.service.UserInfoService;
-import com.easychat.utils.CopyTools;
 import com.wf.captcha.ArithmeticCaptcha;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -45,9 +42,8 @@ public class AccountController extends ABaseController {
         String checkCodeKey = UUID.randomUUID().toString();
 //        log.info("验证码是：{}",code);
 
-        /**
-         * 将生成的 code 存到 redis 中，有效时间 10 分钟
-         */
+
+        // 将生成的 code 存到 redis 中，有效时间 10 分钟
         redisUtils.setex(Constants.REDIS_KEY_CHECK_CODE + checkCodeKey, code, Constants.REDIS_TIME_1MIN * 10);
 
         String checkCodeBase64 = captcha.toBase64();
