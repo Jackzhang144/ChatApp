@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="登录注册：登录注册功能补充：获取系统设置">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="联系人：群组创建：创建相关表以及基础代码引入">
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/annotation/GlobalInterceptor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/aspect/GlobalOperationAspect.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/GroupInfoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/ABaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/ABaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/constants/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/constants/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/enums/ResponseCodeEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/enums/ResponseCodeEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/redis/RedisComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/redis/RedisComponent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +27,7 @@
       <list>
         <option value="Enum" />
         <option value="Class" />
+        <option value="AnnotationType" />
       </list>
     </option>
   </component>
@@ -63,6 +69,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "HTTP 请求.generated-requests | #22.executor": "Run",
+    "HTTP 请求.generated-requests | #23.executor": "Run",
+    "HTTP 请求.generated-requests | #24.executor": "JRebel Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -74,7 +82,7 @@
     "Spring Boot.EasyChatApplication.executor": "JRebel Debug",
     "git-widget-placeholder": "后端",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "F:/code/EasyChat/easychat-java/src/main/resources",
+    "last_opened_file_path": "F:/code/EasyChat/easychat-java/src/main/java/com/easychat/controller",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -105,10 +113,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\code\EasyChat\easychat-java\src\main\resources" />
-      <recent name="F:\code\EasyChat\easychat-java\src\main\java\com\easychat" />
-      <recent name="F:\code\EasyChat\easychat-java\src" />
-      <recent name="F:\code\EasyChat\easychat-java\src\main" />
+      <recent name="F:\code\EasyChat\easychat-java\src\main\java\com\easychat\controller" />
+      <recent name="F:\code\EasyChat\easychat-java\src\main\java\com\easychat\service\impl" />
+      <recent name="F:\code\EasyChat\easychat-java\src\main\java\com\easychat\service" />
+      <recent name="F:\code\EasyChat\easychat-java\src\main\java\com\easychat\mappers" />
+      <recent name="F:\code\EasyChat\easychat-java\src\main\resources\com\easychat\mappers" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.easychat.entity.dto" />
@@ -123,15 +132,13 @@
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
+    <option name="excludedTypes">
+      <set>
+        <option value="HttpClient.HttpRequestRunConfigurationType" />
+      </set>
+    </option>
     <option name="configurationStatuses">
       <map>
-        <entry key="HttpClient.HttpRequestRunConfigurationType">
-          <value>
-            <map>
-              <entry key="generated-requests | #22" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
         <entry key="SpringBootApplicationConfigurationType">
           <value>
             <map>
@@ -143,7 +150,10 @@
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.EasyChatApplication">
-    <configuration name="generated-requests | #22" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#22" index="22" runType="运行单个请求">
+    <configuration name="generated-requests | #23" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#23" index="23" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #24" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#24" index="24" runType="运行单个请求">
       <method v="2" />
     </configuration>
     <configuration name="EasyChatApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
@@ -161,8 +171,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="HTTP 请求.generated-requests | #22" />
         <item itemvalue="Spring Boot.EasyChatApplication" />
+        <item itemvalue="HTTP 请求.generated-requests | #24" />
+        <item itemvalue="HTTP 请求.generated-requests | #23" />
       </list>
     </recent_temporary>
   </component>
@@ -197,7 +208,7 @@
       <workItem from="1754460204119" duration="7207000" />
       <workItem from="1754476688350" duration="13381000" />
       <workItem from="1754557929219" duration="15463000" />
-      <workItem from="1754637364270" duration="6823000" />
+      <workItem from="1754637364270" duration="12481000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始构建">
       <option name="closed" value="true" />
@@ -271,7 +282,23 @@
       <option name="project" value="LOCAL" />
       <updated>1754638490461</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="登录注册：登录注册功能补充：获取系统设置">
+      <option name="closed" value="true" />
+      <created>1754705593005</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1754705593005</updated>
+    </task>
+    <task id="LOCAL-00011" summary="联系人：群组创建：创建相关表以及基础代码引入">
+      <option name="closed" value="true" />
+      <created>1754705877716</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1754705877716</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -323,7 +350,8 @@
     <MESSAGE value="登录注册：图片验证码的生成与redis存放" />
     <MESSAGE value="登录注册：登录注册功能实现" />
     <MESSAGE value="登录注册：登录注册功能补充：获取系统设置" />
-    <option name="LAST_COMMIT_MESSAGE" value="登录注册：登录注册功能补充：获取系统设置" />
+    <MESSAGE value="联系人：群组创建：创建相关表以及基础代码引入" />
+    <option name="LAST_COMMIT_MESSAGE" value="联系人：群组创建：创建相关表以及基础代码引入" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
