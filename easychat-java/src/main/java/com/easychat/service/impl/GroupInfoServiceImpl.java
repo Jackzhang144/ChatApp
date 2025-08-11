@@ -1,9 +1,24 @@
 package com.easychat.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.easychat.entity.config.AppConfig;
+import com.easychat.entity.constants.Constants;
+import com.easychat.entity.dto.SysSettingDto;
+import com.easychat.entity.enums.ResponseCodeEnum;
+import com.easychat.entity.enums.UserContactStatusEnum;
+import com.easychat.entity.enums.UserContactTypeEnum;
+import com.easychat.entity.po.UserContact;
+import com.easychat.entity.query.UserContactQuery;
+import com.easychat.exception.BusinessException;
+import com.easychat.mappers.UserContactMapper;
+import com.easychat.redis.RedisComponent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.easychat.entity.enums.PageSize;
@@ -14,16 +29,29 @@ import com.easychat.entity.query.SimplePage;
 import com.easychat.mappers.GroupInfoMapper;
 import com.easychat.service.GroupInfoService;
 import com.easychat.utils.StringTools;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
  *  业务接口实现
  */
 @Service("groupInfoService")
+@Slf4j
 public class GroupInfoServiceImpl implements GroupInfoService {
 
 	@Resource
 	private GroupInfoMapper<GroupInfo, GroupInfoQuery> groupInfoMapper;
+
+    @Resource
+    private UserContactMapper<UserContact, UserContactQuery> userContactMapper;
+
+    @Resource
+    private RedisComponent redisComponent;
+
+    @Resource
+    private AppConfig appConfig;
+
 
 	/**
 	 * 根据条件查询列表
@@ -127,4 +155,79 @@ public class GroupInfoServiceImpl implements GroupInfoService {
 	public Integer deleteGroupInfoByGroupId(String groupId) {
 		return this.groupInfoMapper.deleteByGroupId(groupId);
 	}
+
+    /**
+     * 创建群组
+     * @param groupInfo 群组信息
+     * @param avatarFile 头像文件
+     * @param avatarCover 头像缩略图
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void saveGroup(GroupInfo groupInfo, MultipartFile avatarFile, MultipartFile avatarCover) throws IOException {
+
+        Date curDate = new Date();
+
+        if (StringTools.isEmpty(groupInfo.getGroupId())){
+            // 新增
+            GroupInfoQuery groupInfoQuery = new GroupInfoQuery();
+            groupInfoQuery.setGroupOwnerId(groupInfo.getGroupOwnerId());
+            Integer count = this.groupInfoMapper.selectCount(groupInfoQuery);
+
+            SysSettingDto sysSetting = redisComponent.getSysSetting();
+            if (count >= sysSetting.getMaxGroupCount()){
+                throw new BusinessException("最多只能创建" + sysSetting.getMaxGroupCount()+ "个群聊");
+            }
+
+            if (null == avatarFile){
+                throw new BusinessException(ResponseCodeEnum.CODE_600);
+            }
+
+            groupInfo.setCreateTime(curDate);
+            groupInfo.setGroupId(StringTools.getGroupId());
+            this.groupInfoMapper.insert(groupInfo);
+
+            // 将群主添加为联系人
+            UserContact userContact = new UserContact();
+            userContact.setStatus(UserContactStatusEnum.FRIEND.getStatus());
+            userContact.setContactType(UserContactTypeEnum.GROUP.getType());
+            userContact.setContactId(groupInfo.getGroupId());
+            userContact.setUserId(groupInfo.getGroupOwnerId());
+            userContact.setCreateTime(curDate);
+            this.userContactMapper.insert(userContact);
+
+            // TODO 创建会话
+            // TODO 发送消息
+
+
+        }else {
+            // 修改
+            GroupInfo dbInfo = this.groupInfoMapper.selectByGroupId(groupInfo.getGroupId());
+            if (!dbInfo.getGroupOwnerId().equals(groupInfo.getGroupOwnerId())){
+                throw new BusinessException(ResponseCodeEnum.CODE_600);
+            }
+            this.groupInfoMapper.updateByGroupId(groupInfo, groupInfo.getGroupId());
+            // TODO 更新相关表冗余信息
+
+            // TODO 修改群昵称，发送ws消息
+        }
+
+        if (null == avatarFile){
+            return;
+        }
+
+        String baseFolder = appConfig.getProjectFolder() + Constants.FILE_FOLDER_FILE;
+        File targetFileFolder = new File(baseFolder + Constants.FILE_FOLDER_AVATAR_NAME);
+        if (!targetFileFolder.exists()){
+            targetFileFolder.mkdirs();
+        }
+        String filePath = targetFileFolder.getPath() + "/" + groupInfo.getGroupId() + Constants.IMAGE_SUFFIX;
+        try {
+            avatarFile.transferTo(new File(filePath));
+            avatarCover.transferTo(new File(filePath + Constants.COVER_IMAGE_SUFFIX));
+        } catch (IOException e) {
+            log.error("头像上传失败", e);
+            throw new BusinessException("头像上传失败");
+        }
+    }
 }
