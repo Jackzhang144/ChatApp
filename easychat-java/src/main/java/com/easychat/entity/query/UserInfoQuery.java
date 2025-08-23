@@ -1,8 +1,5 @@
 package com.easychat.entity.query;
 
-import java.util.Date;
-
-
 /**
  * 用户信息参数
  */

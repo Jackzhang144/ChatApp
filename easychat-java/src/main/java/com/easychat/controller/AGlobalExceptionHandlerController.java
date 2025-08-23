@@ -3,8 +3,6 @@ package com.easychat.controller;
 import com.easychat.entity.enums.ResponseCodeEnum;
 import com.easychat.entity.vo.ResponseVO;
 import com.easychat.exception.BusinessException;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;

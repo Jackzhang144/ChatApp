@@ -1,31 +1,29 @@
 package com.easychat.service.impl;
 
-import java.beans.Transient;
-import java.util.*;
-
-import javax.annotation.Resource;
-
 import com.easychat.entity.config.AppConfig;
 import com.easychat.entity.constants.Constants;
 import com.easychat.entity.dto.TokenUserInfoDto;
 import com.easychat.entity.enums.*;
+import com.easychat.entity.po.UserInfo;
 import com.easychat.entity.po.UserInfoBeauty;
+import com.easychat.entity.query.SimplePage;
+import com.easychat.entity.query.UserInfoQuery;
+import com.easychat.entity.vo.PaginationResultVO;
 import com.easychat.entity.vo.UserInfoVO;
 import com.easychat.exception.BusinessException;
 import com.easychat.mappers.UserInfoBeautyMapper;
+import com.easychat.mappers.UserInfoMapper;
 import com.easychat.redis.RedisComponent;
+import com.easychat.service.UserInfoService;
 import com.easychat.utils.CopyTools;
+import com.easychat.utils.StringTools;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
-
-import com.easychat.entity.query.UserInfoQuery;
-import com.easychat.entity.po.UserInfo;
-import com.easychat.entity.vo.PaginationResultVO;
-import com.easychat.entity.query.SimplePage;
-import com.easychat.mappers.UserInfoMapper;
-import com.easychat.service.UserInfoService;
-import com.easychat.utils.StringTools;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 
 /**

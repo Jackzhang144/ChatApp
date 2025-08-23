@@ -1,13 +1,11 @@
 package com.easychat.service;
 
-import java.util.List;
-import java.util.Map;
-
-import com.easychat.entity.dto.TokenUserInfoDto;
-import com.easychat.entity.query.UserInfoQuery;
 import com.easychat.entity.po.UserInfo;
+import com.easychat.entity.query.UserInfoQuery;
 import com.easychat.entity.vo.PaginationResultVO;
 import com.easychat.entity.vo.UserInfoVO;
+
+import java.util.List;
 
 
 /**

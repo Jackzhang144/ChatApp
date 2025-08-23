@@ -1,10 +1,10 @@
 package com.easychat.service;
 
-import java.util.List;
-
-import com.easychat.entity.query.UserInfoBeautyQuery;
 import com.easychat.entity.po.UserInfoBeauty;
+import com.easychat.entity.query.UserInfoBeautyQuery;
 import com.easychat.entity.vo.PaginationResultVO;
+
+import java.util.List;
 
 
 /**

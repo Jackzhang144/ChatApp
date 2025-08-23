@@ -1,7 +1,6 @@
 package com.easychat.entity.enums;
 
 import com.easychat.utils.StringTools;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter

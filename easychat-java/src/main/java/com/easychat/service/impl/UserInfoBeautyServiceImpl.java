@@ -1,19 +1,17 @@
 package com.easychat.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.easychat.entity.enums.PageSize;
-import com.easychat.entity.query.UserInfoBeautyQuery;
 import com.easychat.entity.po.UserInfoBeauty;
-import com.easychat.entity.vo.PaginationResultVO;
 import com.easychat.entity.query.SimplePage;
+import com.easychat.entity.query.UserInfoBeautyQuery;
+import com.easychat.entity.vo.PaginationResultVO;
 import com.easychat.mappers.UserInfoBeautyMapper;
 import com.easychat.service.UserInfoBeautyService;
 import com.easychat.utils.StringTools;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 
 /**

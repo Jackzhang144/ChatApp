@@ -5,9 +5,7 @@ import com.easychat.entity.dto.TokenUserInfoDto;
 import com.easychat.entity.enums.ResponseCodeEnum;
 import com.easychat.entity.vo.ResponseVO;
 import com.easychat.exception.BusinessException;
-import com.easychat.redis.RedisComponent;
 import com.easychat.redis.RedisUtils;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.HeaderTokenizer;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +51,7 @@ public class ABaseController {
         return vo;
     }
 
-    protected TokenUserInfoDto getTokenUserInfo(HttpServletRequest request){
+    protected TokenUserInfoDto getTokenUserInfo(HttpServletRequest request) {
         String token = request.getHeader("token");
         TokenUserInfoDto tokenUserInfoDto = (TokenUserInfoDto) redisUtils.get(Constants.REDIS_KEY_WS_TOKEN + token);
         return tokenUserInfoDto;

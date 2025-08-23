@@ -8,7 +8,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Random;
 
 
 public class StringTools {

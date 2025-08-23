@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 public @interface GlobalInterceptor {
     // 默认需要校验登录
     boolean checkLogin() default true;
+
     // 默认不为超级管理员
     boolean checkAdmin() default false;
 }

@@ -1,12 +1,12 @@
 package com.easychat.service;
 
-import java.io.IOException;
-import java.util.List;
-
-import com.easychat.entity.query.GroupInfoQuery;
 import com.easychat.entity.po.GroupInfo;
+import com.easychat.entity.query.GroupInfoQuery;
 import com.easychat.entity.vo.PaginationResultVO;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 
 /**
