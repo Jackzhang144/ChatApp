@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="联系人：群组创建：新增群组功能实现">
-      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/enums/GroupStatusEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/vo/GroupInfoVO.java" afterDir="false" />
+    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="联系人：获取我创建的群组 &amp; 获取群聊详情 &amp; 获取聊天会话群聊详情接口实现">
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/UserContactController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/dto/UserContactSearchResultDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/enums/UserContactApplyStatusEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/GroupInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/GroupInfoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/po/GroupInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/po/GroupInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/po/UserContact.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/po/UserContact.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/query/UserContactQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/query/UserContactQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/impl/GroupInfoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/impl/GroupInfoServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/resources/com/easychat/mappers/UserContactMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/resources/com/easychat/mappers/UserContactMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/constants/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/constants/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/UserContactService.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/UserContactService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/impl/UserContactServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/impl/UserContactServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,45 +67,46 @@
     <option name="showLibraryContents" value="true" />
     <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "HTTP 请求.generated-requests | #22.executor": "Run",
-    "HTTP 请求.generated-requests | #23.executor": "JRebel Debug",
-    "HTTP 请求.generated-requests | #24.executor": "JRebel Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.EasyChatApplication.executor": "JRebel Debug",
-    "git-widget-placeholder": "后端",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "F:/code/EasyChat",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "库",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.group.tools",
-    "vue.rearranger.settings.migration": "true",
-    "应用程序.EasyChatApplication.executor": "Run",
-    "应用程序.SocketClient.executor": "Run",
-    "应用程序.SocketServer.executor": "Run",
-    "应用程序.StringTools.executor": "Run",
-    "应用程序.UserContactTypeEnum.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;HTTP 请求.generated-requests | #22.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP 请求.generated-requests | #23.executor&quot;: &quot;JRebel Debug&quot;,
+    &quot;HTTP 请求.generated-requests | #24.executor&quot;: &quot;JRebel Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.EasyChatApplication.executor&quot;: &quot;JRebel Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;后端&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/code/EasyChat&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;库&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.tools&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.EasyChatApplication.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.SocketClient.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.SocketServer.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.StringTools.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.UserContactTypeEnum.executor&quot;: &quot;Run&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -121,9 +122,9 @@
       <recent name="F:\code\EasyChat\easychat-java\src\main\resources\com\easychat\mappers" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.easychat.entity.dto" />
       <recent name="com.easychat.entity.vo" />
       <recent name="com.easychat.entity.enums" />
-      <recent name="com.easychat.entity.dto" />
       <recent name="com.easychat.utils" />
     </key>
   </component>
@@ -139,13 +140,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.EasyChatApplication">
-    <configuration name="generated-requests | #23" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#23" index="23" runType="运行单个请求">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #24" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#24" index="24" runType="运行单个请求">
-      <method v="2" />
-    </configuration>
+  <component name="RunManager">
     <configuration name="EasyChatApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="easychat-java" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.easychat.EasyChatApplication" />
@@ -159,13 +154,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Spring Boot.EasyChatApplication" />
-        <item itemvalue="HTTP 请求.generated-requests | #23" />
-        <item itemvalue="HTTP 请求.generated-requests | #24" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -205,7 +193,8 @@
       <workItem from="1755065565992" duration="49000" />
       <workItem from="1755092071933" duration="60000" />
       <workItem from="1755856585498" duration="8695000" />
-      <workItem from="1755934151082" duration="9924000" />
+      <workItem from="1755934151082" duration="12917000" />
+      <workItem from="1756001050814" duration="9215000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始构建">
       <option name="closed" value="true" />
@@ -311,7 +300,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754926914505</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="联系人：获取我创建的群组 &amp; 获取群聊详情 &amp; 获取聊天会话群聊详情接口实现">
+      <option name="closed" value="true" />
+      <created>1755952618056</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1755952618056</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -366,7 +363,8 @@
     <MESSAGE value="联系人：群组创建：创建相关表以及基础代码引入" />
     <MESSAGE value="联系人：群组创建：新增检验登录/管理员拦截器" />
     <MESSAGE value="联系人：群组创建：新增群组功能实现" />
-    <option name="LAST_COMMIT_MESSAGE" value="联系人：群组创建：新增群组功能实现" />
+    <MESSAGE value="联系人：获取我创建的群组 &amp; 获取群聊详情 &amp; 获取聊天会话群聊详情接口实现" />
+    <option name="LAST_COMMIT_MESSAGE" value="联系人：获取我创建的群组 &amp; 获取群聊详情 &amp; 获取聊天会话群聊详情接口实现" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
