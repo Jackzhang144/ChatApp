@@ -49,6 +49,15 @@ public class UserContactApply implements Serializable {
      */
     private String applyInfo;
 
+    private String contactName;
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;

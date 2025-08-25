@@ -21,39 +21,41 @@
         <result column="status" property="status"/>
         <!--申请信息-->
         <result column="apply_info" property="applyInfo"/>
+        <!--联系人名称-->
+        <result column="contact_name" property="contactName"/>
     </resultMap>
 
 
     <!-- 通用查询结果列-->
     <sql id="base_column_list">
-        u.apply_id,u.apply_user_id,u.receive_user_id,u.contact_type,u.contact_id,
-		 u.last_apply_time,u.status,u.apply_info
+         a.apply_id,a.apply_user_id,a.receive_user_id,a.contact_type,a.contact_id,
+		 a.last_apply_time,a.status,a.apply_info
     </sql>
 
     <sql id="base_condition_filed">
         <if test="query.applyId != null">
-            and u.apply_id = #{query.applyId}
+            and a.apply_id = #{query.applyId}
         </if>
         <if test="query.applyUserId != null and query.applyUserId!=''">
-            and u.apply_user_id = #{query.applyUserId}
+            and a.apply_user_id = #{query.applyUserId}
         </if>
         <if test="query.receiveUserId != null and query.receiveUserId!=''">
-            and u.receive_user_id = #{query.receiveUserId}
+            and a.receive_user_id = #{query.receiveUserId}
         </if>
         <if test="query.contactType != null">
-            and u.contact_type = #{query.contactType}
+            and a.contact_type = #{query.contactType}
         </if>
         <if test="query.contactId != null and query.contactId!=''">
-            and u.contact_id = #{query.contactId}
+            and a.contact_id = #{query.contactId}
         </if>
         <if test="query.lastApplyTime != null">
-            and u.last_apply_time = #{query.lastApplyTime}
+            and a.last_apply_time = #{query.lastApplyTime}
         </if>
         <if test="query.status != null">
-            and u.status = #{query.status}
+            and a.status = #{query.status}
         </if>
         <if test="query.applyInfo != null and query.applyInfo!=''">
-            and u.apply_info = #{query.applyInfo}
+            and a.apply_info = #{query.applyInfo}
         </if>
     </sql>
     <!-- 通用条件列-->
@@ -68,16 +70,16 @@
         <where>
             <include refid="base_condition_filed"/>
             <if test="query.applyUserIdFuzzy!= null  and query.applyUserIdFuzzy!=''">
-                and u.apply_user_id like concat('%', #{query.applyUserIdFuzzy}, '%')
+                and a.apply_user_id like concat('%', #{query.applyUserIdFuzzy}, '%')
             </if>
             <if test="query.receiveUserIdFuzzy!= null  and query.receiveUserIdFuzzy!=''">
-                and u.receive_user_id like concat('%', #{query.receiveUserIdFuzzy}, '%')
+                and a.receive_user_id like concat('%', #{query.receiveUserIdFuzzy}, '%')
             </if>
             <if test="query.contactIdFuzzy!= null  and query.contactIdFuzzy!=''">
-                and u.contact_id like concat('%', #{query.contactIdFuzzy}, '%')
+                and a.contact_id like concat('%', #{query.contactIdFuzzy}, '%')
             </if>
             <if test="query.applyInfoFuzzy!= null  and query.applyInfoFuzzy!=''">
-                and u.apply_info like concat('%', #{query.applyInfoFuzzy}, '%')
+                and a.apply_info like concat('%', #{query.applyInfoFuzzy}, '%')
             </if>
         </where>
     </sql>
@@ -85,8 +87,18 @@
     <!-- 查询集合-->
     <select id="selectList" resultMap="base_result_map">
         SELECT
-        <include refid="base_column_list"/>
-        FROM user_contact_apply u
+        a.*
+        <if test="query.queryContactInfo">
+            ,case
+            when a.contact_type = 0 then u.nick_name
+            when a.contact_type = 1 then g.group_name
+            end as contact_name
+        </if>
+        FROM user_contact_apply a
+        <if test="query.queryContactInfo">
+            left join user_info u on u.user_id = a.apply_user_id and a.receive_user_id = #{query.receiveUserId}
+            left join group_info g on g.group_id = a.contact_id and a.receive_user_id = #{query.receiveUserId}
+        </if>
         <include refid="query_condition"/>
         <if test="query.orderBy!=null">
             order by ${query.orderBy}
@@ -98,7 +110,7 @@
 
     <!-- 查询数量-->
     <select id="selectCount" resultType="java.lang.Integer">
-        SELECT count(1) FROM user_contact_apply u
+        SELECT count(1) FROM user_contact_apply a
         <include refid="query_condition"/>
     </select>
 
@@ -296,7 +308,7 @@
 
     <!--多条件修改-->
     <update id="updateByParam" parameterType="com.easychat.entity.query.UserContactApplyQuery">
-        UPDATE user_contact_apply u
+        UPDATE user_contact_apply a
         <set>
             <if test="bean.applyUserId != null">
                 apply_user_id = #{bean.applyUserId},
@@ -325,7 +337,7 @@
 
     <!--多条件删除-->
     <delete id="deleteByParam">
-        delete u from user_contact_apply u
+        delete a from user_contact_apply a
         <include refid="query_condition"/>
     </delete>
 
@@ -369,7 +381,7 @@
     <select id="selectByApplyId" resultMap="base_result_map">
         select
         <include refid="base_column_list"/>
-        from user_contact_apply u where apply_id=#{applyId}
+        from user_contact_apply a where apply_id=#{applyId}
     </select>
 
     <!-- 根据ApplyUserIdAndReceiveUserIdAndContactId修改-->
@@ -406,7 +418,7 @@
     <select id="selectByApplyUserIdAndReceiveUserIdAndContactId" resultMap="base_result_map">
         select
         <include refid="base_column_list"/>
-        from user_contact_apply u where apply_user_id=#{applyUserId} and receive_user_id=#{receiveUserId} and
+        from user_contact_apply a where apply_user_id=#{applyUserId} and receive_user_id=#{receiveUserId} and
         contact_id=#{contactId}
     </select>
 

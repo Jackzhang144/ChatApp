@@ -87,4 +87,5 @@ public interface UserContactApplyService {
      */
     Integer deleteUserContactApplyByApplyUserIdAndReceiveUserIdAndContactId(String applyUserId, String receiveUserId, String contactId);
 
+    void dealWithApply(String userId, Integer applyId, Integer status);
 }

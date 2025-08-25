@@ -4,16 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="联系人：获取我创建的群组 &amp; 获取群聊详情 &amp; 获取聊天会话群聊详情接口实现">
-      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/UserContactController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/dto/UserContactSearchResultDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/enums/UserContactApplyStatusEnum.java" afterDir="false" />
+    <list default="true" id="e92d7dac-45ff-4845-9063-a72109f5e200" name="更改" comment="联系人：搜索联系人 &amp; 添加联系人">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/constants/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/constants/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/UserContactService.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/UserContactService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/impl/UserContactServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/impl/UserContactServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/UserContactController.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/controller/UserContactController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/po/UserContactApply.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/po/UserContactApply.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/query/UserContactApplyQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/entity/query/UserContactApplyQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/UserContactApplyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/UserContactApplyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/impl/UserContactApplyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/java/com/easychat/service/impl/UserContactApplyServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easychat-java/src/main/resources/com/easychat/mappers/UserContactApplyMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/easychat-java/src/main/resources/com/easychat/mappers/UserContactApplyMapper.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +92,7 @@
     &quot;project.structure.last.edited&quot;: &quot;库&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.tools&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.MySQL&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
     &quot;应用程序.EasyChatApplication.executor&quot;: &quot;Run&quot;,
     &quot;应用程序.SocketClient.executor&quot;: &quot;Run&quot;,
@@ -194,7 +193,8 @@
       <workItem from="1755092071933" duration="60000" />
       <workItem from="1755856585498" duration="8695000" />
       <workItem from="1755934151082" duration="12917000" />
-      <workItem from="1756001050814" duration="9215000" />
+      <workItem from="1756001050814" duration="9348000" />
+      <workItem from="1756040137836" duration="8941000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始构建">
       <option name="closed" value="true" />
@@ -308,7 +308,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755952618056</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="联系人：搜索联系人 &amp; 添加联系人">
+      <option name="closed" value="true" />
+      <created>1756020930356</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1756020930356</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,7 +372,8 @@
     <MESSAGE value="联系人：群组创建：新增检验登录/管理员拦截器" />
     <MESSAGE value="联系人：群组创建：新增群组功能实现" />
     <MESSAGE value="联系人：获取我创建的群组 &amp; 获取群聊详情 &amp; 获取聊天会话群聊详情接口实现" />
-    <option name="LAST_COMMIT_MESSAGE" value="联系人：获取我创建的群组 &amp; 获取群聊详情 &amp; 获取聊天会话群聊详情接口实现" />
+    <MESSAGE value="联系人：搜索联系人 &amp; 添加联系人" />
+    <option name="LAST_COMMIT_MESSAGE" value="联系人：搜索联系人 &amp; 添加联系人" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

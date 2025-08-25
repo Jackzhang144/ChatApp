@@ -1,10 +1,14 @@
 package com.easychat.service.impl;
 
 import com.easychat.entity.enums.PageSize;
+import com.easychat.entity.enums.ResponseCodeEnum;
+import com.easychat.entity.enums.UserContactApplyStatusEnum;
 import com.easychat.entity.po.UserContactApply;
 import com.easychat.entity.query.SimplePage;
 import com.easychat.entity.query.UserContactApplyQuery;
+import com.easychat.entity.query.UserContactQuery;
 import com.easychat.entity.vo.PaginationResultVO;
+import com.easychat.exception.BusinessException;
 import com.easychat.mappers.UserContactApplyMapper;
 import com.easychat.service.UserContactApplyService;
 import com.easychat.utils.StringTools;
@@ -148,5 +152,36 @@ public class UserContactApplyServiceImpl implements UserContactApplyService {
     @Override
     public Integer deleteUserContactApplyByApplyUserIdAndReceiveUserIdAndContactId(String applyUserId, String receiveUserId, String contactId) {
         return this.userContactApplyMapper.deleteByApplyUserIdAndReceiveUserIdAndContactId(applyUserId, receiveUserId, contactId);
+    }
+
+    @Override
+    public void dealWithApply(String userId, Integer applyId, Integer status) {
+
+        UserContactApplyStatusEnum statusEnum = UserContactApplyStatusEnum.getByStatus(status);
+        if (statusEnum == null || statusEnum == UserContactApplyStatusEnum.INIT) {
+            throw new BusinessException(ResponseCodeEnum.CODE_600);
+        }
+
+        //经典防呆防坏设计，需要防止通过接口调用，做一些通过前端做不了的事情
+        UserContactApply applyInfo = this.userContactApplyMapper.selectByApplyId(applyId);
+        if (null == applyInfo || !userId.equals(applyInfo.getApplyUserId())) {
+            // 判断调接口的是否为申请接收者
+            throw new BusinessException(ResponseCodeEnum.CODE_600);
+        }
+
+        UserContactApply updateInfo = new UserContactApply();
+        updateInfo.setStatus(status);
+        updateInfo.setLastApplyTime(System.currentTimeMillis());
+
+        UserContactApplyQuery applyQuery = new UserContactApplyQuery();
+        applyQuery.setApplyId(applyId);
+        applyQuery.setStatus(UserContactApplyStatusEnum.INIT.getStatus());
+
+        Integer count = this.userContactApplyMapper.updateByParam(updateInfo, applyQuery);
+
+        if (count == 0) {
+            throw new BusinessException(ResponseCodeEnum.CODE_600);
+        }
+
     }
 }
