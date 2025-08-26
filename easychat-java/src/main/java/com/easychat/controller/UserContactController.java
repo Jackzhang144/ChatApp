@@ -63,6 +63,8 @@ public class UserContactController extends ABaseController{
         return getSuccessResponseVO(resultVO);
     }
 
+    @RequestMapping("/dealWithApply")
+    @GlobalInterceptor
     public ResponseVO dealWithApply(HttpServletRequest request, @NotNull Integer applyId, @NotNull Integer status){
         TokenUserInfoDto tokenUserInfoDto = getTokenUserInfo(request);
         this.userContactApplyService.dealWithApply(tokenUserInfoDto.getUserId(), applyId, status);

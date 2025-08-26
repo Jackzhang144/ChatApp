@@ -22,9 +22,9 @@ spring:
       max-file-size: 15MB
       max-request-size: 15MB
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/easychat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: abc123
+    url: jdbc:mysql://10.31.141.223:3306/easychat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: test
+    password: Zy20030123
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: HikariCPDatasource
@@ -37,7 +37,7 @@ spring:
       connection-test-query: SELECT 1
   redis:
     database: 0 # Redis数据库索引（默认为0）
-    host: 127.0.0.1
+    host: 10.31.141.223
     port: 6379
     jedis:
       pool:

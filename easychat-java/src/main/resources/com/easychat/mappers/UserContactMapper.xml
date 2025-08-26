@@ -193,18 +193,6 @@
         </trim>
         on DUPLICATE key update
         <trim prefix="" suffix="" suffixOverrides=",">
-            <if test="bean.userId!=null">
-                user_id = VALUES(user_id),
-            </if>
-            <if test="bean.contactId!=null">
-                contact_id = VALUES(contact_id),
-            </if>
-            <if test="bean.contactType!=null">
-                contact_type = VALUES(contact_type),
-            </if>
-            <if test="bean.createTime!=null">
-                create_time = VALUES(create_time),
-            </if>
             <if test="bean.status!=null">
                 status = VALUES(status),
             </if>
