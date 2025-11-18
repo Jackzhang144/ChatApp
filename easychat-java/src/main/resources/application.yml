@@ -10,9 +10,6 @@ ws:
   port: 5051
 
 spring:
-  mvc:
-    favicon:
-      enable: false # 处理favicon
   web:
     resources:
       add-mappings: false
