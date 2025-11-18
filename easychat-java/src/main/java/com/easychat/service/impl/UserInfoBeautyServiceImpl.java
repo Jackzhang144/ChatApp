@@ -10,7 +10,7 @@ import com.easychat.service.UserInfoBeautyService;
 import com.easychat.utils.StringTools;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 
 

@@ -1,9 +1,14 @@
 package com.easychat.entity.query;
 
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * 联系人申请参数
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class UserContactApplyQuery extends BaseParam {
 
 
@@ -56,109 +61,4 @@ public class UserContactApplyQuery extends BaseParam {
     private String applyInfoFuzzy;
 
     private Boolean queryContactInfo;
-
-
-    public void setApplyId(Integer applyId) {
-        this.applyId = applyId;
-    }
-
-    public Integer getApplyId() {
-        return this.applyId;
-    }
-
-    public void setApplyUserId(String applyUserId) {
-        this.applyUserId = applyUserId;
-    }
-
-    public String getApplyUserId() {
-        return this.applyUserId;
-    }
-
-    public void setApplyUserIdFuzzy(String applyUserIdFuzzy) {
-        this.applyUserIdFuzzy = applyUserIdFuzzy;
-    }
-
-    public String getApplyUserIdFuzzy() {
-        return this.applyUserIdFuzzy;
-    }
-
-    public void setReceiveUserId(String receiveUserId) {
-        this.receiveUserId = receiveUserId;
-    }
-
-    public String getReceiveUserId() {
-        return this.receiveUserId;
-    }
-
-    public void setReceiveUserIdFuzzy(String receiveUserIdFuzzy) {
-        this.receiveUserIdFuzzy = receiveUserIdFuzzy;
-    }
-
-    public String getReceiveUserIdFuzzy() {
-        return this.receiveUserIdFuzzy;
-    }
-
-    public void setContactType(Integer contactType) {
-        this.contactType = contactType;
-    }
-
-    public Integer getContactType() {
-        return this.contactType;
-    }
-
-    public void setContactId(String contactId) {
-        this.contactId = contactId;
-    }
-
-    public String getContactId() {
-        return this.contactId;
-    }
-
-    public void setContactIdFuzzy(String contactIdFuzzy) {
-        this.contactIdFuzzy = contactIdFuzzy;
-    }
-
-    public String getContactIdFuzzy() {
-        return this.contactIdFuzzy;
-    }
-
-    public void setLastApplyTime(Long lastApplyTime) {
-        this.lastApplyTime = lastApplyTime;
-    }
-
-    public Long getLastApplyTime() {
-        return this.lastApplyTime;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
-
-    public void setApplyInfo(String applyInfo) {
-        this.applyInfo = applyInfo;
-    }
-
-    public String getApplyInfo() {
-        return this.applyInfo;
-    }
-
-    public void setApplyInfoFuzzy(String applyInfoFuzzy) {
-        this.applyInfoFuzzy = applyInfoFuzzy;
-    }
-
-    public String getApplyInfoFuzzy() {
-        return this.applyInfoFuzzy;
-    }
-
-    public Boolean getQueryContactInfo() {
-        return queryContactInfo;
-    }
-
-    public void setQueryContactInfo(Boolean queryContactInfo) {
-        this.queryContactInfo = queryContactInfo;
-    }
 }

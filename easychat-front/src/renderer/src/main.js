@@ -7,10 +7,10 @@ import VueCookies from 'vue-cookies'
 
 import 'element-plus/dist/index.css'
 //全局重写样式
-import "@/assets/cust-elementplus.scss";
+import "@/assets/cust-elementplus.css";
 
 import "@/assets/icon/iconfont.css"
-import '@/assets/base.scss';
+import '@/assets/base.css';
 
 import WinOp from "@/components/WinOp.vue"
 import Avatar from "@/components/Avatar.vue"

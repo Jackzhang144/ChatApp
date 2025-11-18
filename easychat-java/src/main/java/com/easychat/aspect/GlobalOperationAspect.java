@@ -7,8 +7,7 @@ import com.easychat.entity.enums.ResponseCodeEnum;
 import com.easychat.exception.BusinessException;
 import com.easychat.redis.RedisUtils;
 import com.easychat.utils.StringTools;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -17,14 +16,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
+@Slf4j
 @Aspect
 @Component("globalOperationAspect")
 public class GlobalOperationAspect {
-    private static final Logger log = LoggerFactory.getLogger(GlobalOperationAspect.class);
 
     @Resource
     private RedisUtils redisUtils;

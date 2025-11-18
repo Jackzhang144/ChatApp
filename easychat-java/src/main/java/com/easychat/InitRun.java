@@ -1,20 +1,19 @@
 package com.easychat;
 
 import com.easychat.redis.RedisUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
+@Slf4j
 @Component("initRun")
 public class InitRun implements ApplicationRunner {
-    private static final Logger log = LoggerFactory.getLogger(InitRun.class);
 
     @Resource
     private DataSource dataSource;

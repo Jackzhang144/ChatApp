@@ -3,8 +3,7 @@ package com.easychat.controller;
 import com.easychat.entity.enums.ResponseCodeEnum;
 import com.easychat.entity.vo.ResponseVO;
 import com.easychat.exception.BusinessException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,16 +11,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
+@Slf4j
 @RestControllerAdvice
 public class AGlobalExceptionHandlerController extends ABaseController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AGlobalExceptionHandlerController.class);
-
     @ExceptionHandler(value = Exception.class)
     Object handleException(Exception e, HttpServletRequest request) {
-        logger.error("请求错误，请求地址{},错误信息:", request.getRequestURL(), e);
+        log.error("请求错误，请求地址{},错误信息:", request.getRequestURL(), e);
         ResponseVO ajaxResponse = new ResponseVO();
         //404
         if (e instanceof NoHandlerFoundException) {

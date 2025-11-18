@@ -1,8 +1,7 @@
 package com.easychat.entity.po;
 
-import com.easychat.entity.enums.DateTimePatternEnum;
-import com.easychat.utils.DateUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -12,6 +11,7 @@ import java.util.Date;
 /**
  * 联系人
  */
+@Data
 public class UserContact implements Serializable {
 
 
@@ -55,58 +55,4 @@ public class UserContact implements Serializable {
     private String contactName;
 
     private Integer sex;
-
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserId() {
-        return this.userId;
-    }
-
-    public void setContactId(String contactId) {
-        this.contactId = contactId;
-    }
-
-    public String getContactId() {
-        return this.contactId;
-    }
-
-    public void setContactType(Integer contactType) {
-        this.contactType = contactType;
-    }
-
-    public Integer getContactType() {
-        return this.contactType;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getCreateTime() {
-        return this.createTime;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
-
-    public void setLastUpdateTime(Date lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
-    }
-
-    public Date getLastUpdateTime() {
-        return this.lastUpdateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "用户ID:" + (userId == null ? "空" : userId) + "，联系人ID或者群组ID:" + (contactId == null ? "空" : contactId) + "，联系人类型 0:好友 1:群组:" + (contactType == null ? "空" : contactType) + "，创建时间:" + (createTime == null ? "空" : DateUtil.format(createTime, DateTimePatternEnum.YYYY_MM_DD_HH_MM_SS.getPattern())) + "，状态 0:非好友 1:好友 2:已删除好友 3:被好友删除 4:已拉黑好友 5:被好友拉黑:" + (status == null ? "空" : status) + "，最后更新时间:" + (lastUpdateTime == null ? "空" : DateUtil.format(lastUpdateTime, DateTimePatternEnum.YYYY_MM_DD_HH_MM_SS.getPattern()));
-    }
 }
