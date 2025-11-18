@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, Menu, Tray } from 'electron'
+import { app, shell, BrowserWindow, Menu, Tray, nativeImage } from 'electron'
 import { join } from 'path'
 const NODE_ENV = process.env.NODE_ENV
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -16,11 +16,21 @@ import { saveWindow } from './windowProxy'
 const login_width = 300;
 const login_height = 370;
 const register_height = 490;
+const isMac = process.platform === 'darwin';
+const MAC_TRAY_ICON_SIZE = 18;
+
+function createTrayIcon() {
+  let trayIcon = nativeImage.createFromPath(icon);
+  if (isMac) {
+    trayIcon = trayIcon.resize({ width: MAC_TRAY_ICON_SIZE, height: MAC_TRAY_ICON_SIZE });
+    trayIcon.setTemplateImage(true);
+  }
+  return trayIcon;
+}
 
 
 function createWindow() {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  const windowConfig = {
     icon: icon,
     width: login_width,
     height: login_height,//380
@@ -30,16 +40,29 @@ function createWindow() {
     maximizable: false,
     autoHideMenuBar: true,//隐藏菜单
     resizable: false,//自动拖动大小
-    frame: true,// 创建无边框窗口，没有窗口的某些部分（例如工具栏、控件等）
-    transparent: true,//创建一个完全透明的窗口
-    hasShadow: false,
-    titleBarStyle: 'hidden',
+    frame: !isMac,
+    transparent: !isMac,//mac 使用标准标题栏
+    hasShadow: isMac,
+    titleBarStyle: isMac ? 'hiddenInset' : 'hidden',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
       contextIsolation: false
     }
-  })
+  };
+
+  if (isMac) {
+    windowConfig.fullscreenable = true;
+    windowConfig.frame = true;
+    windowConfig.transparent = false;
+    windowConfig.trafficLightPosition = { x: 14, y: 16 };
+  }
+
+  const mainWindow = new BrowserWindow(windowConfig)
+
+  if (isMac) {
+    mainWindow.setWindowButtonVisibility(true);
+  }
 
   saveWindow("main", mainWindow);
 
@@ -74,7 +97,7 @@ function createWindow() {
   }
 
   //托盘
-  const tray = new Tray(icon)
+  const tray = new Tray(createTrayIcon())
   const contextMenu = [
     {
       label: '退出EasyChat', click: function () {

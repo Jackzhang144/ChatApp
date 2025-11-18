@@ -7,7 +7,8 @@ import com.easychat.entity.enums.ResponseCodeEnum;
 import com.easychat.exception.BusinessException;
 import com.easychat.redis.RedisUtils;
 import com.easychat.utils.StringTools;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -22,8 +23,8 @@ import java.lang.reflect.Method;
 
 @Aspect
 @Component("globalOperationAspect")
-@Slf4j
 public class GlobalOperationAspect {
+    private static final Logger log = LoggerFactory.getLogger(GlobalOperationAspect.class);
 
     @Resource
     private RedisUtils redisUtils;

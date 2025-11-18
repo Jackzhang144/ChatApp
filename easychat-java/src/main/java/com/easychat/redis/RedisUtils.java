@@ -1,6 +1,7 @@
 package com.easychat.redis;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -11,8 +12,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component("redisUtils")
-@Slf4j
 public class RedisUtils<V> {
+    private static final Logger log = LoggerFactory.getLogger(RedisUtils.class);
     @Resource
     RedisTemplate<String, V> redisTemplate;
 

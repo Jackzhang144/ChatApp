@@ -17,7 +17,8 @@ import com.easychat.mappers.UserContactMapper;
 import com.easychat.redis.RedisComponent;
 import com.easychat.service.GroupInfoService;
 import com.easychat.utils.StringTools;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,8 +34,8 @@ import java.util.List;
  *  业务接口实现
  */
 @Service("groupInfoService")
-@Slf4j
 public class GroupInfoServiceImpl implements GroupInfoService {
+    private static final Logger log = LoggerFactory.getLogger(GroupInfoServiceImpl.class);
 
     @Resource
     private GroupInfoMapper<GroupInfo, GroupInfoQuery> groupInfoMapper;

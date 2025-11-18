@@ -1,16 +1,14 @@
 package com.easychat.entity.enums;
 
 import com.easychat.utils.StringTools;
-import lombok.Getter;
 
-@Getter
 public enum UserContactTypeEnum {
     USER(0, "U", "好友"),
     GROUP(1, "G", "群");
 
-    private Integer type;
-    private String prefix;
-    private String desc;
+    private final Integer type;
+    private final String prefix;
+    private final String desc;
 
     UserContactTypeEnum(Integer type, String prefix, String desc) {
         this.type = type;
@@ -44,5 +42,17 @@ public enum UserContactTypeEnum {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 }

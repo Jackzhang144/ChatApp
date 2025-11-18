@@ -17,33 +17,36 @@
         <result column="status" property="status"/>
         <!--最后更新时间-->
         <result column="last_update_time" property="lastUpdateTime"/>
+        <!--可选：联表时返回联系人昵称和性别-->
+        <result column="contact_name" property="contactName"/>
+        <result column="sex" property="sex"/>
     </resultMap>
 
 
     <!-- 通用查询结果列-->
     <sql id="base_column_list">
-        u.user_id,u.contact_id,u.contact_type,u.create_time,u.status,
-		 u.last_update_time
+        c.user_id,c.contact_id,c.contact_type,c.create_time,c.status,
+		 c.last_update_time
     </sql>
 
     <sql id="base_condition_filed">
         <if test="query.userId != null and query.userId!=''">
-            and u.user_id = #{query.userId}
+            and c.user_id = #{query.userId}
         </if>
         <if test="query.contactId != null and query.contactId!=''">
-            and u.contact_id = #{query.contactId}
+            and c.contact_id = #{query.contactId}
         </if>
         <if test="query.contactType != null">
-            and u.contact_type = #{query.contactType}
+            and c.contact_type = #{query.contactType}
         </if>
         <if test="query.createTime != null and query.createTime!=''">
-            <![CDATA[ and  u.create_time=str_to_date(#{query.createTime}, '%Y-%m-%d') ]]>
+            <![CDATA[ and  c.create_time=str_to_date(#{query.createTime}, '%Y-%m-%d') ]]>
         </if>
         <if test="query.status != null">
-            and u.status = #{query.status}
+            and c.status = #{query.status}
         </if>
         <if test="query.lastUpdateTime != null and query.lastUpdateTime!=''">
-            <![CDATA[ and  u.last_update_time=str_to_date(#{query.lastUpdateTime}, '%Y-%m-%d') ]]>
+            <![CDATA[ and  c.last_update_time=str_to_date(#{query.lastUpdateTime}, '%Y-%m-%d') ]]>
         </if>
     </sql>
     <!-- 通用条件列-->
@@ -61,32 +64,34 @@
                 and c.user_id like concat('%', #{query.userIdFuzzy}, '%')
             </if>
             <if test="query.contactIdFuzzy!= null  and query.contactIdFuzzy!=''">
-                and u.contact_id like concat('%', #{query.contactIdFuzzy}, '%')
+                and c.contact_id like concat('%', #{query.contactIdFuzzy}, '%')
             </if>
             <if test="query.createTimeStart!= null and query.createTimeStart!=''">
-                <![CDATA[ and  u.create_time>=str_to_date(#{query.createTimeStart}, '%Y-%m-%d') ]]>
+                <![CDATA[ and  c.create_time>=str_to_date(#{query.createTimeStart}, '%Y-%m-%d') ]]>
             </if>
             <if test="query.createTimeEnd!= null and query.createTimeEnd!=''">
-                <![CDATA[ and  u.create_time< date_sub(str_to_date(#{query.createTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+                <![CDATA[ and  c.create_time< date_sub(str_to_date(#{query.createTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
             </if>
             <if test="query.lastUpdateTimeStart!= null and query.lastUpdateTimeStart!=''">
-                <![CDATA[ and  u.last_update_time>=str_to_date(#{query.lastUpdateTimeStart}, '%Y-%m-%d') ]]>
+                <![CDATA[ and  c.last_update_time>=str_to_date(#{query.lastUpdateTimeStart}, '%Y-%m-%d') ]]>
             </if>
             <if test="query.lastUpdateTimeEnd!= null and query.lastUpdateTimeEnd!=''">
-                <![CDATA[ and  u.last_update_time< date_sub(str_to_date(#{query.lastUpdateTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+                <![CDATA[ and  c.last_update_time< date_sub(str_to_date(#{query.lastUpdateTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
             </if>
         </where>
     </sql>
 
     <!-- 查询集合-->
     <select id="selectList" resultMap="base_result_map">
-        SELECT c.*
+        SELECT
+        <include refid="base_column_list"/>
         <if test="query.queryUserInfo">
-            u.nickname contactName,u.sex sex
+            ,ui.nick_name AS contact_name,ui.sex
         </if>
         FROM user_contact c
         <if test="query.queryUserInfo">
-            inner join user_info u on c.user_id = u.user_id
+            <!-- 仅在需要联系人昵称/性别时联表，避免日常分页查询的额外性能开销 -->
+            inner join user_info ui on c.user_id = ui.user_id
         </if>
         <include refid="query_condition"/>
         <if test="query.orderBy!=null">
@@ -99,7 +104,7 @@
 
     <!-- 查询数量-->
     <select id="selectCount" resultType="java.lang.Integer">
-        SELECT count(1) FROM user_contact u
+        SELECT count(1) FROM user_contact c
         <include refid="query_condition"/>
     </select>
 
@@ -255,7 +260,7 @@
 
     <!--多条件修改-->
     <update id="updateByParam" parameterType="com.easychat.entity.query.UserContactQuery">
-        UPDATE user_contact u
+        UPDATE user_contact c
         <set>
             <if test="bean.userId != null">
                 user_id = #{bean.userId},
@@ -281,7 +286,7 @@
 
     <!--多条件删除-->
     <delete id="deleteByParam">
-        delete u from user_contact u
+        delete c from user_contact c
         <include refid="query_condition"/>
     </delete>
 
@@ -317,7 +322,7 @@
     <select id="selectByUserIdAndContactId" resultMap="base_result_map">
         select
         <include refid="base_column_list"/>
-        from user_contact u where user_id=#{userId} and contact_id=#{contactId}
+        from user_contact c where user_id=#{userId} and contact_id=#{contactId}
     </select>
 
 </mapper>
