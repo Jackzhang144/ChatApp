@@ -49,9 +49,9 @@ project:
   folder: /Users/jackzhang/Code/IdeaProjects/EasyChat/folder
 
 # 日志级别配置
-log:
-  root:
-    level: debug
+logging:
+  level:
+    root: debug
 
 # 超级管理员id
 admin:
