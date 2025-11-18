@@ -2,6 +2,7 @@ package com.easychat.service;
 
 import com.easychat.entity.po.GroupInfo;
 import com.easychat.entity.query.GroupInfoQuery;
+import com.easychat.entity.vo.GroupInfoVO;
 import com.easychat.entity.vo.PaginationResultVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -78,5 +79,28 @@ public interface GroupInfoService {
      * @param avatarCover 头像缩略图
      */
     void saveGroup(GroupInfo groupInfo, MultipartFile avatarFile, MultipartFile avatarCover) throws IOException;
+
+    /**
+     * 查询我创建的群聊
+     * @param userId 当前用户id
+     * @return 群聊列表
+     */
+    List<GroupInfo> loadMyGroup(String userId);
+
+    /**
+     * 获取群聊详情（含成员数量）并校验权限
+     * @param userId 当前用户id
+     * @param groupId 群聊id
+     * @return 群聊详情
+     */
+    GroupInfo getGroupDetail(String userId, String groupId);
+
+    /**
+     * 查询群聊信息及群成员列表
+     * @param userId 当前用户id
+     * @param groupId 群聊id
+     * @return 群聊信息VO
+     */
+    GroupInfoVO getGroupInfoForChat(String userId, String groupId);
 
 }

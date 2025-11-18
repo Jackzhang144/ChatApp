@@ -88,4 +88,14 @@ public interface UserContactApplyService {
     Integer deleteUserContactApplyByApplyUserIdAndReceiveUserIdAndContactId(String applyUserId, String receiveUserId, String contactId);
 
     void dealWithApply(String userId, Integer applyId, Integer status);
+
+    void addContact(String applyUserId, String receiveUserId, String contactId, Integer contactType, String applyInfo);
+
+    /**
+     * 查询联系人申请列表
+     * @param receiveUserId 当前用户
+     * @param pageNo 页码
+     * @return 分页数据
+     */
+    PaginationResultVO<UserContactApply> loadApplyPage(String receiveUserId, Integer pageNo);
 }

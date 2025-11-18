@@ -22,9 +22,9 @@ spring:
       max-file-size: 15MB
       max-request-size: 15MB
   datasource:
-    url: jdbc:mysql://10.31.141.223:3306/easychat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: test
-    password: Zy20030123
+    url: jdbc:mysql://127.0.0.1:3306/easychat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: HikariCPDatasource
@@ -49,7 +49,7 @@ spring:
 
 # 项目目录
 project:
-  folder: F:/code/EasyChat/folder
+  folder: /Users/jackzhang/Code/IdeaProjects/EasyChat/folder
 
 # 日志级别配置
 log:

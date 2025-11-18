@@ -16,7 +16,6 @@ import com.easychat.mappers.UserContactApplyMapper;
 import com.easychat.mappers.UserContactMapper;
 import com.easychat.mappers.UserInfoMapper;
 import com.easychat.service.UserContactService;
-import com.easychat.service.UserInfoService;
 import com.easychat.utils.CopyTools;
 import com.easychat.utils.StringTools;
 import org.springframework.stereotype.Service;
@@ -44,6 +43,8 @@ public class UserContactServiceImpl implements UserContactService {
 
     @Resource
     private UserContactApplyMapper<UserContactApply, UserContactApplyQuery> userContactApplyMapper;
+    @Resource
+    private UserContactApplyServiceImpl userContactApplyService;
 
     /**
      * 根据条件查询列表
@@ -224,8 +225,7 @@ public class UserContactServiceImpl implements UserContactService {
 
         // 直接加入，不用记录申请记录
         if(JoinTypeEnum.JOIN.getType().equals(joinType)){
-            // TODO 添加联系人
-
+            userContactApplyService.addContact(applyUserId, receiveUserId, contactId, typeEnum.getType(), applyInfo);
             return joinType;
         }
 

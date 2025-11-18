@@ -3,15 +3,13 @@ package com.easychat.service.impl;
 import com.easychat.entity.config.AppConfig;
 import com.easychat.entity.constants.Constants;
 import com.easychat.entity.dto.SysSettingDto;
-import com.easychat.entity.enums.PageSize;
-import com.easychat.entity.enums.ResponseCodeEnum;
-import com.easychat.entity.enums.UserContactStatusEnum;
-import com.easychat.entity.enums.UserContactTypeEnum;
+import com.easychat.entity.enums.*;
 import com.easychat.entity.po.GroupInfo;
 import com.easychat.entity.po.UserContact;
 import com.easychat.entity.query.GroupInfoQuery;
 import com.easychat.entity.query.SimplePage;
 import com.easychat.entity.query.UserContactQuery;
+import com.easychat.entity.vo.GroupInfoVO;
 import com.easychat.entity.vo.PaginationResultVO;
 import com.easychat.exception.BusinessException;
 import com.easychat.mappers.GroupInfoMapper;
@@ -228,5 +226,49 @@ public class GroupInfoServiceImpl implements GroupInfoService {
             log.error("头像上传失败", e);
             throw new BusinessException("头像上传失败");
         }
+    }
+
+    @Override
+    public List<GroupInfo> loadMyGroup(String userId) {
+        GroupInfoQuery groupInfoQuery = new GroupInfoQuery();
+        groupInfoQuery.setGroupOwnerId(userId);
+        groupInfoQuery.setOrderBy("create_time desc");
+        return this.groupInfoMapper.selectList(groupInfoQuery);
+    }
+
+    @Override
+    public GroupInfo getGroupDetail(String userId, String groupId) {
+        UserContact userContact = this.userContactMapper.selectByUserIdAndContactId(userId, groupId);
+        if (userContact == null || !UserContactStatusEnum.FRIEND.getStatus().equals(userContact.getStatus())) {
+            throw new BusinessException("你不在群聊或者群聊不存在或已解散");
+        }
+
+        GroupInfo groupInfo = this.groupInfoMapper.selectByGroupId(groupId);
+        if (groupInfo == null || !GroupStatusEnum.NORMAL.getStatus().equals(groupInfo.getStatus())) {
+            throw new BusinessException("群聊不存在或已解散");
+        }
+
+        UserContactQuery userContactQuery = new UserContactQuery();
+        userContactQuery.setContactId(groupId);
+        Integer memberCount = this.userContactMapper.selectCount(userContactQuery);
+        groupInfo.setMemberCount(memberCount);
+        return groupInfo;
+    }
+
+    @Override
+    public GroupInfoVO getGroupInfoForChat(String userId, String groupId) {
+        GroupInfo groupInfo = getGroupDetail(userId, groupId);
+
+        UserContactQuery userContactQuery = new UserContactQuery();
+        userContactQuery.setContactId(groupId);
+        userContactQuery.setQueryUserInfo(true);
+        userContactQuery.setOrderBy("create_time asc");
+        userContactQuery.setStatus(UserContactStatusEnum.FRIEND.getStatus());
+        List<UserContact> userContactList = this.userContactMapper.selectList(userContactQuery);
+
+        GroupInfoVO groupInfoVO = new GroupInfoVO();
+        groupInfoVO.setGroupInfo(groupInfo);
+        groupInfoVO.setUserContactList(userContactList);
+        return groupInfoVO;
     }
 }
