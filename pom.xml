@@ -5,15 +5,15 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.easychat</groupId>
-    <artifactId>easychat-project</artifactId>
+    <groupId>com.chatapp</groupId>
+    <artifactId>ChatApp</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
-    <name>EasyChat</name>
-    <description>Aggregator for the EasyChat modules so IDEs can detect the project from the repo root.</description>
+    <name>ChatApp</name>
+    <description>Aggregator for the ChatApp modules so IDEs can detect the project from the repo root.</description>
 
     <modules>
-        <module>easychat-java</module>
+        <module>ChatApp-java</module>
     </modules>
 
 </project>

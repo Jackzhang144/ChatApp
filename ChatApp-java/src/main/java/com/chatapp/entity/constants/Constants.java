@@ -1,0 +1,58 @@
+package com.chatapp.entity.constants;
+
+import com.chatapp.entity.enums.UserContactTypeEnum;
+
+public class Constants {
+
+    public static final String ZERO_STR = "0";
+    public static final Integer ZERO = 0;
+    public static final Integer ONE = 1;
+
+    public static final Integer LENGTH_10 = 10;
+    public static final Integer LENGTH_11 = 11;
+    public static final Integer LENGTH_20 = 20;
+    public static final Integer LENGTH_30 = 30;
+
+    public static final Integer REDIS_TIME_1MIN = 60;
+    public static final Integer REDIS_KEY_EXPIRES_ONE_MIN = REDIS_TIME_1MIN;
+    public static final Integer REDIS_KEY_EXPIRES_DAY = REDIS_KEY_EXPIRES_ONE_MIN * 60 * 24;
+    public static final Integer REDIS_KEY_TOKEN_EXPIRES = REDIS_KEY_EXPIRES_DAY * 2;
+    public static final Integer REDIS_KEY_EXPIRES_HEART_BEAT = 6;
+
+    public static final String SESSION_KEY = "session_key";
+
+    public static final String FILE_FOLDER_FILE = "/file/";
+    public static final String FILE_FOLDER_TEMP = "/temp/";
+    public static final String FILE_FOLDER_TEMP_2 = "temp";
+    public static final String FILE_FOLDER_IMAGE = "images/";
+    public static final String FILE_FOLDER_AVATAR_NAME = "avatar/";
+
+    public static final String IMAGE_SUFFIX = ".png";
+    public static final String COVER_IMAGE_SUFFIX = "_cover.png";
+    public static final String[] IMAGE_SUFFIX_LIST = new String[]{".jpeg", ".jpg", ".png", ".gif", ".bmp", ".webp"};
+    public static final String[] VIDEO_SUFFIX_LIST = new String[]{".mp4", ".avi", ".rmvb", ".mkv", ".mov"};
+    public static final Long FILE_SIZE_MB = 1024 * 1024L;
+
+    public static final String REDIS_KEY_CHECK_CODE = "chatapp:checkcode:";
+    public static final String REDIS_KEY_WS_TOKEN = "chatapp:ws:token:";
+    public static final String REDIS_KEY_WS_TOKEN_USERID = "chatapp:ws:token:userid:";
+    public static final String REDIS_KEY_WS_USER_HEART_BEAT = "chatapp:ws:user:heartbeat:";
+    public static final String REDIS_KEY_WS_ON_LINE_USER = "chatapp:ws:online:";
+    public static final String REDIS_KEY_USER_CONTACT = "chatapp:user:contact:";
+    public static final String REDIS_KEY_USER_SESSION = "chatapp:user:session:";
+    public static final String REDIS_KEY_SYS_SETTING = "chatapp:syssetting:";
+
+    public static final Long MILLISECOND_3DAYS_AGO = 3 * 24 * 60 * 60 * 1000L;
+
+    public static final String ROBOT_UID = UserContactTypeEnum.USER.getPrefix() + "robot";
+
+    public static final String APP_UPDATE_FOLDER = "/app/";
+    public static final String APP_NAME = "ChatAppSetup.";
+    public static final String APP_EXE_SUFFIX = ".exe";
+
+    public static final String REGEX_PASSWORD = "^(?=.*\\d)(?=.*[a-zA-Z])[\\da-zA-Z~!@#$%^&*_]{8,18}$";
+
+    public static final String APPLY_INFO_TEMPLATE = "我是%s";
+    public static final String OUT_GROUP_TEMPLATE_SELF = "%s退出了群聊";
+    public static final String OUT_GROUP_TEMPLATE = "%s被管理员移出了群聊";
+}

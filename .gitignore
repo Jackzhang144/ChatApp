@@ -17,8 +17,8 @@ out/
 **/node_modules/
 **/.vite/
 **/dist/
-easychat-front/out/
-easychat-front/installPackages/
+ChatApp-front/out/
+ChatApp-front/installPackages/
 
 # Runtime & temp data
 *.log
@@ -31,3 +31,4 @@ folder/
 .env
 .env.*
 *.local
+/现成项目/
