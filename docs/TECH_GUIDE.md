@@ -245,3 +245,87 @@ npm run build:mac  # electron-builder 生成对应安装包，win/linux 对应 b
 ---
 
 通过本指南，你可以从「整体架构 → 后端链路 → 前端链路 → 运行/排错」的视角逐步掌握 ChatApp 的实现原理。更多细节可参考对应源码文件并结合 README.md 中的运行说明。祝学习顺利！
+
+## 5. 运行流程详解
+
+以下内容把「准备环境 → 启动服务 → 联调客户端 → 验证交互 → 发布交付」串成一条完整流水线，方便团队成员在任何环境复现实例。
+
+### 5.1 基础设施准备
+
+1. **安装依赖**：准备 MySQL 8.x、Redis 6.x/7.x、JDK 21、Maven 3.9+、Node.js 18+（Electron/Vite）以及可选的 `pnpm`、`ffmpeg`/`ffprobe`。
+2. **数据库初始化**：
+   - 创建数据库（示例名 `chatapp`），执行 `mysql -u <user> -p < db/ChatApp.sql`。
+   - 如使用不同的库名或账号，请同步修改 `db/ChatApp.sql` 与 `ChatApp-java/src/main/resources/application.yml`。
+3. **Redis 配置**：确保实例允许被后端访问。若启用了密码或哨兵，请在 `application.yml` 的 `spring.data.redis` 栏配置。
+4. **运行目录**：
+   - 根目录下的 `folder/` 用于持久化上传文件、日志、升级包；首次运行前保证该目录存在且具备写权限。
+   - 客户端本地缓存位于用户目录 `~/.chatappdev/`（调试）或 `~/.chatapp/`（生产），首次调试若路径不存在会自动创建。
+
+### 5.2 后端运行流程
+
+1. **配置 application.yml**：
+   - 核对 `server.port`、`netty.port`（默认 5050/5051）。
+   - 设置 `spring.datasource.*`、`spring.data.redis.*` 指向正确实例。
+   - 调整 `project.folder` 为可写路径（相对或绝对），可与根目录 `folder/` 同步。
+   - 必要时更新 `admin.emails`、验证码、上传大小、CORS 等参数。
+2. **启动命令**：
+   - 开发热启动：`mvn -pl ChatApp-java -am spring-boot:run`。
+   - 生产模式：`mvn -pl ChatApp-java -am clean package && java -jar ChatApp-java/target/ChatApp-java-1.0.jar`。
+3. **启动期间关键步骤**：
+   - `InitRun` 会探测 MySQL/Redis，并在后台线程启动 Netty WebSocket 服务。
+   - 成功后日志会输出 `Netty websocket started`、`Started ChatAppApplication in ... seconds`。
+   - `project.folder` 下会生成 `upload/`、`log/` 等子目录并开始写入上传文件与日志。
+4. **健康检查**：
+   - HTTP：`GET http://localhost:5050/account/config` 应返回系统配置。
+   - WebSocket：观察日志中是否出现 `Netty websocket started`，或使用 `wscat -c ws://localhost:5051` 进行握手验证。
+
+### 5.3 桌面端运行流程
+
+1. **安装依赖与构建资源**：
+   - 在 `ChatApp-front` 执行 `npm install`（或 `pnpm install`）。
+   - 如果在非 Windows 平台需要多媒体能力，请确保系统 PATH 中可找到 ffmpeg/ffprobe，或编辑 `src/main/file.js` 指向本地二进制。
+2. **开发模式**：
+   - 运行 `npm run dev`，electron-vite 会同时拉起主进程与渲染进程，并自动打开应用窗口。
+   - 登录页左下角的设置按钮可填写后端 HTTP/WebSocket 域名，此配置通过 Electron Store (`store.js`) 持久化。
+3. **生产构建**：
+   - `npm run build` 先编译渲染进程。
+   - 根据平台执行 `npm run build:mac` / `build:win` / `build:linux`，由 `electron-builder` 生成安装包并把 `assets/**`（如 ffmpeg）一并打包。
+4. **首登流程**：
+   - 用户注册/登录成功后，主进程会在 `~/.chatapp(dev)/` 初始化 SQLite（`db/ADB.js`），建立 WebSocket 连接，并同步历史会话。
+   - 如果需要重置服务器地址，可在登录页重新打开设置或删除本地配置目录。
+
+### 5.4 全链路运行顺序
+
+1. **身份验证**：
+   - 渲染层通过 REST（`/account/checkCode`、`/account/register`、`/account/login`）获取验证码、注册或登录。
+   - 登录成功后返回 token、用户信息、系统配置；token 同时写入 Redis，用于 `GlobalInterceptor` 鉴权。
+2. **会话初始化**：
+   - Electron 主进程把 token 保存到 Store，通知渲染层展示主界面，并建立 WebSocket（`wsClient.js`）。
+   - 服务端 `NettyWebSocketStarter` 记录连接，绑定用户 ID，推送初始好友/会话列表。
+   - 渲染层收到 `messageType=0` 的初始化包后，调用 IPC 将会话写入 SQLite 并更新 Pinia Store。
+3. **消息收发**：
+   - 文本消息：渲染层调用 REST `/chat/sendMessage`，后端 `ChatMessageServiceImpl` 校验联系人权限、写 MySQL、更新 Redis 缓存，并经 Netty 推送到在线端。
+   - 文件/图片：渲染层把文件交给主进程 `file.js` 生成缩略图并落地本地缓存，然后由主进程上传 `/chat/uploadFile`，成功后再调用 `/chat/sendMessage` 携带文件 meta。
+   - 客户端收到推送后，主进程写入 SQLite（`ChatMessageModel.save`），通过 IPC 通知渲染层刷新 UI 和未读计数。
+4. **状态同步与离线补偿**：
+   - Redis 保存用户在线状态、token→user 映射以及最近会话缓存；当另一端上线时可快速补发离线消息。
+   - 客户端退出或 token 失效时，后端会向连接发送 `messageType=7` 强制下线；前端收到后清空 Store 并跳转回登录页。
+5. **系统设置与管理后台**：
+   - 登录管理员账号后，渲染层可进入 `/admin` 路由，通过 REST 接口操作用户、群组、靓号、版本配置。
+   - 相关接口均被 `@GlobalInterceptor(checkAdmin = true)` 保护，只有在 Redis 中标记的管理员邮箱才能调用。
+
+### 5.5 发布与交付
+
+1. **后端发布**：
+   - 执行 `mvn -pl ChatApp-java -am clean package`，部署 `target/ChatApp-java-1.0.jar`。
+   - 在服务器上准备 `project.folder`，并把 `application.yml` 外置到同级目录或通过环境变量覆盖。
+   - 启动脚本可采用 `java -jar ... --spring.config.additional-location=file:/opt/chatapp/` 并配合 `systemd`/`supervisor`。
+2. **客户端发布**：
+   - 通过 `npm run build:<platform>` 得到 `dist/` 下的安装包与 `latest.yml` 更新描述。
+   - 将安装包、更新文件上传到后端配置的升级目录（`project.folder/update/`），管理员后台可以配置版本号与下载 URL。
+   - 客户端启动时检查版本差异并提示用户下载或静默更新。
+3. **验收回归**：
+   - 完整跑一遍「注册 → 登录 → 添加联系人 → 单聊/群聊 → 上传文件 → 重启客户端」。
+   - 观察后端日志（`folder/logs/`）与 Electron 日志（`~/.chatapp(dev)/logs/`）确保无异常。
+
+通过上述流程，你可以把 ChatApp 在任何环境中从零跑到可交付状态，同时掌握运行期的关键节点，便于排查与扩展。
