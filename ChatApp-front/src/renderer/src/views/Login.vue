@@ -301,8 +301,13 @@ const selectEmail = (email) => {
   border-radius: 3px;
   border: 1px solid #ddd;
   .title {
-    height: 30px;
-    padding: 5px 0px 0px 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
 
   .login-form {

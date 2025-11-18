@@ -1,5 +1,5 @@
 <template>
-  <div class="win-op no-drag">
+  <div v-if="!isMac" class="win-op no-drag">
     <div
       v-if="showSetTop"
       :class="['iconfont icon-top', isTop ? 'win-top' : '']"
@@ -21,6 +21,8 @@
 import { getCurrentInstance, onMounted, ref } from 'vue'
 
 const { proxy } = getCurrentInstance()
+
+const isMac = navigator?.userAgent?.includes('Mac') ?? false
 
 const props = defineProps({
   showSetTop: {

@@ -3,102 +3,109 @@ import { ElLoading } from 'element-plus'
 import Message from '../utils/Message'
 import Api from '../utils/Api'
 
-const contentTypeForm = 'application/x-www-form-urlencoded;charset=UTF-8'
-const contentTypeJson = 'application/json'
-const responseTypeJson = 'json'
-let loading = null
+const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded;charset=UTF-8'
+const CONTENT_TYPE_JSON = 'application/json'
+const RESPONSE_TYPE_JSON = 'json'
+const BINARY_RESPONSE = ['arraybuffer', 'blob']
+const REQUEST_TIMEOUT = 10 * 1000
+
+let loadingInstance = null
 const instance = axios.create({
   withCredentials: true,
-  baseURL: (import.meta.env.PROD ? Api.prodDomain : '') + '/api',
-  timeout: 10 * 1000
+  baseURL: `${import.meta.env.PROD ? Api.prodDomain : ''}/api`,
+  timeout: REQUEST_TIMEOUT
 })
-//请求前拦截器
+
 instance.interceptors.request.use(
   (config) => {
     if (config.showLoading) {
-      loading = ElLoading.service({
+      loadingInstance = ElLoading.service({
         lock: true,
-        text: '加载中......',
+        text: '加载中……',
         background: 'rgba(0, 0, 0, 0.7)'
       })
     }
     return config
   },
   (error) => {
-    if (error.config.showLoading && loading) {
-      loading.close()
+    if (error?.config?.showLoading && loadingInstance) {
+      loadingInstance.close()
     }
     Message.error('请求发送失败')
-    return Promise.reject('请求发送失败')
+    return Promise.reject(error)
   }
 )
-//请求后拦截器
+
 instance.interceptors.response.use(
   (response) => {
     const { showLoading, errorCallback, showError = true, responseType } = response.config
-    if (showLoading && loading) {
-      loading.close()
+    if (showLoading && loadingInstance) {
+      loadingInstance.close()
     }
     const responseData = response.data
-    if (responseType == 'arraybuffer' || responseType == 'blob') {
+    if (BINARY_RESPONSE.includes(responseType)) {
       return responseData
     }
 
-    //正常请求
-    if (responseData.code == 200) {
+    if (responseData.code === 200) {
       return responseData
-    } else if (responseData.code == 901) {
-      //登录超时
+    }
+    if (responseData.code === 901) {
       setTimeout(() => {
         window.ipcRenderer.send('reLogin')
       }, 2000)
       return Promise.reject({ showError: true, msg: '登录超时' })
-    } else {
-      //其他错误
-      if (errorCallback) {
-        errorCallback(responseData)
-      }
-      return Promise.reject({ showError: showError, msg: responseData.info })
     }
+
+    if (typeof errorCallback === 'function') {
+      errorCallback(responseData)
+    }
+    return Promise.reject({ showError, msg: responseData.info })
   },
   (error) => {
-    if (error.config.showLoading && loading) {
-      loading.close()
+    if (error?.config?.showLoading && loadingInstance) {
+      loadingInstance.close()
     }
     return Promise.reject({ showError: true, msg: '网络异常' })
   }
 )
 
-const request = (config) => {
+const buildPayload = (params = {}, useJson = false) => {
+  if (useJson) {
+    return params
+  }
+  const formData = new FormData()
+  Object.entries(params).forEach(([key, value]) => {
+    formData.append(key, value ?? '')
+  })
+  return formData
+}
+
+const request = (config = {}) => {
   const {
     url,
-    params,
+    params = {},
     dataType,
     showLoading = true,
-    responseType = responseTypeJson,
-    showError = true
+    responseType = RESPONSE_TYPE_JSON,
+    showError = true,
+    errorCallback
   } = config
-  let contentType = contentTypeForm
-  let formData = new FormData() // 创建form对象
-  for (let key in params) {
-    formData.append(key, params[key] == undefined ? '' : params[key])
-  }
-  if (dataType != null && dataType == 'json') {
-    contentType = contentTypeJson
-  }
+  const useJson = dataType === 'json'
+  const payload = buildPayload(params, useJson)
   const token = localStorage.getItem('token')
-  let headers = {
-    'Content-Type': contentType,
+  const headers = {
+    'Content-Type': useJson ? CONTENT_TYPE_JSON : CONTENT_TYPE_FORM,
     'X-Requested-With': 'XMLHttpRequest',
-    token: token
+    ...(token ? { token } : {})
   }
   return instance
-    .post(url, formData, {
-      headers: headers,
-      showLoading: showLoading,
-      errorCallback: config.errorCallback,
-      showError: showError,
-      responseType: responseType
+    .post(url, payload, {
+      headers,
+      showLoading,
+      errorCallback,
+      showError,
+      responseType
     })
     .catch((error) => {
       if (error.showError) {

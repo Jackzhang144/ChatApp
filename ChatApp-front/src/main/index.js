@@ -32,8 +32,7 @@ import {
   winTitleOp
 } from './ipc'
 import { saveWindow } from './windowProxy'
-
-const NODE_ENV = process.env.NODE_ENV
+import appConfig from './config'
 
 const login_width = 300
 const login_height = 370
@@ -88,7 +87,7 @@ function createWindow() {
   saveWindow('main', mainWindow)
 
   //打开控制台
-  if (NODE_ENV === 'development') {
+  if (appConfig.autoOpenDevTools) {
     mainWindow.webContents.openDevTools()
   }
 
