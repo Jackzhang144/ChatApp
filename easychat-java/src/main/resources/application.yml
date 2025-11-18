@@ -13,7 +13,6 @@ spring:
   mvc:
     favicon:
       enable: false # 处理favicon
-    throw-exception-if-no-handler-found: true # 错误页处理
   web:
     resources:
       add-mappings: false

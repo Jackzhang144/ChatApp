@@ -21,11 +21,11 @@ EasyChat 是一个包含桌面端与服务端的即时通讯项目。后端基�
 
 ## 环境要求
 
-- JDK 1.8+
-- Maven 3.6+
-- Node.js 18+（Electron 依赖）及 npm
+- **JDK 21**（项目已升级到 Spring Boot 3，需要 Jakarta API 与 JDK 21）
+- Maven 3.9+
+- Node.js 18+ 与 npm（Electron/Vite 构建依赖）
 - MySQL 8.x
-- Redis 5.x/6.x
+- Redis 6.x/7.x
 - 可选：`pnpm`/`yarn`、`docker` 等工具
 
 ## 数据库初始化
@@ -38,8 +38,11 @@ EasyChat 是一个包含桌面端与服务端的即时通讯项目。后端基�
 
 ## 后端（easychat-java）
 
+- 核心栈：**Spring Boot 3.2 + MyBatis + Redis (Lettuce) + MySQL**，大量实体/VO 已使用 Lombok 简化 Getter/Setter。
 - 配置：
   - `application.yml` 中包含 web 端口（5050）、WebSocket 端口（5051）、MySQL、Redis 连接以及 `project.folder`（用于存储上传文件与日志，默认指向仓库下的 `folder/`，首次运行请确保该路径存在且可写）。
+  - Redis 连接池配置已使用 Spring Boot 3 的 Duration 写法，如需调整请保持单位（如 `2s`, `-1ms`）。
+  - 验证码使用 `easy-captcha`，在 JDK 21 下需要 `org.openjdk.nashorn:nashorn-core` 作为 JavaScript 引擎，已在 POM 中引入。
 - 启动：
   ```bash
   # 在 repo 根目录
@@ -54,6 +57,7 @@ EasyChat 是一个包含桌面端与服务端的即时通讯项目。后端基�
 
 ## 前端（easychat-front）
 
+- 核心栈：**Electron 28 + Vue 3.5 + Vite 4 + Element Plus 2.11**。
 - 依赖安装：
   ```bash
   cd easychat-front
@@ -68,6 +72,7 @@ EasyChat 是一个包含桌面端与服务端的即时通讯项目。后端基�
   npm run build          # 生成 electron-vite 产物
   npm run build:mac      # 其它平台见 package.json 中的 build:* 脚本
   ```
+- 前端主题色与基础样式已使用纯 CSS（`src/renderer/src/assets/cust-elementplus.css`、`base.css`）覆盖 Element Plus 的 CSS 变量，避免 Sass 预处理的兼容问题。
 - 运行桌面端前，保证后端服务已启动并且能访问 MySQL、Redis。
 
 ## 开发流程建议
