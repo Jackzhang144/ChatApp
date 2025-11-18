@@ -4,9 +4,9 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 
 ## 项目概览
 
-- **后端服务（ChatApp-java）**：Spring Boot + MyBatis + Redis + MySQL，暴露 REST + WebSocket 接口，处理账号鉴权、双端同步、消息路由和上传文件的持久化；Netty WebSocket 启动器运行在虚拟线程上，异常拦截等模块使用 Java 21 模式匹配与 switch 表达式。
+- **后端服务（ChatApp-java）**：Spring Boot + MyBatis + Redis + PostgreSQL，暴露 REST + WebSocket 接口，处理账号鉴权、双端同步、消息路由和上传文件的持久化；Netty WebSocket 启动器运行在虚拟线程上，异常拦截等模块使用 Java 21 模式匹配与 switch 表达式。
 - **桌面客户端（ChatApp-front）**：Electron + Vue 3 + Vite，集成 Element Plus 组件库，提供用户登录、联系人管理、单聊/群聊、设置以及客户端自更新能力。
-- **支撑设施**：Redis 用于存储会话状态与缓存，MySQL 存储核心业务数据，`folder/` 目录用来落地上传资源、日志和构建产物。
+- **支撑设施**：Redis 用于存储会话状态与缓存，PostgreSQL 存储核心业务数据，`folder/` 目录用来落地上传资源、日志和构建产物。
 
 ## 主要特性
 
@@ -28,7 +28,7 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 │   ├── src/
 │   ├── package.json
 │   └── electron-vite 配置
-├── db/ChatApp.sql                 # 初始化 MySQL 的建表与示例数据脚本
+├── db/ChatApp.sql                 # 初始化 PostgreSQL 的建表脚本
 ├── folder/                     # 运行期产生的文件、日志目录（已在 .gitignore 中忽略）
 └── .gitignore
 ```
@@ -38,7 +38,7 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 - **JDK 21**
 - Maven 3.9+
 - Node.js 18+ 与 npm（Electron/Vite 构建依赖）
-- MySQL 8.x
+- PostgreSQL 15+
 - Redis 6.x/7.x
 - 可选：`pnpm`/`yarn`、`docker`、`ffmpeg`/`ffprobe`
 
@@ -46,14 +46,15 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 
 1. 创建数据库与基础数据：
    ```bash
-   mysql -u <user> -p < db/ChatApp.sql
+   createdb chatapp
+   psql -U <user> -d chatapp -f db/ChatApp.sql
    ```
 2. 如需修改库名或凭据，先调整 `db/ChatApp.sql` 与 `ChatApp-java/src/main/resources/application.yml` 中的 `spring.datasource.*`。
 
 ## 后端服务（ChatApp-java）
 
-- 核心栈：**Spring Boot 3.2 + MyBatis + Redis (Lettuce) + MySQL**，配合 Lombok 简化实体对象维护。
-- `application.yml` 中配置 web 端口（5050）、WebSocket 端口（5051）、MySQL、Redis 连接以及 `project.folder`（默认 `folder/`）。
+- 核心栈：**Spring Boot 3.2 + MyBatis + Redis (Lettuce) + PostgreSQL**，配合 Lombok 简化实体对象维护。
+- `application.yml` 中配置 web 端口（5050）、WebSocket 端口（5051）、PostgreSQL、Redis 连接以及 `project.folder`（默认 `folder/`）。
 - Multipart 上传默认 15 MB，可按需调整；验证码依赖 `easy-captcha` 与 `nashorn-core`。
 - 启动方式：
   ```bash
@@ -82,7 +83,7 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 
 ## 开发流程建议
 
-1. 启动 MySQL 与 Redis，并导入 `db/ChatApp.sql`。
+1. 启动 PostgreSQL 与 Redis，并导入 `db/ChatApp.sql`。
 2. 配置 `ChatApp-java/src/main/resources/application.yml`，保证数据库、Redis 以及 `project.folder` 指向可写路径。
 3. 在根目录运行 `mvn -pl ChatApp-java -am spring-boot:run` 启动服务端。
 4. 进入 `ChatApp-front` 执行 `npm run dev`，打开桌面客户端进行调试。

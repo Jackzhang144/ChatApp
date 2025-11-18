@@ -75,7 +75,7 @@
             order by ${query.orderBy}
         </if>
         <if test="query.simplePage!=null">
-            limit #{query.simplePage.start},#{query.simplePage.end}
+            limit #{query.simplePage.end} offset #{query.simplePage.start}
         </if>
     </select>
 
@@ -149,19 +149,13 @@
                 #{bean.contactName},
             </if>
         </trim>
-        on DUPLICATE key update
-        <trim prefix="" suffix="" suffixOverrides=",">
-            <if test="bean.userId!=null">
-                user_id = VALUES(user_id),
-            </if>
-            <if test="bean.contactId!=null">
-                contact_id = VALUES(contact_id),
-            </if>
+        on conflict (user_id, contact_id) do update
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="bean.sessionId!=null">
-                session_id = VALUES(session_id),
+                session_id = excluded.session_id,
             </if>
             <if test="bean.contactName!=null">
-                contact_name = VALUES(contact_name),
+                contact_name = excluded.contact_name,
             </if>
         </trim>
     </insert>
@@ -200,11 +194,9 @@
             #{item.contactName}
             )
         </foreach>
-        on DUPLICATE key update
-        user_id = VALUES(user_id),
-        contact_id = VALUES(contact_id),
-        session_id = VALUES(session_id),
-        contact_name = VALUES(contact_name)
+        on conflict (user_id, contact_id) do update set
+        session_id = excluded.session_id,
+        contact_name = excluded.contact_name
     </insert>
 
     <!--多条件修改-->

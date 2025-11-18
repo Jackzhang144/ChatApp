@@ -40,7 +40,7 @@
             and group_owner_id = #{query.groupOwnerId}
         </if>
         <if test="query.createTime != null and query.createTime!=''">
-            <![CDATA[ and  create_time=str_to_date(#{query.createTime}, '%Y-%m-%d') ]]>
+            <![CDATA[ and  create_time=to_timestamp(#{query.createTime}, 'YYYY-MM-DD') ]]>
         </if>
         <if test="query.groupNotice != null and query.groupNotice!=''">
             and group_notice = #{query.groupNotice}
@@ -73,10 +73,10 @@
                 and group_owner_id like concat('%', #{query.groupOwnerIdFuzzy}, '%')
             </if>
             <if test="query.createTimeStart!= null and query.createTimeStart!=''">
-                <![CDATA[ and  create_time>=str_to_date(#{query.createTimeStart}, '%Y-%m-%d') ]]>
+                <![CDATA[ and  create_time>=to_timestamp(#{query.createTimeStart}, 'YYYY-MM-DD') ]]>
             </if>
             <if test="query.createTimeEnd!= null and query.createTimeEnd!=''">
-                <![CDATA[ and  create_time< date_sub(str_to_date(#{query.createTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+                <![CDATA[ and  create_time< to_timestamp(#{query.createTimeEnd},'YYYY-MM-DD') + interval '1 day' ]]>
             </if>
             <if test="query.groupNoticeFuzzy!= null  and query.groupNoticeFuzzy!=''">
                 and group_notice like concat('%', #{query.groupNoticeFuzzy}, '%')
@@ -100,7 +100,7 @@
             order by ${query.orderBy}
         </if>
         <if test="query.simplePage!=null">
-            limit #{query.simplePage.start},#{query.simplePage.end}
+            limit #{query.simplePage.end} offset #{query.simplePage.start}
         </if>
     </select>
 
@@ -210,28 +210,25 @@
                 #{bean.status},
             </if>
         </trim>
-        on DUPLICATE key update
-        <trim prefix="" suffix="" suffixOverrides=",">
-            <if test="bean.groupId!=null">
-                group_id = VALUES(group_id),
-            </if>
+        on conflict (group_id) do update
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="bean.groupName!=null">
-                group_name = VALUES(group_name),
+                group_name = excluded.group_name,
             </if>
             <if test="bean.groupOwnerId!=null">
-                group_owner_id = VALUES(group_owner_id),
+                group_owner_id = excluded.group_owner_id,
             </if>
             <if test="bean.createTime!=null">
-                create_time = VALUES(create_time),
+                create_time = excluded.create_time,
             </if>
             <if test="bean.groupNotice!=null">
-                group_notice = VALUES(group_notice),
+                group_notice = excluded.group_notice,
             </if>
             <if test="bean.joinType!=null">
-                join_type = VALUES(join_type),
+                join_type = excluded.join_type,
             </if>
             <if test="bean.status!=null">
-                status = VALUES(status),
+                status = excluded.status,
             </if>
         </trim>
     </insert>
@@ -282,14 +279,13 @@
             #{item.status}
             )
         </foreach>
-        on DUPLICATE key update
-        group_id = VALUES(group_id),
-        group_name = VALUES(group_name),
-        group_owner_id = VALUES(group_owner_id),
-        create_time = VALUES(create_time),
-        group_notice = VALUES(group_notice),
-        join_type = VALUES(join_type),
-        status = VALUES(status)
+        on conflict (group_id) do update set
+        group_name = excluded.group_name,
+        group_owner_id = excluded.group_owner_id,
+        create_time = excluded.create_time,
+        group_notice = excluded.group_notice,
+        join_type = excluded.join_type,
+        status = excluded.status
     </insert>
 
     <!--多条件修改-->

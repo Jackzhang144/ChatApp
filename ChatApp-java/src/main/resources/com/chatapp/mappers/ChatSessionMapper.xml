@@ -60,7 +60,7 @@
             order by ${query.orderBy}
         </if>
         <if test="query.simplePage!=null">
-            limit #{query.simplePage.start},#{query.simplePage.end}
+            limit #{query.simplePage.end} offset #{query.simplePage.start}
         </if>
     </select>
 
@@ -122,16 +122,13 @@
                 #{bean.lastReceiveTime},
             </if>
         </trim>
-        on DUPLICATE key update
-        <trim prefix="" suffix="" suffixOverrides=",">
-            <if test="bean.sessionId!=null">
-                session_id = VALUES(session_id),
-            </if>
+        on conflict (session_id) do update
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="bean.lastMessage!=null">
-                last_message = VALUES(last_message),
+                last_message = excluded.last_message,
             </if>
             <if test="bean.lastReceiveTime!=null">
-                last_receive_time = VALUES(last_receive_time),
+                last_receive_time = excluded.last_receive_time,
             </if>
         </trim>
     </insert>
@@ -166,10 +163,9 @@
             #{item.lastReceiveTime}
             )
         </foreach>
-        on DUPLICATE key update
-        session_id = VALUES(session_id),
-        last_message = VALUES(last_message),
-        last_receive_time = VALUES(last_receive_time)
+        on conflict (session_id) do update set
+        last_message = excluded.last_message,
+        last_receive_time = excluded.last_receive_time
     </insert>
 
     <!--多条件修改-->

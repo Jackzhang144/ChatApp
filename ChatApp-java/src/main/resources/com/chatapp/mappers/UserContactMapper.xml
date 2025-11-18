@@ -40,13 +40,13 @@
             and contact_type = #{query.contactType}
         </if>
         <if test="query.createTime != null and query.createTime!=''">
-            <![CDATA[ and  create_time=str_to_date(#{query.createTime}, '%Y-%m-%d') ]]>
+            <![CDATA[ and  create_time=to_timestamp(#{query.createTime}, 'YYYY-MM-DD') ]]>
         </if>
         <if test="query.status != null">
             and c.status = #{query.status}
         </if>
         <if test="query.lastUpdateTime != null and query.lastUpdateTime!=''">
-            <![CDATA[ and  last_update_time=str_to_date(#{query.lastUpdateTime}, '%Y-%m-%d') ]]>
+            <![CDATA[ and  last_update_time=to_timestamp(#{query.lastUpdateTime}, 'YYYY-MM-DD') ]]>
         </if>
     </sql>
 
@@ -61,16 +61,16 @@
                 and contact_id like concat('%', #{query.contactIdFuzzy}, '%')
             </if>
             <if test="query.createTimeStart!= null and query.createTimeStart!=''">
-                <![CDATA[ and  create_time>=str_to_date(#{query.createTimeStart}, '%Y-%m-%d') ]]>
+                <![CDATA[ and  create_time>=to_timestamp(#{query.createTimeStart}, 'YYYY-MM-DD') ]]>
             </if>
             <if test="query.createTimeEnd!= null and query.createTimeEnd!=''">
-                <![CDATA[ and  create_time< date_sub(str_to_date(#{query.createTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+                <![CDATA[ and  create_time< to_timestamp(#{query.createTimeEnd},'YYYY-MM-DD') + interval '1 day' ]]>
             </if>
             <if test="query.lastUpdateTimeStart!= null and query.lastUpdateTimeStart!=''">
-                <![CDATA[ and  last_update_time>=str_to_date(#{query.lastUpdateTimeStart}, '%Y-%m-%d') ]]>
+                <![CDATA[ and  last_update_time>=to_timestamp(#{query.lastUpdateTimeStart}, 'YYYY-MM-DD') ]]>
             </if>
             <if test="query.lastUpdateTimeEnd!= null and query.lastUpdateTimeEnd!=''">
-                <![CDATA[ and  last_update_time< date_sub(str_to_date(#{query.lastUpdateTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+                <![CDATA[ and  last_update_time< to_timestamp(#{query.lastUpdateTimeEnd},'YYYY-MM-DD') + interval '1 day' ]]>
             </if>
             <if test="query.statusArray!=null and query.statusArray.length>0">
                 and c.status in
@@ -108,7 +108,7 @@
             order by ${query.orderBy}
         </if>
         <if test="query.simplePage!=null">
-            limit #{query.simplePage.start},#{query.simplePage.end}
+            limit #{query.simplePage.end} offset #{query.simplePage.start}
         </if>
     </select>
 
@@ -206,13 +206,13 @@
                 #{bean.lastUpdateTime},
             </if>
         </trim>
-        on DUPLICATE key update
-        <trim prefix="" suffix="" suffixOverrides=",">
+        on conflict (user_id, contact_id) do update
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="bean.status!=null">
-                status = VALUES(status),
+                status = excluded.status,
             </if>
             <if test="bean.lastUpdateTime!=null">
-                last_update_time = VALUES(last_update_time),
+                last_update_time = excluded.last_update_time,
             </if>
         </trim>
     </insert>
@@ -259,9 +259,9 @@
             #{item.lastUpdateTime}
             )
         </foreach>
-        on DUPLICATE key update
-        status = VALUES(status),
-        last_update_time = VALUES(last_update_time)
+        on conflict (user_id, contact_id) do update set
+        status = excluded.status,
+        last_update_time = excluded.last_update_time
     </insert>
 
     <!--多条件修改-->

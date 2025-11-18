@@ -42,7 +42,7 @@
             and update_desc = #{query.updateDesc}
         </if>
         <if test="query.createTime != null and query.createTime!=''">
-            <![CDATA[ and  create_time=str_to_date(#{query.createTime}, '%Y-%m-%d') ]]>
+            <![CDATA[ and  create_time=to_timestamp(#{query.createTime}, 'YYYY-MM-DD') ]]>
         </if>
         <if test="query.status != null">
             and status = #{query.status}
@@ -75,10 +75,10 @@
                 and update_desc like concat('%', #{query.updateDescFuzzy}, '%')
             </if>
             <if test="query.createTimeStart!= null and query.createTimeStart!=''">
-                <![CDATA[ and  create_time>=str_to_date(#{query.createTimeStart}, '%Y-%m-%d') ]]>
+                <![CDATA[ and  create_time>=to_timestamp(#{query.createTimeStart}, 'YYYY-MM-DD') ]]>
             </if>
             <if test="query.createTimeEnd!= null and query.createTimeEnd!=''">
-                <![CDATA[ and  create_time< date_sub(str_to_date(#{query.createTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+                <![CDATA[ and  create_time< to_timestamp(#{query.createTimeEnd},'YYYY-MM-DD') + interval '1 day' ]]>
             </if>
             <if test="query.grayscaleUidFuzzy!= null  and query.grayscaleUidFuzzy!=''">
                 and grayscale_uid like concat('%', #{query.grayscaleUidFuzzy}, '%')
@@ -99,7 +99,7 @@
             order by ${query.orderBy}
         </if>
         <if test="query.simplePage!=null">
-            limit #{query.simplePage.start},#{query.simplePage.end}
+            limit #{query.simplePage.end} offset #{query.simplePage.start}
         </if>
     </select>
 
@@ -112,7 +112,7 @@
     <!-- 插入 （匹配有值的字段）-->
     <insert id="insert" parameterType="com.chatapp.entity.po.AppUpdate">
         <selectKey keyProperty="bean.id" resultType="Integer" order="AFTER">
-            SELECT LAST_INSERT_ID()
+            SELECT currval(pg_get_serial_sequence('app_update','id'))
         </selectKey>
         INSERT INTO app_update
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -218,28 +218,28 @@
                 #{bean.outerLink},
             </if>
         </trim>
-        on DUPLICATE key update
-        <trim prefix="" suffix="" suffixOverrides=",">
+        on conflict (version) do update
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="bean.version!=null">
-                version = VALUES(version),
+                version = excluded.version,
             </if>
             <if test="bean.updateDesc!=null">
-                update_desc = VALUES(update_desc),
+                update_desc = excluded.update_desc,
             </if>
             <if test="bean.createTime!=null">
-                create_time = VALUES(create_time),
+                create_time = excluded.create_time,
             </if>
             <if test="bean.status!=null">
-                status = VALUES(status),
+                status = excluded.status,
             </if>
             <if test="bean.grayscaleUid!=null">
-                grayscale_uid = VALUES(grayscale_uid),
+                grayscale_uid = excluded.grayscale_uid,
             </if>
             <if test="bean.fileType!=null">
-                file_type = VALUES(file_type),
+                file_type = excluded.file_type,
             </if>
             <if test="bean.outerLink!=null">
-                outer_link = VALUES(outer_link),
+                outer_link = excluded.outer_link,
             </if>
         </trim>
     </insert>
@@ -290,14 +290,14 @@
             #{item.outerLink}
             )
         </foreach>
-        on DUPLICATE key update
-        version = VALUES(version),
-        update_desc = VALUES(update_desc),
-        create_time = VALUES(create_time),
-        status = VALUES(status),
-        grayscale_uid = VALUES(grayscale_uid),
-        file_type = VALUES(file_type),
-        outer_link = VALUES(outer_link)
+        on conflict (version) do update set
+        version = excluded.version,
+        update_desc = excluded.update_desc,
+        create_time = excluded.create_time,
+        status = excluded.status,
+        grayscale_uid = excluded.grayscale_uid,
+        file_type = excluded.file_type,
+        outer_link = excluded.outer_link
     </insert>
 
     <!--多条件修改-->

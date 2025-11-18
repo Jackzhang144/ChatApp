@@ -18,10 +18,10 @@ spring:
       max-file-size: 15MB
       max-request-size: 15MB
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/chatapp?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
+    url: jdbc:postgresql://127.0.0.1:5432/chatapp
+    username:
     password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
     hikari:
       pool-name: HikariCPDatasource
       minimum-idle: 5

@@ -65,7 +65,7 @@
             order by ${query.orderBy}
         </if>
         <if test="query.simplePage!=null">
-            limit #{query.simplePage.start},#{query.simplePage.end}
+            limit #{query.simplePage.end} offset #{query.simplePage.start}
         </if>
     </select>
 
@@ -78,7 +78,7 @@
     <!-- 插入 （匹配有值的字段）-->
     <insert id="insert" parameterType="com.chatapp.entity.po.UserInfoBeauty">
         <selectKey keyProperty="bean.id" resultType="Integer" order="AFTER">
-            SELECT LAST_INSERT_ID()
+            SELECT currval(pg_get_serial_sequence('user_info_beauty','id'))
         </selectKey>
         INSERT INTO user_info_beauty
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -136,16 +136,13 @@
                 #{bean.status},
             </if>
         </trim>
-        on DUPLICATE key update
-        <trim prefix="" suffix="" suffixOverrides=",">
+        on conflict (user_id) do update
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="bean.email!=null">
-                email = VALUES(email),
-            </if>
-            <if test="bean.userId!=null">
-                user_id = VALUES(user_id),
+                email = excluded.email,
             </if>
             <if test="bean.status!=null">
-                status = VALUES(status),
+                status = excluded.status,
             </if>
         </trim>
     </insert>
@@ -181,10 +178,9 @@
             #{item.status}
             )
         </foreach>
-        on DUPLICATE key update
-        email = VALUES(email),
-        user_id = VALUES(user_id),
-        status = VALUES(status)
+        on conflict (user_id) do update set
+        email = excluded.email,
+        status = excluded.status
     </insert>
 
     <!--多条件修改-->

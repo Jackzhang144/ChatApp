@@ -109,7 +109,7 @@
             order by ${query.orderBy}
         </if>
         <if test="query.simplePage!=null">
-            limit #{query.simplePage.start},#{query.simplePage.end}
+            limit #{query.simplePage.end} offset #{query.simplePage.start}
         </if>
     </select>
 
@@ -122,7 +122,7 @@
     <!-- 插入 （匹配有值的字段）-->
     <insert id="insert" parameterType="com.chatapp.entity.po.UserContactApply">
         <selectKey keyProperty="bean.applyId" resultType="Integer" order="AFTER">
-            SELECT LAST_INSERT_ID()
+            SELECT currval(pg_get_serial_sequence('user_contact_apply','apply_id'))
         </selectKey>
         INSERT INTO user_contact_apply
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -228,28 +228,19 @@
                 #{bean.applyInfo},
             </if>
         </trim>
-        on DUPLICATE key update
-        <trim prefix="" suffix="" suffixOverrides=",">
-            <if test="bean.applyUserId!=null">
-                apply_user_id = VALUES(apply_user_id),
-            </if>
-            <if test="bean.receiveUserId!=null">
-                receive_user_id = VALUES(receive_user_id),
-            </if>
+        on conflict (apply_user_id, receive_user_id, contact_id) do update
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="bean.contactType!=null">
-                contact_type = VALUES(contact_type),
-            </if>
-            <if test="bean.contactId!=null">
-                contact_id = VALUES(contact_id),
+                contact_type = excluded.contact_type,
             </if>
             <if test="bean.lastApplyTime!=null">
-                last_apply_time = VALUES(last_apply_time),
+                last_apply_time = excluded.last_apply_time,
             </if>
             <if test="bean.status!=null">
-                status = VALUES(status),
+                status = excluded.status,
             </if>
             <if test="bean.applyInfo!=null">
-                apply_info = VALUES(apply_info),
+                apply_info = excluded.apply_info,
             </if>
         </trim>
     </insert>
@@ -301,14 +292,11 @@
             #{item.applyInfo}
             )
         </foreach>
-        on DUPLICATE key update
-        apply_user_id = VALUES(apply_user_id),
-        receive_user_id = VALUES(receive_user_id),
-        contact_type = VALUES(contact_type),
-        contact_id = VALUES(contact_id),
-        last_apply_time = VALUES(last_apply_time),
-        status = VALUES(status),
-        apply_info = VALUES(apply_info)
+        on conflict (apply_user_id, receive_user_id, contact_id) do update set
+        contact_type = excluded.contact_type,
+        last_apply_time = excluded.last_apply_time,
+        status = excluded.status,
+        apply_info = excluded.apply_info
     </insert>
 
     <!--多条件修改-->

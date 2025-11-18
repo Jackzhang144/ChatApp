@@ -132,7 +132,7 @@
             order by ${query.orderBy}
         </if>
         <if test="query.simplePage!=null">
-            limit #{query.simplePage.start},#{query.simplePage.end}
+            limit #{query.simplePage.end} offset #{query.simplePage.start}
         </if>
     </select>
 
@@ -145,7 +145,7 @@
     <!-- 插入 （匹配有值的字段）-->
     <insert id="insert" parameterType="com.chatapp.entity.po.ChatMessage">
         <selectKey keyProperty="bean.messageId" resultType="Long" order="AFTER">
-            SELECT LAST_INSERT_ID()
+            SELECT currval(pg_get_serial_sequence('chat_message','message_id'))
         </selectKey>
         INSERT INTO chat_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -311,43 +311,43 @@
                 #{bean.status},
             </if>
         </trim>
-        on DUPLICATE key update
-        <trim prefix="" suffix="" suffixOverrides=",">
+        on conflict (message_id) do update
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="bean.sessionId!=null">
-                session_id = VALUES(session_id),
+                session_id = excluded.session_id,
             </if>
             <if test="bean.messageType!=null">
-                message_type = VALUES(message_type),
+                message_type = excluded.message_type,
             </if>
             <if test="bean.messageContent!=null">
-                message_content = VALUES(message_content),
+                message_content = excluded.message_content,
             </if>
             <if test="bean.sendUserId!=null">
-                send_user_id = VALUES(send_user_id),
+                send_user_id = excluded.send_user_id,
             </if>
             <if test="bean.sendUserNickName!=null">
-                send_user_nick_name = VALUES(send_user_nick_name),
+                send_user_nick_name = excluded.send_user_nick_name,
             </if>
             <if test="bean.sendTime!=null">
-                send_time = VALUES(send_time),
+                send_time = excluded.send_time,
             </if>
             <if test="bean.contactId!=null">
-                contact_id = VALUES(contact_id),
+                contact_id = excluded.contact_id,
             </if>
             <if test="bean.contactType!=null">
-                contact_type = VALUES(contact_type),
+                contact_type = excluded.contact_type,
             </if>
             <if test="bean.fileSize!=null">
-                file_size = VALUES(file_size),
+                file_size = excluded.file_size,
             </if>
             <if test="bean.fileName!=null">
-                file_name = VALUES(file_name),
+                file_name = excluded.file_name,
             </if>
             <if test="bean.fileType!=null">
-                file_type = VALUES(file_type),
+                file_type = excluded.file_type,
             </if>
             <if test="bean.status!=null">
-                status = VALUES(status),
+                status = excluded.status,
             </if>
         </trim>
     </insert>
@@ -419,19 +419,19 @@
             #{item.status}
             )
         </foreach>
-        on DUPLICATE key update
-        session_id = VALUES(session_id),
-        message_type = VALUES(message_type),
-        message_content = VALUES(message_content),
-        send_user_id = VALUES(send_user_id),
-        send_user_nick_name = VALUES(send_user_nick_name),
-        send_time = VALUES(send_time),
-        contact_id = VALUES(contact_id),
-        contact_type = VALUES(contact_type),
-        file_size = VALUES(file_size),
-        file_name = VALUES(file_name),
-        file_type = VALUES(file_type),
-        status = VALUES(status)
+        on conflict (message_id) do update set
+        session_id = excluded.session_id,
+        message_type = excluded.message_type,
+        message_content = excluded.message_content,
+        send_user_id = excluded.send_user_id,
+        send_user_nick_name = excluded.send_user_nick_name,
+        send_time = excluded.send_time,
+        contact_id = excluded.contact_id,
+        contact_type = excluded.contact_type,
+        file_size = excluded.file_size,
+        file_name = excluded.file_name,
+        file_type = excluded.file_type,
+        status = excluded.status
     </insert>
 
     <!--多条件修改-->

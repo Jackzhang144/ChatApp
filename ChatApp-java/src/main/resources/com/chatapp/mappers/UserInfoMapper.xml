@@ -67,10 +67,10 @@
             and u.status = #{query.status}
         </if>
         <if test="query.createTime != null and query.createTime!=''">
-            <![CDATA[ and  u.create_time=str_to_date(#{query.createTime}, '%Y-%m-%d') ]]>
+            <![CDATA[ and  u.create_time=to_timestamp(#{query.createTime}, 'YYYY-MM-DD') ]]>
         </if>
         <if test="query.lastLoginTime != null and query.lastLoginTime!=''">
-            <![CDATA[ and  u.last_login_time=str_to_date(#{query.lastLoginTime}, '%Y-%m-%d') ]]>
+            <![CDATA[ and  u.last_login_time=to_timestamp(#{query.lastLoginTime}, 'YYYY-MM-DD') ]]>
         </if>
         <if test="query.areaName != null and query.areaName!=''">
             and u.area_name = #{query.areaName}
@@ -109,16 +109,16 @@
                 and u.personal_signature like concat('%', #{query.personalSignatureFuzzy}, '%')
             </if>
             <if test="query.createTimeStart!= null and query.createTimeStart!=''">
-                <![CDATA[ and  u.create_time>=str_to_date(#{query.createTimeStart}, '%Y-%m-%d') ]]>
+                <![CDATA[ and  u.create_time>=to_timestamp(#{query.createTimeStart}, 'YYYY-MM-DD') ]]>
             </if>
             <if test="query.createTimeEnd!= null and query.createTimeEnd!=''">
-                <![CDATA[ and  u.create_time< date_sub(str_to_date(#{query.createTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+                <![CDATA[ and  u.create_time< to_timestamp(#{query.createTimeEnd},'YYYY-MM-DD') + interval '1 day' ]]>
             </if>
             <if test="query.lastLoginTimeStart!= null and query.lastLoginTimeStart!=''">
-                <![CDATA[ and  u.last_login_time>=str_to_date(#{query.lastLoginTimeStart}, '%Y-%m-%d') ]]>
+                <![CDATA[ and  u.last_login_time>=to_timestamp(#{query.lastLoginTimeStart}, 'YYYY-MM-DD') ]]>
             </if>
             <if test="query.lastLoginTimeEnd!= null and query.lastLoginTimeEnd!=''">
-                <![CDATA[ and  u.last_login_time< date_sub(str_to_date(#{query.lastLoginTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+                <![CDATA[ and  u.last_login_time< to_timestamp(#{query.lastLoginTimeEnd},'YYYY-MM-DD') + interval '1 day' ]]>
             </if>
             <if test="query.areaNameFuzzy!= null  and query.areaNameFuzzy!=''">
                 and u.area_name like concat('%', #{query.areaNameFuzzy}, '%')
@@ -139,7 +139,7 @@
             order by ${query.orderBy}
         </if>
         <if test="query.simplePage!=null">
-            limit #{query.simplePage.start},#{query.simplePage.end}
+            limit #{query.simplePage.end} offset #{query.simplePage.start}
         </if>
     </select>
 
@@ -321,46 +321,43 @@
                 #{bean.lastOffTime},
             </if>
         </trim>
-        on DUPLICATE key update
-        <trim prefix="" suffix="" suffixOverrides=",">
-            <if test="bean.userId!=null">
-                user_id = VALUES(user_id),
-            </if>
+        on conflict (user_id) do update
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="bean.email!=null">
-                email = VALUES(email),
+                email = excluded.email,
             </if>
             <if test="bean.nickName!=null">
-                nick_name = VALUES(nick_name),
+                nick_name = excluded.nick_name,
             </if>
             <if test="bean.joinType!=null">
-                join_type = VALUES(join_type),
+                join_type = excluded.join_type,
             </if>
             <if test="bean.sex!=null">
-                sex = VALUES(sex),
+                sex = excluded.sex,
             </if>
             <if test="bean.password!=null">
-                password = VALUES(password),
+                password = excluded.password,
             </if>
             <if test="bean.personalSignature!=null">
-                personal_signature = VALUES(personal_signature),
+                personal_signature = excluded.personal_signature,
             </if>
             <if test="bean.status!=null">
-                status = VALUES(status),
+                status = excluded.status,
             </if>
             <if test="bean.createTime!=null">
-                create_time = VALUES(create_time),
+                create_time = excluded.create_time,
             </if>
             <if test="bean.lastLoginTime!=null">
-                last_login_time = VALUES(last_login_time),
+                last_login_time = excluded.last_login_time,
             </if>
             <if test="bean.areaName!=null">
-                area_name = VALUES(area_name),
+                area_name = excluded.area_name,
             </if>
             <if test="bean.areaCode!=null">
-                area_code = VALUES(area_code),
+                area_code = excluded.area_code,
             </if>
             <if test="bean.lastOffTime!=null">
-                last_off_time = VALUES(last_off_time),
+                last_off_time = excluded.last_off_time,
             </if>
         </trim>
     </insert>
@@ -435,20 +432,19 @@
             #{item.lastOffTime}
             )
         </foreach>
-        on DUPLICATE key update
-        user_id = VALUES(user_id),
-        email = VALUES(email),
-        nick_name = VALUES(nick_name),
-        join_type = VALUES(join_type),
-        sex = VALUES(sex),
-        password = VALUES(password),
-        personal_signature = VALUES(personal_signature),
-        status = VALUES(status),
-        create_time = VALUES(create_time),
-        last_login_time = VALUES(last_login_time),
-        area_name = VALUES(area_name),
-        area_code = VALUES(area_code),
-        last_off_time = VALUES(last_off_time)
+        on conflict (user_id) do update set
+        email = excluded.email,
+        nick_name = excluded.nick_name,
+        join_type = excluded.join_type,
+        sex = excluded.sex,
+        password = excluded.password,
+        personal_signature = excluded.personal_signature,
+        status = excluded.status,
+        create_time = excluded.create_time,
+        last_login_time = excluded.last_login_time,
+        area_name = excluded.area_name,
+        area_code = excluded.area_code,
+        last_off_time = excluded.last_off_time
     </insert>
 
     <!--多条件修改-->

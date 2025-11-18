@@ -14,14 +14,14 @@ ChatApp 采用「服务端 + 桌面端」的典型即时通讯方案：
 | Netty WebSocket 服务 (`NettyWebSocketStarter`) | 负责长连接、消息推送与心跳检测，伴随 Spring Boot 进程启动。 |
 | Electron 主进程 (`ChatApp-front/src/main`) | 管理窗口、托盘、IPC 通道、本地缓存(SQLite)、WebSocket 客户端、文件下载/生成。 |
 | Vue3 渲染进程 (`ChatApp-front/src/renderer`) | 负责 UI、业务交互、调用 REST 接口（通过 Axios）以及和主进程 IPC 联动。 |
-| MySQL + Redis | MySQL 存储账号、群组、消息等结构化数据；Redis 缓存登录状态、系统参数与在线会话。 |
+| PostgreSQL + Redis | PostgreSQL 存储账号、群组、消息等结构化数据；Redis 缓存登录状态、系统参数与在线会话。 |
 
 主要交互流程：
 
 1. 用户通过桌面端注册/登录，服务端验证验证码后返回 `token`、账号资料、系统配置（`AccountController`）。
 2. Electron 主进程持久化 `token` 并建立 WebSocket 连接 (`wsClient.js`)，将初始会话/消息落盘到本地 SQLite 以支撑离线浏览。
 3. 用户发送文本/媒体消息时，渲染进程先调用 REST (`/chat/sendMessage`)，如伴随文件则通过主进程写入本地并回传服务端 (`file.js` + `/chat/uploadFile`)。
-4. 服务端 `ChatMessageServiceImpl` 将消息写入 MySQL、更新会话状态、借助 `MessageHandler` 通过 Netty 推送至目标客户端；Redis 同时缓存必要的会话/联系人数据。
+4. 服务端 `ChatMessageServiceImpl` 将消息写入 PostgreSQL、更新会话状态、借助 `MessageHandler` 通过 Netty 推送至目标客户端；Redis 同时缓存必要的会话/联系人数据。
 5. 客户端收到推送后更新本地数据库和 UI，必要时触发提醒、托盘提示或窗体闪烁。
 
 ---
@@ -32,7 +32,7 @@ ChatApp 采用「服务端 + 桌面端」的典型即时通讯方案：
 
 - **框架**：Spring Boot 3.2、MyBatis、Spring Data Redis、Lettuce 连接池、Lombok。
 - **协议**：REST + JSON（HTTP 5050 端口）、Netty WebSocket（5051 端口）。
-- **Persistence**：MySQL（`db/ChatApp.sql` 初始化脚本）、Redis（Token、系统设置、会话缓存）。
+- **Persistence**：PostgreSQL（`db/ChatApp.sql` 初始化脚本）、Redis（Token、系统设置、会话缓存）。
 - 模块划分：
   - `controller`：负责 REST API，使用 `@GlobalInterceptor` 做登录/管理员校验。
   - `service`/`impl`：封装业务逻辑，组合 Mapper、Redis、WebSocket 推送。
@@ -43,9 +43,9 @@ ChatApp 采用「服务端 + 桌面端」的典型即时通讯方案：
 
 ### 2.2 配置与启动
 
-- `application.yml`（`ChatApp-java/src/main/resources`）定义 HTTP/WebSocket 端口、MySQL、Redis、上传大小限制、`project.folder`（文件存储目录）、`admin.emails`（默认管理员邮箱）等。
+- `application.yml`（`ChatApp-java/src/main/resources`）定义 HTTP/WebSocket 端口、PostgreSQL、Redis、上传大小限制、`project.folder`（文件存储目录）、`admin.emails`（默认管理员邮箱）等。
 - `AppConfig`（`entity/config/AppConfig.java`）在运行时注入这些配置，提供 `getProjectFolder()` 等工具方法。
-- `InitRun`（`InitRun.java`）实现 `ApplicationRunner`：启动前探测 MySQL/Redis 连通性，并在 **虚拟线程** 中启动 Netty WebSocket 服务，最大化利用 Java 21 的轻量级并发。
+- `InitRun`（`InitRun.java`）实现 `ApplicationRunner`：启动前探测 PostgreSQL/Redis 连通性，并在 **虚拟线程** 中启动 Netty WebSocket 服务，最大化利用 Java 21 的轻量级并发。
 - 启动命令：
   ```bash
   mvn -pl ChatApp-java -am spring-boot:run
@@ -236,7 +236,7 @@ npm run build:mac  # electron-builder 生成对应安装包，win/linux 对应 b
 
 ## 4. 运行与学习建议
 
-1. **准备环境**：MySQL 8 + Redis 6/7 + JDK 21 + Node.js 18；执行 `db/ChatApp.sql` 初始化数据库。
+1. **准备环境**：PostgreSQL 15 + Redis 6/7 + JDK 21 + Node.js 18；执行 `db/ChatApp.sql` 初始化数据库。
 2. **配置**：修改 `ChatApp-java/src/main/resources/application.yml` 的数据库/Redis/`project.folder`；前端在登录界面点击设置填写后端域名与 WebSocket 地址（会保存到 Electron Store）。
 3. **联调顺序**：先启动后端，再运行前端；首次登录可在 `db/ChatApp.sql` 中查看示例账号或自行注册（若允许注册）。
 4. **阅读代码路径**：建议从 Controller -> Service -> Mapper 顺序阅读后端；前端则先理解主进程 `ipc.js`、`wsClient.js`，再查看渲染层 Router/Store/Views。
@@ -252,9 +252,9 @@ npm run build:mac  # electron-builder 生成对应安装包，win/linux 对应 b
 
 ### 5.1 基础设施准备
 
-1. **安装依赖**：准备 MySQL 8.x、Redis 6.x/7.x、JDK 21、Maven 3.9+、Node.js 18+（Electron/Vite）以及可选的 `pnpm`、`ffmpeg`/`ffprobe`。
+1. **安装依赖**：准备 PostgreSQL 15.x、Redis 6.x/7.x、JDK 21、Maven 3.9+、Node.js 18+（Electron/Vite）以及可选的 `pnpm`、`ffmpeg`/`ffprobe`。
 2. **数据库初始化**：
-   - 创建数据库（示例名 `chatapp`），执行 `mysql -u <user> -p < db/ChatApp.sql`。
+   - 创建数据库（示例名 `chatapp`），执行 `psql -U <user> -d chatapp -f db/ChatApp.sql`。
    - 如使用不同的库名或账号，请同步修改 `db/ChatApp.sql` 与 `ChatApp-java/src/main/resources/application.yml`。
 3. **Redis 配置**：确保实例允许被后端访问。若启用了密码或哨兵，请在 `application.yml` 的 `spring.data.redis` 栏配置。
 4. **运行目录**：
@@ -272,7 +272,7 @@ npm run build:mac  # electron-builder 生成对应安装包，win/linux 对应 b
    - 开发热启动：`mvn -pl ChatApp-java -am spring-boot:run`。
    - 生产模式：`mvn -pl ChatApp-java -am clean package && java -jar ChatApp-java/target/ChatApp-java-1.0.jar`。
 3. **启动期间关键步骤**：
-   - `InitRun` 会探测 MySQL/Redis，并在后台线程启动 Netty WebSocket 服务。
+   - `InitRun` 会探测 PostgreSQL/Redis，并在后台线程启动 Netty WebSocket 服务。
    - 成功后日志会输出 `Netty websocket started`、`Started ChatAppApplication in ... seconds`。
    - `project.folder` 下会生成 `upload/`、`log/` 等子目录并开始写入上传文件与日志。
 4. **健康检查**：
@@ -304,7 +304,7 @@ npm run build:mac  # electron-builder 生成对应安装包，win/linux 对应 b
    - 服务端 `NettyWebSocketStarter` 记录连接，绑定用户 ID，推送初始好友/会话列表。
    - 渲染层收到 `messageType=0` 的初始化包后，调用 IPC 将会话写入 SQLite 并更新 Pinia Store。
 3. **消息收发**：
-   - 文本消息：渲染层调用 REST `/chat/sendMessage`，后端 `ChatMessageServiceImpl` 校验联系人权限、写 MySQL、更新 Redis 缓存，并经 Netty 推送到在线端。
+   - 文本消息：渲染层调用 REST `/chat/sendMessage`，后端 `ChatMessageServiceImpl` 校验联系人权限、写 PostgreSQL、更新 Redis 缓存，并经 Netty 推送到在线端。
    - 文件/图片：渲染层把文件交给主进程 `file.js` 生成缩略图并落地本地缓存，然后由主进程上传 `/chat/uploadFile`，成功后再调用 `/chat/sendMessage` 携带文件 meta。
    - 客户端收到推送后，主进程写入 SQLite（`ChatMessageModel.save`），通过 IPC 通知渲染层刷新 UI 和未读计数。
 4. **状态同步与离线补偿**：
