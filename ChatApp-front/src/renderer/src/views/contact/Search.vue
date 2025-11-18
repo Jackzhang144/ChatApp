@@ -2,9 +2,9 @@
   <ContentPanel>
     <div class="search-form">
       <el-input
+        v-model="contactId"
         clearable
         placeholder="请输入用户ID或群组ID"
-        v-model="contactId"
         size="large"
         @keydown.enter="search"
       ></el-input>
@@ -15,13 +15,12 @@
       <div class="search-result">
         <span class="contact-type">{{ contactTypeName }}</span>
         <UserBaseInfo
-          :userInfo="searchResult"
-          :showArea="searchResult.contactType == 'USER'"
+          :user-info="searchResult"
+          :show-area="searchResult.contactType == 'USER'"
         ></UserBaseInfo>
       </div>
-      <div class="op-btn" v-if="searchResult.contactId != userInfoStore.getInfo().userId">
+      <div v-if="searchResult.contactId != userInfoStore.getInfo().userId" class="op-btn">
         <el-button
-          type="primary"
           v-if="
             searchResult.status == null ||
             searchResult.status == 0 ||
@@ -29,10 +28,11 @@
             searchResult.status == 3 ||
             searchResult.status == 4
           "
+          type="primary"
           @click="applyContact"
           >{{ searchResult.contactType == 'USER' ? '添加到联系人' : '申请加入群组' }}</el-button
         >
-        <el-button type="primary" v-if="searchResult.status == 1" @click="sendMessage"
+        <el-button v-if="searchResult.status == 1" type="primary" @click="sendMessage"
           >发消息</el-button
         >
         <span v-if="searchResult.status == 5 || searchResult.status == 6">对方拉黑了你</span>

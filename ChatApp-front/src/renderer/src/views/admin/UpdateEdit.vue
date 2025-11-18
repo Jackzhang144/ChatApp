@@ -3,12 +3,12 @@
     :title="dialogConfig.title"
     :buttons="dialogConfig.buttons"
     :show="dialogConfig.show"
-    @close="dialogConfig.show = false"
     :width="'500px'"
+    @close="dialogConfig.show = false"
   >
     <el-form ref="formDataRef" :model="formData" :rules="rules" label-width="100px">
       <el-form-item label="版本号" prop="version">
-        <el-input :maxLength="10" v-model="formData.version" placeholder="eg:1.0.0" />
+        <el-input v-model="formData.version" :max-length="10" placeholder="eg:1.0.0" />
       </el-form-item>
       <el-form-item label="文件类型" prop="fileType">
         <el-radio-group v-model="formData.fileType">
@@ -16,7 +16,7 @@
           <el-radio :label="1">外链</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="文件" prop="fileName" class="file-select" v-if="formData.fileType == 0">
+      <el-form-item v-if="formData.fileType == 0" label="文件" prop="fileName" class="file-select">
         <div class="file-name">{{ formData.fileName }}</div>
         <el-upload
           name="file"
@@ -28,15 +28,15 @@
           <el-button type="primary" size="small">选择文件</el-button>
         </el-upload>
       </el-form-item>
-      <el-form-item label="外链地址" prop="outerLink" v-if="formData.fileType == 1">
+      <el-form-item v-if="formData.fileType == 1" label="外链地址" prop="outerLink">
         <el-input
-          :maxLength="200"
           v-model="formData.outerLink"
+          :max-length="200"
           placeholder="请输入完整的外链地址"
         />
       </el-form-item>
       <el-form-item label="更新内容" class="updte-form-item">
-        <div class="update-desc-item" v-for="(item, index) in formData.updateDescList">
+        <div v-for="(item, index) in formData.updateDescList" class="update-desc-item">
           <el-form-item
             :prop="'updateDescList.' + index + '.title'"
             :rules="{
@@ -47,10 +47,10 @@
             <div class="update-desc">
               <div class="num">{{ index + 1 }}</div>
               <div class="input">
-                <el-input :maxLength="11" v-model="item.title" placeholder="请输入更新内容" />
+                <el-input v-model="item.title" :max-length="11" placeholder="请输入更新内容" />
               </div>
-              <div class="iconfont icon-add" v-if="index == 0" @click="addLine"></div>
-              <div class="iconfont btn-del" v-if="index > 0" @click="delLie(index)">删除</div>
+              <div v-if="index == 0" class="iconfont icon-add" @click="addLine"></div>
+              <div v-if="index > 0" class="iconfont btn-del" @click="delLie(index)">删除</div>
             </div>
           </el-form-item>
         </div>

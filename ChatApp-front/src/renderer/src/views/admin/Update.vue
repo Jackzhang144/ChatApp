@@ -29,7 +29,7 @@
       <Table
         :columns="columns"
         :fetch="loadDataList"
-        :dataSource="tableData"
+        :data-source="tableData"
         :options="tableOptions"
       >
         <template #slotUpdateDesc="{ index, row }">
@@ -42,20 +42,20 @@
         </template>
 
         <template #slotStatus="{ index, row }">
-          <div style="color: #f56c6c" v-if="row.status == 0">未发布</div>
-          <div style="color: #f7ba2a" v-if="row.status == 1">灰度发布</div>
-          <div style="color: #529b2e" v-if="row.status == 2">全网发布</div>
+          <div v-if="row.status == 0" style="color: #f56c6c">未发布</div>
+          <div v-if="row.status == 1" style="color: #f7ba2a">灰度发布</div>
+          <div v-if="row.status == 2" style="color: #529b2e">全网发布</div>
         </template>
 
         <template #slotOperation="{ index, row }">
           <el-dropdown placement="bottom-end" trigger="click">
             <span class="iconfont icon-more"> </span>
             <template #dropdown>
-              <el-dropdown-item @click="showEdit(row)" v-if="row.status == 0"
+              <el-dropdown-item v-if="row.status == 0" @click="showEdit(row)"
                 >修改</el-dropdown-item
               >
               <el-dropdown-item @click="updatePost(row)">发布</el-dropdown-item>
-              <el-dropdown-item @click="del(row)" v-if="row.status == 0">删除</el-dropdown-item>
+              <el-dropdown-item v-if="row.status == 0" @click="del(row)">删除</el-dropdown-item>
             </template>
           </el-dropdown>
         </template>

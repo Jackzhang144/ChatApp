@@ -5,7 +5,7 @@
         <div class="iconfont icon-image-error"></div>
       </template>
     </el-image>
-    <div class="play-panel" v-if="showPlay">
+    <div v-if="showPlay" class="play-panel">
       <span class="iconfont icon-video-play"></span>
     </div>
   </div>

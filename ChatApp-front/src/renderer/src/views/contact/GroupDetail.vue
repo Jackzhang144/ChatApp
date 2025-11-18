@@ -3,7 +3,7 @@
     <div class="group-info-item">
       <div class="group-title">群封面：</div>
       <div class="group-value">
-        <Avatar :userId="groupInfo.groupId" :contactType="1"></Avatar>
+        <Avatar :user-id="groupInfo.groupId" :contact-type="1"></Avatar>
       </div>
       <el-dropdown placement="bottom-end" trigger="click">
         <span class="el-dropdown-link">
@@ -49,7 +49,7 @@
       </div>
     </div>
   </ContentPanel>
-  <GroupEditDialog ref="groupEditDialogRef" @reloadGroupInfo="getGroupInfo"></GroupEditDialog>
+  <GroupEditDialog ref="groupEditDialogRef" @reload-group-info="getGroupInfo"></GroupEditDialog>
 </template>
 
 <script setup>

@@ -2,17 +2,17 @@
   <ContentPanel
     v-infinite-scroll="loadApply"
     :infinite-scroll-immediate="false"
-    :showTopBorder="true"
+    :show-top-border="true"
   >
     <div>
-      <div class="apply-item" v-for="item in applyList">
+      <div v-for="item in applyList" class="apply-item">
         <div :class="['contact-type', item.contactType == 0 ? 'user-contact' : '']">
           {{ item.contactType == 0 ? '好友' : '群聊' }}
         </div>
         <Avatar
           :width="50"
-          :userId="item.applyUserId"
-          :lastUpdateTime="item.iconLastUpdateTime"
+          :user-id="item.applyUserId"
+          :last-update-time="item.iconLastUpdateTime"
         ></Avatar>
         <div class="contact-info">
           <div class="nick-name">{{ item.contactName }}</div>

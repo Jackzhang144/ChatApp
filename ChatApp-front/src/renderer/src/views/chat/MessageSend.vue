@@ -6,18 +6,18 @@
         trigger="click"
         placement="top"
         :teleported="false"
-        @show="openPopover"
-        @hide="closePopover"
         :popper-style="{
           padding: '0px 10px 10px 10px',
           width: '490px'
         }"
+        @show="openPopover"
+        @hide="closePopover"
       >
         <template #default>
           <el-tabs v-model="activeEmoji" @click.stop>
-            <el-tab-pane :label="emoji.name" :name="emoji.name" v-for="emoji in emojiList">
+            <el-tab-pane v-for="emoji in emojiList" :label="emoji.name" :name="emoji.name">
               <div class="emoji-list">
-                <div class="emoji-item" v-for="item in emoji.emojiList" @click="sendEmoji(item)">
+                <div v-for="item in emoji.emojiList" class="emoji-item" @click="sendEmoji(item)">
                   {{ item }}
                 </div>
               </div>
@@ -42,8 +42,8 @@
     </div>
     <div class="input-area" @drop="dropHandler" @dragover="dragOverHandler">
       <el-input
-        rows="5"
         v-model="msgContent"
+        rows="5"
         type="textarea"
         resize="none"
         maxlength="500"
@@ -61,13 +61,13 @@
         :hide-after="1500"
         placement="top-end"
         :teleported="false"
-        @show="openPopover"
-        @hide="closePopover"
         :popper-style="{
           padding: '5px',
           'min-width': '0px',
           width: '120px'
         }"
+        @show="openPopover"
+        @hide="closePopover"
       >
         <template #default> <span class="empty-msg">不能发送空白信息</span> </template>
         <template #reference>

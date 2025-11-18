@@ -1,14 +1,15 @@
 <template>
   <div>
     <AvatarBase
-      :userId="userId"
-      :width="width"
-      :borderRadius="borderRadius"
-      :showDetail="false"
       v-if="userId == 'Urobot' || contactType == 1"
+      :user-id="userId"
+      :width="width"
+      :border-radius="borderRadius"
+      :show-detail="false"
     ></AvatarBase>
     <el-popover
       v-else
+      ref="popoverRef"
       :width="280"
       placement="right-start"
       :show-arrow="false"
@@ -16,20 +17,19 @@
       transition="none"
       :hide-after="0"
       @show="getContactInfo"
-      ref="popoverRef"
     >
       <template #reference>
         <AvatarBase
-          :userId="userId"
+          :user-id="userId"
           :width="width"
-          :borderRadius="borderRadius"
-          :showDetail="false"
+          :border-radius="borderRadius"
+          :show-detail="false"
         ></AvatarBase>
       </template>
       <template #default>
         <div class="popover-user-panel">
-          <UserBaseInfo :userInfo="userInfo"></UserBaseInfo>
-          <div class="op-btn" v-if="userId !== userInfoStore.getInfo().userId">
+          <UserBaseInfo :user-info="userInfo"></UserBaseInfo>
+          <div v-if="userId !== userInfoStore.getInfo().userId" class="op-btn">
             <el-button v-if="userInfo.contactStatus == 1" type="primary" @click="sendMessage"
               >发送消息</el-button
             >

@@ -1,8 +1,8 @@
 <template>
   <div :class="['chat-session-item', currentSession ? 'active' : '']">
-    <div class="contact-tag" v-if="data.contactType == 1">群</div>
+    <div v-if="data.contactType == 1" class="contact-tag">群</div>
     <Badge :count="data.noReadCount" :top="2" :left="42"></Badge>
-    <AvatarBase :userId="data.contactId"> </AvatarBase>
+    <AvatarBase :user-id="data.contactId"> </AvatarBase>
     <div class="user-info">
       <div class="user-name-panel">
         <div class="user-name">{{ data.contactName }}</div>
@@ -10,7 +10,7 @@
       </div>
       <div class="last-message" v-html="data.lastMessage"></div>
     </div>
-    <div class="chat-top iconfont icon-top" v-if="data.topType == 1"></div>
+    <div v-if="data.topType == 1" class="chat-top iconfont icon-top"></div>
   </div>
 </template>
 

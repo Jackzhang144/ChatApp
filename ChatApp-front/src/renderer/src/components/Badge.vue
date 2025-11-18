@@ -1,5 +1,5 @@
 <template>
-  <div class="badge" :style="{ top: top + 'px', left: left + 'px' }" v-if="count > 0">
+  <div v-if="count > 0" class="badge" :style="{ top: top + 'px', left: left + 'px' }">
     {{ count > 99 ? '99+' : count }}
   </div>
 </template>

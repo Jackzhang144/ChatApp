@@ -1,9 +1,9 @@
 <template>
   <div class="image-panel">
     <ShowLocalImage
-      :fileId="data.messageId"
-      partType="chat"
-      :fileType="data.fileType"
+      :file-id="data.messageId"
+      part-type="chat"
+      :file-type="data.fileType"
     ></ShowLocalImage>
   </div>
 </template>

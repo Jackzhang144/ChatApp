@@ -4,9 +4,9 @@
     <div class="body-content">
       <div class="left-side">
         <div
+          v-for="item in menuList"
           :class="['menu-item', item.path == route.path ? 'active' : '']"
           @click="menuJump(item)"
-          v-for="item in menuList"
         >
           <div :class="['iconfont', item.icon]" :style="{ background: item.iconBgColor }"></div>
           <div class="text">{{ item.name }}</div>
@@ -19,7 +19,7 @@
       </div>
     </div>
   </div>
-  <WinOp :showMax="false" :showSetTop="false"></WinOp>
+  <WinOp :show-max="false" :show-set-top="false"></WinOp>
 </template>
 
 <script setup>

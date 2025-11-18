@@ -1,21 +1,21 @@
 <template>
   <div>
-    <el-form :model="formData" :rules="rules" ref="formDataRef" label-width="80px" @submit.prevent>
+    <el-form ref="formDataRef" :model="formData" :rules="rules" label-width="80px" @submit.prevent>
       <el-form-item label="密码" prop="password">
         <el-input
+          v-model.trim="formData.password"
           type="password"
           clearable
           placeholder="请输入新密码"
-          v-model.trim="formData.password"
           show-password
         ></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="rePassword">
         <el-input
+          v-model.trim="formData.rePassword"
           type="password"
           clearable
           placeholder="请再次输入新密码"
-          v-model.trim="formData.rePassword"
           show-password
         ></el-input>
       </el-form-item>

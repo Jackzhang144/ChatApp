@@ -1,28 +1,28 @@
 <template>
   <div class="form-panel">
-    <el-form :model="formData" :rules="rules" ref="formDataRef" label-width="160px" @submit.prevent>
+    <el-form ref="formDataRef" :model="formData" :rules="rules" label-width="160px" @submit.prevent>
       <el-form-item label="最多可创建群组数" prop="maxGroupCount">
         <el-input
+          v-model.trim="formData.maxGroupCount"
           clearable
           placeholder="请输入每人最多可创建群组数"
-          v-model.trim="formData.maxGroupCount"
         >
         </el-input>
       </el-form-item>
       <el-form-item label="群组最大成员数" prop="maxGroupMemberCount">
         <el-input
+          v-model.trim="formData.maxGroupMemberCount"
           clearable
           placeholder="请输入每个群组最大成员数"
-          v-model.trim="formData.maxGroupMemberCount"
         >
         </el-input>
       </el-form-item>
       <!--input输入-->
       <el-form-item label="图片大小" prop="maxImageSize">
         <el-input
+          v-model.trim="formData.maxImageSize"
           clearable
           placeholder="请输入允许上传的图片大小"
-          v-model.trim="formData.maxImageSize"
         >
           <template #append>MB</template>
         </el-input>
@@ -30,40 +30,40 @@
       <!--textarea输入-->
       <el-form-item label="视频大小" prop="maxVideoSize">
         <el-input
+          v-model.trim="formData.maxVideoSize"
           clearable
           placeholder="请输入允许上传的视频大小"
-          v-model.trim="formData.maxVideoSize"
         >
           <template #append>MB</template>
         </el-input>
       </el-form-item>
       <el-form-item label="其他文件大小" prop="maxFileSize">
         <el-input
+          v-model.trim="formData.maxFileSize"
           clearable
           placeholder="请输入允许上传的文件大小"
-          v-model.trim="formData.maxFileSize"
         >
           <template #append>MB</template>
         </el-input>
       </el-form-item>
       <el-form-item label="机器人昵称" prop="robotNickName">
         <el-input
+          v-model.trim="formData.robotNickName"
           clearable
           placeholder="请输入机器人昵称"
-          v-model.trim="formData.robotNickName"
           maxlength="20"
         >
         </el-input>
       </el-form-item>
       <!-- 下拉框 -->
       <el-form-item label="机器人头像" prop="robotFile">
-        <AvatarUpload v-model="formData.robotFile" @coverFile="saveCover"></AvatarUpload>
+        <AvatarUpload v-model="formData.robotFile" @cover-file="saveCover"></AvatarUpload>
       </el-form-item>
       <el-form-item label="欢迎消息" prop="robotWelcome">
         <el-input
+          v-model="formData.robotWelcome"
           clearable
           placeholder="请输入新用户注册机器人欢迎消息"
-          v-model="formData.robotWelcome"
           type="textarea"
           rows="5"
           maxlength="300"

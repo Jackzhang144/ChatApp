@@ -1,12 +1,12 @@
 <template>
   <div class="group-panel">
-    <el-drawer v-model="showDrawer" modal-class="mask-style" :size="300" ref="drawerRef">
+    <el-drawer ref="drawerRef" v-model="showDrawer" modal-class="mask-style" :size="300">
       <div class="group-panel-body">
         <div class="member-list">
-          <div class="member-item" v-for="item in memberList">
-            <Avatar :userId="item.userId" :width="30" @closeDrawer="closeDrawerHandler"></Avatar>
+          <div v-for="item in memberList" class="member-item">
+            <Avatar :user-id="item.userId" :width="30" @close-drawer="closeDrawerHandler"></Avatar>
             <div class="nick-name" :title="item.contactName">{{ item.contactName }}</div>
-            <div class="owner-tag" v-if="item.userId == groupInfo.groupOwnerId">群主</div>
+            <div v-if="item.userId == groupInfo.groupOwnerId" class="owner-tag">群主</div>
           </div>
           <template v-if="userInfoStore.getInfo().userId == groupInfo.groupOwnerId">
             <div class="member-item" @click="addUser">
@@ -22,10 +22,10 @@
         <div class="line"></div>
         <div class="part-content">
           <AvatarBase
-            :userId="groupInfo.groupId"
+            :user-id="groupInfo.groupId"
             :width="60"
-            :borderRadius="5"
-            :showDetail="true"
+            :border-radius="5"
+            :show-detail="true"
           ></AvatarBase>
         </div>
         <div class="part-title">群号</div>
@@ -36,13 +36,13 @@
         <div class="part-content">{{ groupInfo.groupNotice || '-' }}</div>
         <div class="line"></div>
         <a
+          v-if="userInfoStore.getInfo().userId == groupInfo.groupOwnerId"
           href="javascript:void(0)"
           class="leave-btn"
           @click="dissolutionGroup"
-          v-if="userInfoStore.getInfo().userId == groupInfo.groupOwnerId"
           >解散群聊</a
         >
-        <a href="javascript:void(0)" class="leave-btn" @click="leaveGroup" v-else>退出群聊</a>
+        <a v-else href="javascript:void(0)" class="leave-btn" @click="leaveGroup">退出群聊</a>
       </div>
     </el-drawer>
     <UserSelect ref="userSelectRef" @callback="addOrRemoveUserCallback"></UserSelect>

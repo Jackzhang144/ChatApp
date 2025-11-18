@@ -4,54 +4,54 @@
     <div class="media-op no-drag">
       <div
         :class="['iconfont icon-left', currentIndex == 0 ? 'not-allow' : '']"
-        @dblclick.stop
         title="上一张"
+        @dblclick.stop
         @click="next(-1)"
       ></div>
       <div
         :class="['iconfont icon-right', currentIndex >= allFileList.length - 1 ? 'not-allow' : '']"
-        @dblclick.stop
         title="下一张"
+        @dblclick.stop
         @click="next(1)"
       ></div>
       <template v-if="fileList[0].fileType == 0">
         <el-divider direction="vertical" />
         <div
           class="iconfont icon-enlarge"
+          title="放大"
           @click.stop="changeSize(0.1)"
           @dblclick.stop
-          title="放大"
         ></div>
         <div
           class="iconfont icon-narrow"
+          title="缩小"
           @click="changeSize(-0.1)"
           @dblclick.stop
-          title="缩小"
         ></div>
         <div
           :class="['iconfont', isOne2One ? 'icon-resize' : 'icon-source-size']"
+          :title="isOne2One ? '图片适应窗口大小' : '图片原始大小'"
           @dblclick.stop
           @click="resize"
-          :title="isOne2One ? '图片适应窗口大小' : '图片原始大小'"
         ></div>
-        <div class="iconfont icon-rotate" @dblclick.stop @click="rotate" title="旋转"></div>
+        <div class="iconfont icon-rotate" title="旋转" @dblclick.stop @click="rotate"></div>
         <el-divider direction="vertical" />
       </template>
-      <div class="iconfont icon-download" @dblclick.stop @click="saveAs" title="另存为..."></div>
+      <div class="iconfont icon-download" title="另存为..." @dblclick.stop @click="saveAs"></div>
     </div>
     <div class="media-panel">
       <viewer
-        :options="options"
-        @inited="inited"
-        :images="fileList"
         v-if="fileList[0].fileType == 0 && fileList[0].status == 1"
+        :options="options"
+        :images="fileList"
+        @inited="inited"
       >
         <img :src="fileList[0].url" />
       </viewer>
       <div
-        ref="player"
-        id="player"
         v-show="fileList[0].fileType == 1 && fileList[0].status == 1"
+        id="player"
+        ref="player"
         style="width: 100%; height: 100%"
       ></div>
       <div v-if="fileList[0].fileType == 2" class="file-panel">
@@ -61,10 +61,10 @@
           <el-button type="primary" @click="saveAs">下载文件</el-button>
         </div>
       </div>
-      <div class="loading" v-if="fileList[0].status != 1">加载中....</div>
+      <div v-if="fileList[0].status != 1" class="loading">加载中....</div>
     </div>
   </div>
-  <WinOp @closeCallback="closeWin"></WinOp>
+  <WinOp @close-callback="closeWin"></WinOp>
 </template>
 
 <script setup>

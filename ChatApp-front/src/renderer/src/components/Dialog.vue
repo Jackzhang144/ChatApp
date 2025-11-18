@@ -1,13 +1,22 @@
 <template>
   <div>
-    <el-dialog :show-close="showClose" :draggable="false" :model-value="show" :close-on-click-modal="false"
-      :title="title" class="cust-dialog" :top="top + 'px'" :width="width" @close="close">
+    <el-dialog
+      :show-close="showClose"
+      :draggable="false"
+      :model-value="show"
+      :close-on-click-modal="false"
+      :title="title"
+      class="cust-dialog"
+      :top="top + 'px'"
+      :width="width"
+      @close="close"
+    >
       <div class="dialog-body" :style="{ 'max-height': maxHeight + 'px', padding: padding + 'px' }">
         <slot></slot>
       </div>
       <template v-if="(buttons && buttons.length > 0) || showCancel">
         <div class="dialog-footer">
-          <el-button link @click="close" v-if="showCancel"> 取消 </el-button>
+          <el-button v-if="showCancel" link @click="close"> 取消 </el-button>
           <el-button v-for="btn in buttons" :type="btn.type || 'primary'" @click="btn.click">
             {{ btn.text }}
           </el-button>

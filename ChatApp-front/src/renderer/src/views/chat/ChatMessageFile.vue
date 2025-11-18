@@ -4,7 +4,7 @@
       <div class="file-name">{{ data.fileName }}</div>
       <div class="file-size">大小：{{ proxy.Utils.size2Str(data.fileSize) }}</div>
       <div class="process">
-        <span class="iconfont icon-ok" v-if="data.status == 1"></span>
+        <span v-if="data.status == 1" class="iconfont icon-ok"></span>
         <div class="info">{{ data.status == 0 ? '文件处理中' : '处理完成' }}</div>
       </div>
     </div>

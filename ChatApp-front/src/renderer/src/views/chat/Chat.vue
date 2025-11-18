@@ -3,32 +3,32 @@
     <template #left-content>
       <div class="drag-panel drag"></div>
       <div class="top-search">
-        <el-input placeholder="搜索" v-model="searchKey" size="small" @keyup="search">
+        <el-input v-model="searchKey" placeholder="搜索" size="small" @keyup="search">
           <template #suffix>
             <span class="iconfont icon-search"></span>
           </template>
         </el-input>
       </div>
-      <div class="chat-session-list" v-show="!searchKey">
+      <div v-show="!searchKey" class="chat-session-list">
         <template v-for="data in chatSessionList">
           <ChatSession
-            @click="chatSessionClickHandler(data)"
             :data="data"
-            :currentSession="data.contactId == currentChatSession.contactId"
+            :current-session="data.contactId == currentChatSession.contactId"
+            @click="chatSessionClickHandler(data)"
             @contextmenu.stop="onContextMenu(data, $event)"
           ></ChatSession>
         </template>
       </div>
-      <div class="search-list" v-show="searchKey">
+      <div v-show="searchKey" class="search-list">
         <SearchResult
-          @click="searchClickHandler(item)"
-          :data="item"
           v-for="item in searchList"
+          :data="item"
+          @click="searchClickHandler(item)"
         ></SearchResult>
       </div>
     </template>
     <template #right-content>
-      <div class="title-panel drag" v-if="Object.keys(currentChatSession).length > 0">
+      <div v-if="Object.keys(currentChatSession).length > 0" class="title-panel drag">
         <div class="title">
           <span>{{ currentChatSession.contactName }}</span>
           <span v-if="currentChatSession.contactType == 1"
@@ -42,12 +42,12 @@
         @click="showGroupDetail"
       ></div>
 
-      <div class="chat-panel" v-show="Object.keys(currentChatSession).length > 0">
-        <div class="message-panel" id="message-panel">
+      <div v-show="Object.keys(currentChatSession).length > 0" class="chat-panel">
+        <div id="message-panel" class="message-panel">
           <div
-            class="message-item"
             v-for="(data, index) in messageList"
             :id="'message' + data.messageId"
+            class="message-item"
           >
             <template
               v-if="
@@ -75,32 +75,32 @@
             >
               <ChatMessage
                 :data="data"
-                :currentChatSession="currentChatSession"
-                @showMediaDetail="showMediaDetailHandler"
+                :current-chat-session="currentChatSession"
+                @show-media-detail="showMediaDetailHandler"
               ></ChatMessage>
             </template>
           </div>
         </div>
         <MessageSend
           ref="messageSendRef"
-          :currentChatSession="currentChatSession"
-          @sendMessage4Local="sendMessage4LocalHandler"
+          :current-chat-session="currentChatSession"
+          @send-message4-local="sendMessage4LocalHandler"
         >
         </MessageSend>
       </div>
-      <div class="chat-blank" v-show="Object.keys(currentChatSession).length == 0">
+      <div v-show="Object.keys(currentChatSession).length == 0" class="chat-blank">
         <Blank></Blank>
       </div>
     </template>
   </Layout>
   <ChatGroupDetail
     ref="chatGroupDetailRef"
-    @delChatSessionCallback="delChatSession"
+    @del-chat-session-callback="delChatSession"
   ></ChatGroupDetail>
 </template>
 <script>
 export default {
-  name: 'chat'
+  name: 'Chat'
 }
 </script>
 <script setup>
@@ -219,7 +219,7 @@ const onReciveMessage = () => {
   window.ipcRenderer.on('reciveMessage', (e, message) => {
     console.log('收到消息', message)
     if (message.messageType == 0) {
-	if (chatSessionList.value.length == 0) {
+      if (chatSessionList.value.length == 0) {
         loadChatSession()
       }
       return
@@ -593,7 +593,8 @@ const sendMessage = async (contactId) => {
     chatSessionList.value.push(sessionInfo)
     sortChatSessionList(chatSessionList.value)
     curSession =
-      chatSessionList.value.find((item) => item.contactId == contactId) || Object.assign({}, sessionInfo)
+      chatSessionList.value.find((item) => item.contactId == contactId) ||
+      Object.assign({}, sessionInfo)
   }
   chatSessionClickHandler(curSession)
 }

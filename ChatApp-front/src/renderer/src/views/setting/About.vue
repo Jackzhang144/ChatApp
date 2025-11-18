@@ -13,7 +13,7 @@
     </el-form>
   </ContentPanel>
 
-  <Update :autoUpdate="false" ref="updateRef"></Update>
+  <Update ref="updateRef" :auto-update="false"></Update>
 </template>
 
 <script setup>

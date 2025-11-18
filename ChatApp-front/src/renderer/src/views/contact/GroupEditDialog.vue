@@ -4,10 +4,10 @@
     :title="dialogConfig.title"
     :buttons="dialogConfig.buttons"
     width="400px"
-    :showCancel="false"
+    :show-cancel="false"
     @close="dialogConfig.show = false"
   >
-    <GroupEditForm ref="groupEditRef" @eidtBack="eidtBack"></GroupEditForm>
+    <GroupEditForm ref="groupEditRef" @eidt-back="eidtBack"></GroupEditForm>
   </Dialog>
 </template>
 

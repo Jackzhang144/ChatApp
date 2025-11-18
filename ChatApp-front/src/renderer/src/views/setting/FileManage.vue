@@ -1,9 +1,9 @@
 <template>
   <ContentPanel v-loading="copying" element-loading-text="正在复制文件">
     <el-form
+      ref="formDataRef"
       label-position="top"
       :model="formData"
-      ref="formDataRef"
       label-width="80px"
       @submit.prevent
     >

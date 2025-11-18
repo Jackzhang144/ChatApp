@@ -7,8 +7,8 @@
             <el-col :span="5">
               <el-form-item label="群组ID" label-width="55px">
                 <el-input
-                  class="password-input"
                   v-model="searchForm.groupId"
+                  class="password-input"
                   clearable
                   @keyup.native="loadDataList"
                 >
@@ -18,8 +18,8 @@
             <el-col :span="5">
               <el-form-item label="群名称">
                 <el-input
-                  class="password-input"
                   v-model="searchForm.groupNameFuzzy"
+                  class="password-input"
                   clearable
                   placeholder="支持模糊搜索"
                   @keyup.native="loadDataList"
@@ -30,8 +30,8 @@
             <el-col :span="5">
               <el-form-item label="群主UID">
                 <el-input
-                  class="password-input"
                   v-model="searchForm.groupOwnerId"
+                  class="password-input"
                   clearable
                   @keyup.native="loadDataList"
                 >
@@ -49,11 +49,11 @@
       <Table
         :columns="columns"
         :fetch="loadDataList"
-        :dataSource="tableData"
+        :data-source="tableData"
         :options="tableOptions"
       >
         <template #slotAvatar="{ index, row }">
-          <AvatarBase :width="50" :userId="row.groupId" partType="avatar"> </AvatarBase>
+          <AvatarBase :width="50" :user-id="row.groupId" part-type="avatar"> </AvatarBase>
         </template>
 
         <template #slotGroupName="{ index, row }">
@@ -74,7 +74,7 @@
         </template>
         <template #slotOperation="{ index, row }">
           <div class="row-op-panel">
-            <a href="javascript:void(0)" @click="dissolutionGroup(row)" v-if="row.status == 1"
+            <a v-if="row.status == 1" href="javascript:void(0)" @click="dissolutionGroup(row)"
               >解散</a
             >
           </div>

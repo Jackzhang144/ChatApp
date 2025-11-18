@@ -3,15 +3,15 @@
     :title="dialogConfig.title"
     :buttons="dialogConfig.buttons"
     :show="dialogConfig.show"
-    @close="dialogConfig.show = false"
     :width="'400px'"
+    @close="dialogConfig.show = false"
   >
     <el-form ref="formDataRef" :model="formData" :rules="rules" label-width="60px">
       <el-form-item label="邮箱" prop="email">
-        <el-input :maxLength="50" v-model.trim="formData.email" placeholder="请输入邮箱" />
+        <el-input v-model.trim="formData.email" :max-length="50" placeholder="请输入邮箱" />
       </el-form-item>
       <el-form-item label="靓号" prop="userId">
-        <el-input :maxLength="11" v-model.trim="formData.userId" placeholder="请输入靓号" />
+        <el-input v-model.trim="formData.userId" :max-length="11" placeholder="请输入靓号" />
       </el-form-item>
     </el-form>
   </Dialog>

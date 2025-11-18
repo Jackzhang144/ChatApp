@@ -6,9 +6,9 @@
   >
     <ShowLocalImage
       :width="width"
-      :fileId="userId"
-      partType="avatar"
-      :forceGet="avatarInfoStore.getFoceReload(userId)"
+      :file-id="userId"
+      part-type="avatar"
+      :force-get="avatarInfoStore.getFoceReload(userId)"
     >
     </ShowLocalImage>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="content-panel" :style="{'border-top':showTopBorder?'1px solid #ddd':'none'}">
+  <div class="content-panel" :style="{ 'border-top': showTopBorder ? '1px solid #ddd' : 'none' }">
     <div class="content-inner">
       <slot></slot>
     </div>

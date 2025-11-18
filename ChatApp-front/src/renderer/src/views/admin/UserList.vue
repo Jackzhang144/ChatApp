@@ -6,8 +6,8 @@
           <el-col :span="5">
             <el-form-item label="UID" label-width="40px">
               <el-input
-                class="password-input"
                 v-model="searchForm.userId"
+                class="password-input"
                 clearable
                 @keyup.native="loadDataList"
               >
@@ -17,8 +17,8 @@
           <el-col :span="5">
             <el-form-item label="昵称">
               <el-input
-                class="password-input"
                 v-model="searchForm.nickNameFuzzy"
+                class="password-input"
                 clearable
                 placeholder="支持模糊搜索"
                 @keyup.native="loadDataList"
@@ -34,9 +34,14 @@
     </el-card>
   </div>
   <el-card class="table-data-card">
-    <Table :columns="columns" :fetch="loadDataList" :dataSource="tableData" :options="tableOptions">
+    <Table
+      :columns="columns"
+      :fetch="loadDataList"
+      :data-source="tableData"
+      :options="tableOptions"
+    >
       <template #slotAvatar="{ index, row }">
-        <AvatarBase :width="50" :userId="row.userId" partType="avatar"> </AvatarBase>
+        <AvatarBase :width="50" :user-id="row.userId" part-type="avatar"> </AvatarBase>
       </template>
 
       <template #slotNickName="{ index, row }">
@@ -47,23 +52,23 @@
       </template>
 
       <template #slotStatus="{ index, row }">
-        <span style="color: red" v-if="row.status == 0">禁用</span>
-        <span style="color: green" v-else>启用</span>
+        <span v-if="row.status == 0" style="color: red">禁用</span>
+        <span v-else style="color: green">启用</span>
       </template>
 
       <template #slotOnline="{ index, row }">
-        <span style="color: green" v-if="row.onlineType == 1">在线</span>
-        <span style="color: #8a8a8a" v-else>离线</span>
+        <span v-if="row.onlineType == 1" style="color: green">在线</span>
+        <span v-else style="color: #8a8a8a">离线</span>
       </template>
 
       <template #slotOperation="{ index, row }">
-        <el-dropdown placement="bottom-end" trigger="click" v-if="userInfo.userId != row.userId">
+        <el-dropdown v-if="userInfo.userId != row.userId" placement="bottom-end" trigger="click">
           <span class="iconfont icon-more"> </span>
           <template #dropdown>
             <el-dropdown-item @click="changeAccountStatus(row)">{{
               row.status == 0 ? '启用' : '禁用'
             }}</el-dropdown-item>
-            <el-dropdown-item @click="forceOffLine(row)" v-if="row.onlineType == 1"
+            <el-dropdown-item v-if="row.onlineType == 1" @click="forceOffLine(row)"
               >强制下线</el-dropdown-item
             >
           </template>

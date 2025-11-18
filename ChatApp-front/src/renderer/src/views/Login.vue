@@ -4,20 +4,20 @@
     <div v-if="showLoading" class="loading-panel">
       <img src="../assets/img/loading.gif" />
     </div>
-    <div class="login-form" v-else>
+    <div v-else class="login-form">
       <div class="error-msg">{{ errorMsg }}</div>
-      <el-form :model="formData" ref="formDataRef" label-width="0px" @submit.prevent>
+      <el-form ref="formDataRef" :model="formData" label-width="0px" @submit.prevent>
         <el-form-item prop="email">
           <div class="email-panel">
             <el-input
+              v-model.trim="formData.email"
               class="input"
               size="large"
               clearable
               placeholder="请输入邮箱"
-              v-model.trim="formData.email"
-              maxLength="30"
-              @focus="clearVerify"
+              max-length="30"
               :input-style="{ border: 'none' }"
+              @focus="clearVerify"
             >
               <template #prefix>
                 <span class="iconfont icon-email"></span>
@@ -41,13 +41,13 @@
             </el-dropdown>
           </div>
         </el-form-item>
-        <el-form-item prop="nickName" v-if="!isLogin">
+        <el-form-item v-if="!isLogin" prop="nickName">
           <el-input
+            v-model.trim="formData.nickName"
             size="large"
             clearable
             placeholder="请输入昵称"
-            v-model.trim="formData.nickName"
-            maxLength="15"
+            max-length="15"
             @focus="clearVerify"
           >
             <template #prefix>
@@ -58,10 +58,10 @@
         <!--登录密码-->
         <el-form-item prop="password">
           <el-input
+            v-model.trim="formData.password"
             type="password"
             size="large"
             placeholder="请输入密码"
-            v-model.trim="formData.password"
             show-password
             @focus="clearVerify"
           >
@@ -70,12 +70,12 @@
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item prop="rePassword" v-if="!isLogin">
+        <el-form-item v-if="!isLogin" prop="rePassword">
           <el-input
+            v-model.trim="formData.rePassword"
             type="password"
             size="large"
             placeholder="请再次输入密码"
-            v-model.trim="formData.rePassword"
             show-password
             @focus="clearVerify"
           >
@@ -87,9 +87,9 @@
         <el-form-item prop="checkCode">
           <div class="check-code-panel">
             <el-input
+              v-model.trim="formData.checkCode"
               size="large"
               placeholder="请输入验证码"
-              v-model.trim="formData.checkCode"
               @focus="clearVerify"
               @keyup.enter="submit"
             >
@@ -101,7 +101,7 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submit" class="login-btn">{{
+          <el-button type="primary" class="login-btn" @click="submit">{{
             isLogin ? '登录' : '注册'
           }}</el-button>
         </el-form-item>
@@ -113,7 +113,7 @@
       </el-form>
     </div>
   </div>
-  <WinOp :showSetTop="false" :showMin="false" :showMax="false" :closeType="0"></WinOp>
+  <WinOp :show-set-top="false" :show-min="false" :show-max="false" :close-type="0"></WinOp>
 </template>
 
 <script setup>

@@ -3,17 +3,17 @@
     <div
       v-if="showSetTop"
       :class="['iconfont icon-top', isTop ? 'win-top' : '']"
-      @click="top"
       :title="isTop ? '取消置顶' : '置顶'"
+      @click="top"
     ></div>
-    <div v-if="showMin" class="iconfont icon-min" @click="minimize" title="最小化"></div>
+    <div v-if="showMin" class="iconfont icon-min" title="最小化" @click="minimize"></div>
     <div
       v-if="showMax"
       :class="['iconfont', isMax ? 'icon-maximize' : 'icon-max']"
       :title="isMax ? '向下还原' : '最大化'"
       @click="maximize"
     ></div>
-    <div v-if="showClose" class="iconfont icon-close" @click="close" title="关闭"></div>
+    <div v-if="showClose" class="iconfont icon-close" title="关闭" @click="close"></div>
   </div>
 </template>
 

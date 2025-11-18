@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-form :model="formData" :rules="rules" ref="formDataRef" label-width="80px" @submit.prevent>
+    <el-form ref="formDataRef" :model="formData" :rules="rules" label-width="80px" @submit.prevent>
       <el-form-item label="头像" prop="avatarFile">
-        <AvatarUpload v-model="formData.avatarFile" @coverFile="saveCover"></AvatarUpload>
+        <AvatarUpload v-model="formData.avatarFile" @cover-file="saveCover"></AvatarUpload>
       </el-form-item>
       <el-form-item label="昵称" prop="nickName">
         <el-input
+          v-model.trim="formData.nickName"
           maxlength="150"
           clearable
           placeholder="请输入昵称"
-          v-model.trim="formData.nickName"
         ></el-input>
       </el-form-item>
       <!-- 下拉框 -->
@@ -29,9 +29,9 @@
       </el-form-item>
       <el-form-item label="个性签名" prop="personalSignature">
         <el-input
+          v-model.trim="formData.personalSignature"
           clearable
           placeholder="请输入个性签名"
-          v-model.trim="formData.personalSignature"
           type="textarea"
           rows="5"
           maxlength="30"

@@ -1,7 +1,7 @@
 <template>
   <ContentPanel>
     <div class="user-info">
-      <UserBaseInfo :userInfo="userInfo"></UserBaseInfo>
+      <UserBaseInfo :user-info="userInfo"></UserBaseInfo>
       <div class="more-op">
         <el-dropdown placement="bottom-end" trigger="click">
           <span class="el-dropdown-link">

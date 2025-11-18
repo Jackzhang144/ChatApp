@@ -26,10 +26,10 @@
           <div class="select-item">
             <div class="avatar">
               <AvatarBase
-                :userId="option.contactId"
+                :user-id="option.contactId"
                 :width="30"
-                :borderRadius="5"
-                :showDetail="false"
+                :border-radius="5"
+                :show-detail="false"
               >
               </AvatarBase>
             </div>

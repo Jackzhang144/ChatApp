@@ -9,7 +9,7 @@
             <div v-for="(item, index) in updateInfo.updateList">{{ index + 1 }}、{{ item }}</div>
           </div>
         </div>
-        <div class="download-progress" v-if="downloading">
+        <div v-if="downloading" class="download-progress">
           <div v-if="downloadPercent.progress != 100">
             <el-progress :percentage="downloadPercent.progress" />
             <div class="download-tips">
@@ -20,7 +20,7 @@
           </div>
           <div v-else>下载完成，准备安装</div>
         </div>
-        <div class="op-btn" v-else>
+        <div v-else class="op-btn">
           <div class="cancel" @click="cancelUpdateHandler">残忍拒绝</div>
           <div class="update" @click="startDownload">更新</div>
         </div>

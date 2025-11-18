@@ -1,10 +1,10 @@
 <template>
   <div class="user-panel">
     <AvatarBase
-      :userId="userInfo.userId || userInfo.contactId"
+      :user-id="userInfo.userId || userInfo.contactId"
       :width="60"
-      :borderRadius="5"
-      :showDetail="true"
+      :border-radius="5"
+      :show-detail="true"
     >
     </AvatarBase>
     <div class="user-info">
@@ -14,7 +14,7 @@
         <span v-if="userInfo.sex == 1" class="iconfont icon-man"></span>
       </div>
       <div class="info">ID：{{ userInfo.userId || userInfo.contactId }}</div>
-      <div class="info" v-if="showArea">地区：{{ proxy.Utils.getAreaInfo(userInfo.areaName) }}</div>
+      <div v-if="showArea" class="info">地区：{{ proxy.Utils.getAreaInfo(userInfo.areaName) }}</div>
     </div>
   </div>
 </template>

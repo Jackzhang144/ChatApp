@@ -7,8 +7,8 @@
             <el-col :span="5">
               <el-form-item label="靓号" label-width="40px">
                 <el-input
-                  class="password-input"
                   v-model="searchForm.userIdFuzzy"
+                  class="password-input"
                   clearable
                   placeholder="支持模糊搜索"
                   @keyup.native="loadDataList"
@@ -19,8 +19,8 @@
             <el-col :span="5">
               <el-form-item label="邮箱">
                 <el-input
-                  class="password-input"
                   v-model="searchForm.emailFuzzy"
+                  class="password-input"
                   clearable
                   placeholder="支持模糊搜索"
                   @keyup.native="loadDataList"
@@ -40,11 +40,11 @@
       <Table
         :columns="columns"
         :fetch="loadDataList"
-        :dataSource="tableData"
+        :data-source="tableData"
         :options="tableOptions"
       >
         <template #slotAvatar="{ index, row }">
-          <Avatar :width="50" :userId="row.userId" partType="avatar"> </Avatar>
+          <Avatar :width="50" :user-id="row.userId" part-type="avatar"> </Avatar>
         </template>
 
         <template #slotNickName="{ index, row }">
@@ -54,20 +54,20 @@
         </template>
 
         <template #slotStatus="{ index, row }">
-          <span style="color: red" v-if="row.status == 0">未使用</span>
-          <span style="color: green" v-else>已使用</span>
+          <span v-if="row.status == 0" style="color: red">未使用</span>
+          <span v-else style="color: green">已使用</span>
         </template>
 
         <template #slotOnline="{ index, row }">
-          <span style="color: green" v-if="!row.status || row.onlineType == 1">在线</span>
-          <span style="color: #8a8a8a" v-else>离线</span>
+          <span v-if="!row.status || row.onlineType == 1" style="color: green">在线</span>
+          <span v-else style="color: #8a8a8a">离线</span>
         </template>
 
         <template #slotOperation="{ index, row }">
           <el-dropdown placement="bottom-end" trigger="click">
             <span class="iconfont icon-more"> </span>
             <template #dropdown>
-              <el-dropdown-item @click="editAccount(row)" v-if="row.status == 0"
+              <el-dropdown-item v-if="row.status == 0" @click="editAccount(row)"
                 >修改</el-dropdown-item
               >
               <el-dropdown-item @click="delAccount(row)">删除</el-dropdown-item>

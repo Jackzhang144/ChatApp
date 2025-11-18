@@ -5,17 +5,17 @@
       :title="dialogConfig.title"
       :buttons="dialogConfig.buttons"
       width="400px"
-      :showCancel="true"
+      :show-cancel="true"
       @close="dialogConfig.show = false"
     >
-      <el-form :model="formData" ref="formDataRef" @submit.prevent>
+      <el-form ref="formDataRef" :model="formData" @submit.prevent>
         <el-form-item label="" prop="applyInfo">
           <el-input
+            v-model.trim="formData.applyInfo"
             type="textarea"
             :rows="5"
             clearable
             placeholder="输入申请信息，更容易被通过"
-            v-model.trim="formData.applyInfo"
             resize="none"
             show-word-limit
             maxlength="100"

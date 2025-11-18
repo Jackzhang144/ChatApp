@@ -1,20 +1,20 @@
 <template>
-  <el-form :model="formData" :rules="rules" ref="formDataRef" label-width="80px" @submit.prevent>
+  <el-form ref="formDataRef" :model="formData" :rules="rules" label-width="80px" @submit.prevent>
     <!--input输入-->
     <el-form-item label="群名称" prop="groupName">
       <el-input
+        v-model.trim="formData.groupName"
         maxlength="150"
         clearable
         placeholder="请输入群名称"
-        v-model.trim="formData.groupName"
       ></el-input>
     </el-form-item>
     <!--input输入-->
     <el-form-item label="封面" prop="avatarFile">
       <AvatarUpload
-        v-model="formData.avatarFile"
         ref="avatarUploadRef"
-        @coverFile="saveCover"
+        v-model="formData.avatarFile"
+        @cover-file="saveCover"
       ></AvatarUpload>
     </el-form-item>
     <!-- 下拉框 -->
@@ -28,9 +28,9 @@
     <!-- 单选 -->
     <el-form-item label="公告" prop="groupNotice">
       <el-input
+        v-model.trim="formData.groupNotice"
         clearable
         placeholder="请输入群公告"
-        v-model.trim="formData.groupNotice"
         type="textarea"
         rows="5"
         maxlength="300"

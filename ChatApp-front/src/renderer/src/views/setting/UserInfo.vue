@@ -1,8 +1,8 @@
 <template>
   <ContentPanel>
-    <div class="show-info" v-if="showType == 0">
+    <div v-if="showType == 0" class="show-info">
       <div class="user-info">
-        <UserBaseInfo :userInfo="userInfo"></UserBaseInfo>
+        <UserBaseInfo :user-info="userInfo"></UserBaseInfo>
         <div class="more-op">
           <el-dropdown placement="bottom-end" trigger="click">
             <span class="el-dropdown-link">
@@ -32,10 +32,10 @@
       </div>
     </div>
     <div v-if="showType == 1">
-      <UserInfoEdit @editBack="editBack" :data="userInfo"></UserInfoEdit>
+      <UserInfoEdit :data="userInfo" @edit-back="editBack"></UserInfoEdit>
     </div>
     <div v-if="showType == 2">
-      <UserPassword @editBack="editBack"></UserPassword>
+      <UserPassword @edit-back="editBack"></UserPassword>
     </div>
   </ContentPanel>
 </template>

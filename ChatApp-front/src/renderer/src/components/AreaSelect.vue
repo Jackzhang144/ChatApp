@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-cascader
-      :options="AreaData"
-      v-model="modelValue.areaCode"
-      @change="change"
       ref="areaSelectRef"
+      v-model="modelValue.areaCode"
+      :options="AreaData"
       clearable
+      @change="change"
     />
   </div>
 </template>

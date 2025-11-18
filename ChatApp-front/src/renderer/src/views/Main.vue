@@ -1,13 +1,13 @@
 <template>
   <div class="main">
     <div class="left-sider">
-      <Avatar :userId="userInfoStore.getInfo().userId" :width="35" :showDetail="false"></Avatar>
+      <Avatar :user-id="userInfoStore.getInfo().userId" :width="35" :show-detail="false"></Avatar>
       <div class="menu-list">
         <template v-for="item in menuList">
           <div
+            v-if="item.position == 'top'"
             :class="['tab-item iconfont', item.icon, item.path == currentMenu.path ? 'active' : '']"
             @click="changeMenu(item)"
-            v-if="item.position == 'top'"
           >
             <template v-if="item.name == 'chat' || item.name == 'contact'">
               <Badge :count="messageCountStore.getCount(item.countKey)" :top="5" :left="15"></Badge>
@@ -18,9 +18,9 @@
       <div class="menu-list menu-buttom">
         <template v-for="item in menuList">
           <div
+            v-if="item.position == 'bottom'"
             :class="['tab-item iconfont', item.icon, item.path == currentMenu.path ? 'active' : '']"
             @click="changeMenu(item)"
-            v-if="item.position == 'bottom'"
           ></div>
         </template>
       </div>

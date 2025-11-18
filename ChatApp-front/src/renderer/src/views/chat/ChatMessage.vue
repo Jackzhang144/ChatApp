@@ -1,7 +1,7 @@
 <template>
-  <div class="message-content-my" v-if="data.sendUserId == userInfoStore.getInfo().userId">
+  <div v-if="data.sendUserId == userInfoStore.getInfo().userId" class="message-content-my">
     <div :class="['content-panel', data.messageType == 5 ? 'content-panel-media' : '']">
-      <div class="sending" v-if="data.status == 0">
+      <div v-if="data.status == 0" class="sending">
         <el-skeleton :animated="true">
           <template #template>
             <el-skeleton-item class="skeleton-item" variant="image" />
@@ -9,8 +9,8 @@
         </el-skeleton>
       </div>
       <template v-else>
-        <div class="content" v-html="data.messageContent" v-if="data.messageType != 5"></div>
-        <div class="content" v-else>
+        <div v-if="data.messageType != 5" class="content" v-html="data.messageContent"></div>
+        <div v-else class="content">
           <template v-if="data.fileType == 0">
             <ChatMessageImage :data="data" @click="showDetail"></ChatMessageImage>
           </template>
@@ -23,11 +23,11 @@
         </div>
       </template>
     </div>
-    <Avatar :width="35" :userId="userInfoStore.getInfo().userId"> </Avatar>
+    <Avatar :width="35" :user-id="userInfoStore.getInfo().userId"> </Avatar>
   </div>
-  <div class="message-content-other" v-else>
+  <div v-else class="message-content-other">
     <div class="user-avatar">
-      <Avatar :width="35" :userId="data.sendUserId"></Avatar>
+      <Avatar :width="35" :user-id="data.sendUserId"></Avatar>
     </div>
     <div
       :class="[
@@ -36,10 +36,10 @@
         data.messageType == 5 ? 'content-panel-media' : ''
       ]"
     >
-      <div class="nick-name" v-if="data.contactType == 1">
+      <div v-if="data.contactType == 1" class="nick-name">
         {{ data.sendUserNickName }}
       </div>
-      <div class="sending" v-if="data.status == 0">
+      <div v-if="data.status == 0" class="sending">
         <el-skeleton :animated="true">
           <template #template>
             <el-skeleton-item class="skeleton-item" variant="image" />
@@ -47,8 +47,8 @@
         </el-skeleton>
       </div>
       <template v-else>
-        <div class="content" v-html="data.messageContent" v-if="data.messageType != 5"></div>
-        <div class="content" v-else>
+        <div v-if="data.messageType != 5" class="content" v-html="data.messageContent"></div>
+        <div v-else class="content">
           <template v-if="data.fileType == 0">
             <ChatMessageImage :data="data" @click="showDetail"></ChatMessageImage>
           </template>

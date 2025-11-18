@@ -3,19 +3,19 @@
     <template #left-content>
       <div class="drag-panel drag"></div>
       <div class="top-search">
-        <el-input placeholder="搜索" v-model="searchKey" size="small" @keyup="search">
+        <el-input v-model="searchKey" placeholder="搜索" size="small" @keyup="search">
           <template #suffix>
             <span class="iconfont icon-search"></span>
           </template>
         </el-input>
       </div>
-      <div class="contact-list" v-show="!searchKey">
+      <div v-show="!searchKey" class="contact-list">
         <template v-for="item in partList">
           <div class="part-title">{{ item.partName }}</div>
           <div class="part-list">
             <div
-              :class="['part-item', sub.path == route.path ? 'active' : '']"
               v-for="sub in item.children"
+              :class="['part-item', sub.path == route.path ? 'active' : '']"
               @click="partJump(sub)"
             >
               <div :class="['iconfont', sub.icon]" :style="{ background: sub.iconBgColor }"></div>
@@ -31,7 +31,7 @@
                 ]"
                 @click="contactDetail(contact, item)"
               >
-                <Avatar :userId="contact[item.contactId]" :width="35"></Avatar>
+                <Avatar :user-id="contact[item.contactId]" :width="35"></Avatar>
                 <div class="text">
                   {{ contact[item.contactName] }}
                   <span v-if="contact.isOwner" class="owner-tag">群主</span>
@@ -44,11 +44,11 @@
           </div>
         </template>
       </div>
-      <div class="search-list" v-show="searchKey">
+      <div v-show="searchKey" class="search-list">
         <ContactSearchResult
-          @click="searchClickHandler(item)"
-          :data="item"
           v-for="item in searchList"
+          :data="item"
+          @click="searchClickHandler(item)"
         >
         </ContactSearchResult>
       </div>

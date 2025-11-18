@@ -20,11 +20,11 @@ export default defineConfig({
       hmr: true,
       port: 5000,
       proxy: {
-        "/api": {
-          target: "http://localhost:5050/",
+        '/api': {
+          target: 'http://localhost:5050/',
           changeOrigin: true,
           pathRewrite: {
-            "^api": "/api"
+            '^api': '/api'
           }
         }
       }

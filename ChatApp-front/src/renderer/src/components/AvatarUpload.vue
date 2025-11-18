@@ -4,10 +4,10 @@
       <template v-if="modelValue">
         <el-image v-if="preview" :src="localFile" fit="scale-down"></el-image>
         <ShowLocalImage
-          :fileId="props.modelValue"
-          partType="avatar"
-          :width="40"
           v-else
+          :file-id="props.modelValue"
+          part-type="avatar"
+          :width="40"
         ></ShowLocalImage>
       </template>
       <template v-else>

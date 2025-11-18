@@ -1,6 +1,6 @@
 <template>
   <div class="search-item">
-    <Avatar :userId="data.contactId" :showDetail="false"> </Avatar>
+    <Avatar :user-id="data.contactId" :show-detail="false"> </Avatar>
     <div class="contact-info">
       <div class="contact-name" v-html="data.searchContactName"></div>
       <div class="last-message" v-html="data.searchLastMessage"></div>

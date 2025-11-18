@@ -1,10 +1,10 @@
 <template>
   <div class="image-panel">
     <ShowLocalImage
-      :fileId="data.messageId"
-      :showPlay="true"
-      partType="chat"
-      :fileType="data.fileType"
+      :file-id="data.messageId"
+      :show-play="true"
+      part-type="chat"
+      :file-type="data.fileType"
     >
     </ShowLocalImage>
   </div>

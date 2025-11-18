@@ -4,8 +4,8 @@
       <div class="title-panel drag">设置</div>
       <div class="menu-list">
         <div
-          :class="['menu-item', route.path == item.path ? 'menu-active' : '']"
           v-for="item in settingMenuList"
+          :class="['menu-item', route.path == item.path ? 'menu-active' : '']"
           @click="jump(item)"
         >
           <div :class="['iconfont', item.icon]" :style="{ background: item.bgColor }"></div>
