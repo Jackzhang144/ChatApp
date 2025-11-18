@@ -29,28 +29,52 @@ public class ChatSessionServiceImpl implements ChatSessionService {
         return this.chatSessionMapper.selectCount(param);
     }
 
+        /**
+     * 根据分页参数查询聊天会话列表
+     * @param param 查询参数对象，包含分页信息和查询条件
+     * @return 分页结果对象，包含总记录数、分页信息和当前页数据列表
+     */
     @Override
     public PaginationResultVO<ChatSession> findListByPage(ChatSessionQuery param) {
+        // 获取符合条件的总记录数
         int count = this.findCountByParam(param);
+
+        // 计算分页大小，如果参数中未指定则使用默认值15
         int pageSize = param.getPageSize() == null ? PageSize.SIZE15.getSize() : param.getPageSize();
+
+        // 创建分页对象并设置到查询参数中
         SimplePage page = new SimplePage(param.getPageNo(), count, pageSize);
         param.setSimplePage(page);
+
+        // 查询当前页的数据列表
         List<ChatSession> list = this.findListByParam(param);
+
+        // 构造并返回分页结果对象
         return new PaginationResultVO<>(count, page.getPageSize(), page.getPageNo(), page.getPageTotal(), list);
     }
+
 
     @Override
     public Integer add(ChatSession bean) {
         return this.chatSessionMapper.insert(bean);
     }
 
+        /**
+     * 批量添加聊天会话记录
+     *
+     * @param listBean 聊天会话列表，不能为空
+     * @return 成功插入的记录数，如果列表为空则返回0
+     */
     @Override
     public Integer addBatch(List<ChatSession> listBean) {
+        // 检查输入参数是否为空或空集合
         if (listBean == null || listBean.isEmpty()) {
             return 0;
         }
+        // 调用Mapper执行批量插入操作
         return this.chatSessionMapper.insertBatch(listBean);
     }
+
 
     @Override
     public Integer addOrUpdateBatch(List<ChatSession> listBean) {
