@@ -23,13 +23,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick, onMounted, onUnmounted } from 'vue'
+import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useGlobalInfoStore } from '@/stores/GlobalInfoStore'
+
 const { proxy } = getCurrentInstance()
-import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 
-import { useGlobalInfoStore } from '@/stores/GlobalInfoStore'
 const globalInfoStore = useGlobalInfoStore()
 
 const menuList = ref([

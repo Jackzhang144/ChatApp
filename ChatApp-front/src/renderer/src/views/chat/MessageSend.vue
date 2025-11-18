@@ -83,13 +83,14 @@
 <script setup>
 import SearchAdd from '@/views/contact/SearchAdd.vue'
 import { getFileType } from '@/utils/Constants.js'
-import { ref, reactive, getCurrentInstance, nextTick, onMounted, onUnmounted } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
 import emojiList from '@/utils/Emoji.js'
 import { useUserInfoStore } from '@/stores/UserInfoStore'
+import { useSysSettingStore } from '@/stores/SysSettingStore'
+
+const { proxy } = getCurrentInstance()
 const userInfoStore = useUserInfoStore()
 
-import { useSysSettingStore } from '@/stores/SysSettingStore'
 const sysSettingStore = useSysSettingStore()
 
 const props = defineProps({

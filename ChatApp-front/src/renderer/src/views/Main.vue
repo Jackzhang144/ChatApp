@@ -40,24 +40,25 @@
 <script setup>
 import Update from './Update.vue'
 import Badge from '@/components/Badge.vue'
-import { ref, reactive, getCurrentInstance, nextTick, onUnmounted, onMounted, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { getCurrentInstance, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserInfoStore } from '@/stores/UserInfoStore'
+import { useSysSettingStore } from '@/stores/SysSettingStore'
+import { useMessageCountStore } from '@/stores/MessageCountStore'
+import { useGlobalInfoStore } from '@/stores/GlobalInfoStore'
+import { useAvatarInfoStore } from '@/stores/AvatarUpdateStore'
+
 const { proxy } = getCurrentInstance()
 const router = useRouter()
 const route = useRoute()
-import { useUserInfoStore } from '@/stores/UserInfoStore'
 const userInfoStore = useUserInfoStore()
 
-import { useSysSettingStore } from '@/stores/SysSettingStore'
 const sysSettingStore = useSysSettingStore()
 
-import { useMessageCountStore } from '@/stores/MessageCountStore'
 const messageCountStore = useMessageCountStore()
 
-import { useGlobalInfoStore } from '@/stores/GlobalInfoStore'
 const globalInfoStore = useGlobalInfoStore()
 
-import { useAvatarInfoStore } from '@/stores/AvatarUpdateStore'
 const avatarInfoStore = useAvatarInfoStore()
 
 const menuList = ref([

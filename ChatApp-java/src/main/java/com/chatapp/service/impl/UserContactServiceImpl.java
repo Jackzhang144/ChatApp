@@ -15,10 +15,10 @@ import com.chatapp.utils.CopyTools;
 import com.chatapp.utils.StringTools;
 import com.chatapp.websocket.ChannelContextUtils;
 import com.chatapp.websocket.MessageHandler;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -168,22 +168,23 @@ public class UserContactServiceImpl implements UserContactService {
         if (typeEnum == null) {
             return null;
         }
-        UserContactSearchResultDto resultDto = new UserContactSearchResultDto();
-        switch (typeEnum) {
-            case USER:
+        UserContactSearchResultDto resultDto = switch (typeEnum) {
+            case USER -> {
                 UserInfo userInfo = userInfoMapper.selectByUserId(contactId);
-                if (userInfo == null) {
-                    return null;
-                }
-                resultDto = CopyTools.copy(userInfo, UserContactSearchResultDto.class);
-                break;
-            case GROUP:
+                yield userInfo == null ? null : CopyTools.copy(userInfo, UserContactSearchResultDto.class);
+            }
+            case GROUP -> {
                 GroupInfo groupInfo = groupInfoMapper.selectByGroupId(contactId);
-                if (null == groupInfo) {
-                    return null;
+                if (groupInfo == null) {
+                    yield null;
                 }
-                resultDto.setNickName(groupInfo.getGroupName());
-                break;
+                var dto = new UserContactSearchResultDto();
+                dto.setNickName(groupInfo.getGroupName());
+                yield dto;
+            }
+        };
+        if (resultDto == null) {
+            return null;
         }
         resultDto.setContactType(typeEnum.toString());
         resultDto.setContactId(contactId);

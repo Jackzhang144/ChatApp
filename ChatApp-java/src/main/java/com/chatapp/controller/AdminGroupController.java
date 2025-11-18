@@ -8,11 +8,10 @@ import com.chatapp.entity.vo.PaginationResultVO;
 import com.chatapp.entity.vo.ResponseVO;
 import com.chatapp.exception.BusinessException;
 import com.chatapp.service.GroupInfoService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController("adminGroupController")
 @RequestMapping("/admin")

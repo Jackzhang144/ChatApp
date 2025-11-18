@@ -7,7 +7,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -16,13 +15,12 @@ public class StringTools {
 
     public static void checkParam(Object param) {
         try {
-            Field[] fields = param.getClass().getDeclaredFields();
             boolean notEmpty = false;
-            for (Field field : fields) {
-                String methodName = "get" + StringTools.upperCaseFirstLetter(field.getName());
+            for (var field : param.getClass().getDeclaredFields()) {
+                var methodName = "get" + StringTools.upperCaseFirstLetter(field.getName());
                 Method method = param.getClass().getMethod(methodName);
                 Object object = method.invoke(param);
-                if (object != null && object instanceof String && !StringTools.isEmpty(object.toString())
+                if (object instanceof String str && !StringTools.isEmpty(str)
                         || object != null && !(object instanceof String)) {
                     notEmpty = true;
                     break;

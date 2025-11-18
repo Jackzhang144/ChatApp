@@ -4,17 +4,16 @@ import com.chatapp.annotation.GlobalInterceptor;
 import com.chatapp.entity.dto.SysSettingDto;
 import com.chatapp.entity.vo.ResponseVO;
 import com.chatapp.entity.vo.SysSettingVO;
-import com.chatapp.redis.RedisComponent;
 import com.chatapp.entity.vo.UserInfoVO;
+import com.chatapp.redis.RedisComponent;
 import com.chatapp.service.AccountService;
 import com.chatapp.utils.CopyTools;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController("accountController")
 @RequestMapping("/account")

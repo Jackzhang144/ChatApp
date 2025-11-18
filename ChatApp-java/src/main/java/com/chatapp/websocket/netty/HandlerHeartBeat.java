@@ -13,8 +13,7 @@ public class HandlerHeartBeat extends ChannelDuplexHandler {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent) {
-            IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
+        if (evt instanceof IdleStateEvent idleStateEvent) {
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
                 Attribute<String> attribute = ctx.channel().attr(AttributeKey.valueOf(ctx.channel().id().toString()));
                 String userId = attribute.get();

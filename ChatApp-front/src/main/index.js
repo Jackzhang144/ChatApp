@@ -1,47 +1,68 @@
-import { app, shell, BrowserWindow, Menu, Tray, nativeImage } from 'electron'
+import { app, BrowserWindow, Menu, nativeImage, shell, Tray } from 'electron'
 import { join } from 'path'
-const NODE_ENV = process.env.NODE_ENV
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import {
-  onSetLocalStore, onGetLocalStore,
-  onLoginSuccess, onLoadChatMessage, onLoadSessionData, onReLogin, onLoginOrRegister, winTitleOp,
-  onOpenNewWindow, openWindow, onSetSessionSelect, onLoadContactApply, onUpdateContactNoReadCount,
-  onAddLocalMessage, onCreateCover, onSaveAs, onGetSettingInfo, onChangeLocalFolder,
-  onOpenLocalFolder, onDownloadUpdate, onOpenUrl, onSaveClipBoardFile, onLoadLocalUser, onDelChatSession,
-  onTopChatSession, onReloadChatSession, onEnsureChatSession
-} from "./ipc"
+  onAddLocalMessage,
+  onChangeLocalFolder,
+  onCreateCover,
+  onDelChatSession,
+  onDownloadUpdate,
+  onEnsureChatSession,
+  onGetLocalStore,
+  onGetSettingInfo,
+  onLoadChatMessage,
+  onLoadContactApply,
+  onLoadLocalUser,
+  onLoadSessionData,
+  onLoginOrRegister,
+  onLoginSuccess,
+  onOpenLocalFolder,
+  onOpenNewWindow,
+  onOpenUrl,
+  onReloadChatSession,
+  onReLogin,
+  onSaveAs,
+  onSaveClipBoardFile,
+  onSetLocalStore,
+  onSetSessionSelect,
+  onTopChatSession,
+  onUpdateContactNoReadCount,
+  openWindow,
+  winTitleOp
+} from './ipc'
 import { saveWindow } from './windowProxy'
 
-const login_width = 300;
-const login_height = 370;
-const register_height = 490;
-const isMac = process.platform === 'darwin';
-const MAC_TRAY_ICON_SIZE = 18;
+const NODE_ENV = process.env.NODE_ENV
+
+const login_width = 300
+const login_height = 370
+const register_height = 490
+const isMac = process.platform === 'darwin'
+const MAC_TRAY_ICON_SIZE = 18
 
 function createTrayIcon() {
-  let trayIcon = nativeImage.createFromPath(icon);
+  let trayIcon = nativeImage.createFromPath(icon)
   if (isMac) {
-    trayIcon = trayIcon.resize({ width: MAC_TRAY_ICON_SIZE, height: MAC_TRAY_ICON_SIZE });
-    trayIcon.setTemplateImage(true);
+    trayIcon = trayIcon.resize({ width: MAC_TRAY_ICON_SIZE, height: MAC_TRAY_ICON_SIZE })
+    trayIcon.setTemplateImage(true)
   }
-  return trayIcon;
+  return trayIcon
 }
-
 
 function createWindow() {
   const windowConfig = {
     icon: icon,
     width: login_width,
-    height: login_height,//380
+    height: login_height, //380
     show: false,
     fullscreenable: false,
     fullscreen: false,
     maximizable: false,
-    autoHideMenuBar: true,//隐藏菜单
-    resizable: false,//自动拖动大小
+    autoHideMenuBar: true, //隐藏菜单
+    resizable: false, //自动拖动大小
     frame: !isMac,
-    transparent: !isMac,//mac 使用标准标题栏
+    transparent: !isMac, //mac 使用标准标题栏
     hasShadow: isMac,
     titleBarStyle: isMac ? 'hiddenInset' : 'hidden',
     webPreferences: {
@@ -49,38 +70,37 @@ function createWindow() {
       sandbox: false,
       contextIsolation: false
     }
-  };
+  }
 
   if (isMac) {
-    windowConfig.fullscreenable = true;
-    windowConfig.frame = true;
-    windowConfig.transparent = false;
-    windowConfig.trafficLightPosition = { x: 14, y: 16 };
+    windowConfig.fullscreenable = true
+    windowConfig.frame = true
+    windowConfig.transparent = false
+    windowConfig.trafficLightPosition = { x: 14, y: 16 }
   }
 
   const mainWindow = new BrowserWindow(windowConfig)
 
   if (isMac) {
-    mainWindow.setWindowButtonVisibility(true);
+    mainWindow.setWindowButtonVisibility(true)
   }
 
-  saveWindow("main", mainWindow);
+  saveWindow('main', mainWindow)
 
   //打开控制台
   if (NODE_ENV === 'development') {
-    mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools()
   }
-
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
-    mainWindow.setTitle("ChatApp")
+    mainWindow.setTitle('ChatApp')
   })
 
-  mainWindow.once('focus', () => mainWindow.flashFrame(false));
+  mainWindow.once('focus', () => mainWindow.flashFrame(false))
 
   mainWindow.on('close', (e) => {
-    mainWindow.hide();
+    mainWindow.hide()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -100,178 +120,181 @@ function createWindow() {
   const tray = new Tray(createTrayIcon())
   const contextMenu = [
     {
-      label: '退出ChatApp', click: function () {
-        app.exit();
+      label: '退出ChatApp',
+      click: function () {
+        app.exit()
       }
     }
-  ];
+  ]
 
   const menu = Menu.buildFromTemplate(contextMenu)
   tray.setToolTip('ChatApp')
   tray.setContextMenu(menu)
   // 点击托盘图标，显示主窗口
-  tray.on("click", () => {
+  tray.on('click', () => {
     mainWindow.setSkipTaskbar(false)
-    mainWindow.show();
+    mainWindow.show()
   })
 
   //设置本地store存储
-  onSetLocalStore();
+  onSetLocalStore()
 
   //获取本地store存储
-  onGetLocalStore();
+  onGetLocalStore()
 
   onLoginSuccess((config) => {
-    contextMenu.splice(0);
+    contextMenu.splice(0)
     contextMenu.push({
-      label: '退出ChatApp', click: function () {
-        app.exit();
+      label: '退出ChatApp',
+      click: function () {
+        app.exit()
       }
     })
 
     //改变窗口大小
-    mainWindow.setResizable(true);
+    mainWindow.setResizable(true)
     //设置窗口大小
-    mainWindow.setSize(850, 800);
+    mainWindow.setSize(850, 800)
     //居中
-    mainWindow.center();
+    mainWindow.center()
     //最大化
-    mainWindow.setMaximizable(true);
+    mainWindow.setMaximizable(true)
     //设置最小窗口大小
-    mainWindow.setMinimumSize(800, 600);
+    mainWindow.setMinimumSize(800, 600)
 
     //更新托盘
     if (config.admin) {
       //管理员 可以进入后台
       contextMenu.unshift({
-        label: "管理后台", click: function () {
+        label: '管理后台',
+        click: function () {
           openWindow({
             windowId: 'admin',
-            title: "管理后台",
+            title: '管理后台',
             path: `/admin`,
             width: config.screenWidth * 0.8,
             height: config.screenHeight * 0.8,
             data: {
               token: config.token
             }
-          });
+          })
         }
       })
     }
 
     //设置用户
     contextMenu.unshift({
-      label: "用户：" + config.nickName, click: function () {
-      }
+      label: '用户：' + config.nickName,
+      click: function () {}
     })
-    tray.setContextMenu(Menu.buildFromTemplate(contextMenu));
-  });
+    tray.setContextMenu(Menu.buildFromTemplate(contextMenu))
+  })
 
   onLoginOrRegister((isLogin) => {
-    mainWindow.setResizable(true);
+    mainWindow.setResizable(true)
     if (isLogin) {
-      mainWindow.setSize(login_width, login_height);
+      mainWindow.setSize(login_width, login_height)
     } else {
-      mainWindow.setSize(login_width, register_height);
+      mainWindow.setSize(login_width, register_height)
     }
-    mainWindow.setResizable(false);
+    mainWindow.setResizable(false)
   })
 
   onReLogin(() => {
-    mainWindow.setResizable(true);
+    mainWindow.setResizable(true)
     //上面设置了最小窗口大小，所这里需要重新设置窗口大小，否则无法修改大小
-    mainWindow.setMinimumSize(login_width, login_height);
-    mainWindow.setSize(login_width, login_height);
-    mainWindow.center();
-    mainWindow.setResizable(false);
+    mainWindow.setMinimumSize(login_width, login_height)
+    mainWindow.setSize(login_width, login_height)
+    mainWindow.center()
+    mainWindow.setResizable(false)
   })
 
   winTitleOp((e, { action, data }) => {
     const webContents = e.sender
     const win = BrowserWindow.fromWebContents(webContents)
     switch (action) {
-      case "close": {
+      case 'close': {
         if (data.closeType == 0) {
-          win.close();
+          win.close()
         } else {
           win.setSkipTaskbar(true) // 使窗口不显示在任务栏中
           win.hide()
         }
-        break;
+        break
       }
-      case "minimize": {
-        win.minimize();
-        break;
+      case 'minimize': {
+        win.minimize()
+        break
       }
-      case "maximize": {
-        win.maximize();
-        break;
+      case 'maximize': {
+        win.maximize()
+        break
       }
-      case "unmaximize": {
-        win.unmaximize();
-        break;
+      case 'unmaximize': {
+        win.unmaximize()
+        break
       }
-      case "top": {
-        win.setAlwaysOnTop(data.top);
+      case 'top': {
+        win.setAlwaysOnTop(data.top)
       }
-    };
-  });
+    }
+  })
 
-  onLoadChatMessage();
+  onLoadChatMessage()
 
-  onLoadSessionData();
+  onLoadSessionData()
 
   //打开新窗口
-  onOpenNewWindow();
+  onOpenNewWindow()
 
   //设置session
-  onSetSessionSelect();
+  onSetSessionSelect()
 
   //查询好友申请
-  onLoadContactApply();
+  onLoadContactApply()
 
   //设置未读数
-  onUpdateContactNoReadCount();
+  onUpdateContactNoReadCount()
 
   //增加本地消息
-  onAddLocalMessage();
+  onAddLocalMessage()
 
   //生成缩略图
-  onCreateCover();
+  onCreateCover()
 
   //文件另存为
-  onSaveAs();
+  onSaveAs()
 
   //获取设置信息
-  onGetSettingInfo();
+  onGetSettingInfo()
 
   //更改本地目录
-  onChangeLocalFolder();
+  onChangeLocalFolder()
 
   //打开本地目录
-  onOpenLocalFolder();
+  onOpenLocalFolder()
 
   //下载更新
-  onDownloadUpdate();
+  onDownloadUpdate()
 
   //打开URL
-  onOpenUrl();
+  onOpenUrl()
 
   //保存剪切板的内功
-  onSaveClipBoardFile();
+  onSaveClipBoardFile()
 
   //查询本地用户
-  onLoadLocalUser();
+  onLoadLocalUser()
 
   //删除好友
-  onDelChatSession();
+  onDelChatSession()
 
   //置顶会话
-  onTopChatSession();
+  onTopChatSession()
 
-  onEnsureChatSession();
+  onEnsureChatSession()
 
-  onReloadChatSession();
+  onReloadChatSession()
 }
 
 // This method will be called when Electron has finished
@@ -304,7 +327,7 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-app.commandLine.appendSwitch('wm-window-animations-disabled');
+app.commandLine.appendSwitch('wm-window-animations-disabled')
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.

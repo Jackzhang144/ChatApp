@@ -31,9 +31,10 @@
 
 <script setup>
 import config from '../../../../package.json'
-import { ref, reactive, getCurrentInstance, nextTick, onMounted, onUnmounted } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
 import { useUserInfoStore } from '@/stores/UserInfoStore'
+
+const { proxy } = getCurrentInstance()
 const userInfoStore = useUserInfoStore()
 
 const props = defineProps({

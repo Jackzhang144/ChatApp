@@ -18,7 +18,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick, onMounted } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
+
 const { proxy } = getCurrentInstance()
 
 const props = defineProps({

@@ -1,10 +1,10 @@
 # ChatApp
 
-ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供账号、联系人、群聊、文件与通知等能力，Electron 客户端负责在 Windows、macOS 与 Linux 桌面环境中提供类原生体验。
+ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供账号、联系人、群聊、文件与通知等能力，Electron 客户端负责在 Windows、macOS 与 Linux 桌面环境中提供类原生体验。后端已经升级到 **Java 21**，并在关键路径使用虚拟线程、模式匹配 switch 等特性提升并发效率与代码可读性。
 
 ## 项目概览
 
-- **后端服务（ChatApp-java）**：Spring Boot + MyBatis + Redis + MySQL，暴露 REST + WebSocket 接口，处理账号鉴权、双端同步、消息路由和上传文件的持久化。
+- **后端服务（ChatApp-java）**：Spring Boot + MyBatis + Redis + MySQL，暴露 REST + WebSocket 接口，处理账号鉴权、双端同步、消息路由和上传文件的持久化；Netty WebSocket 启动器运行在虚拟线程上，异常拦截等模块使用 Java 21 模式匹配与 switch 表达式。
 - **桌面客户端（ChatApp-front）**：Electron + Vue 3 + Vite，集成 Element Plus 组件库，提供用户登录、联系人管理、单聊/群聊、设置以及客户端自更新能力。
 - **支撑设施**：Redis 用于存储会话状态与缓存，MySQL 存储核心业务数据，`folder/` 目录用来落地上传资源、日志和构建产物。
 

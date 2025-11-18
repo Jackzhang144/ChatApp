@@ -8,7 +8,10 @@ import com.chatapp.entity.enums.*;
 import com.chatapp.entity.po.UserContact;
 import com.chatapp.entity.po.UserInfo;
 import com.chatapp.entity.po.UserInfoBeauty;
-import com.chatapp.entity.query.*;
+import com.chatapp.entity.query.SimplePage;
+import com.chatapp.entity.query.UserContactQuery;
+import com.chatapp.entity.query.UserInfoBeautyQuery;
+import com.chatapp.entity.query.UserInfoQuery;
 import com.chatapp.entity.vo.PaginationResultVO;
 import com.chatapp.entity.vo.UserInfoVO;
 import com.chatapp.exception.BusinessException;
@@ -22,17 +25,16 @@ import com.chatapp.service.UserInfoService;
 import com.chatapp.utils.CopyTools;
 import com.chatapp.utils.StringTools;
 import com.chatapp.websocket.MessageHandler;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -243,7 +245,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         contactQuery.setUserId(userInfo.getUserId());
         contactQuery.setStatusArray(new Integer[]{UserContactStatusEnum.FRIEND.getStatus()});
         List<UserContact> contactList = userContactMapper.selectList(contactQuery);
-        List<String> contactIdList = contactList.stream().map(item -> item.getContactId()).collect(Collectors.toList());
+        List<String> contactIdList = contactList.stream().map(UserContact::getContactId).toList();
 
         redisComponent.cleanUserContact(userInfo.getUserId());
         if (!contactIdList.isEmpty()) {

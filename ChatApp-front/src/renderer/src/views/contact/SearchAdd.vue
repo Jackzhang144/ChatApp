@@ -27,11 +27,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, nextTick, ref } from 'vue'
 import { useUserInfoStore } from '@/stores/UserInfoStore'
-const userInfoStore = useUserInfoStore()
 import { useContactStateStore } from '@/stores/ContactStateStore'
+
+const { proxy } = getCurrentInstance()
+const userInfoStore = useUserInfoStore()
 const contactStateStore = useContactStateStore()
 
 const dialogConfig = ref({
@@ -92,5 +93,4 @@ const submitApply = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

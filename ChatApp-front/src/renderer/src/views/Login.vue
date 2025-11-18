@@ -117,12 +117,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick, onMounted, onUnmounted } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-const router = useRouter()
 import md5 from 'js-md5'
 import { useUserInfoStore } from '@/stores/UserInfoStore'
+
+const { proxy } = getCurrentInstance()
+const router = useRouter()
 const userInfoStore = useUserInfoStore()
 
 const checkCodeUrl = ref(null)

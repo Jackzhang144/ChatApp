@@ -32,12 +32,12 @@
                 @click="contactDetail(contact, item)"
               >
                 <Avatar :userId="contact[item.contactId]" :width="35"></Avatar>
-              <div class="text">
-                {{ contact[item.contactName] }}
-                <span v-if="contact.isOwner" class="owner-tag">群主</span>
+                <div class="text">
+                  {{ contact[item.contactName] }}
+                  <span v-if="contact.isOwner" class="owner-tag">群主</span>
+                </div>
               </div>
-            </div>
-          </template>
+            </template>
             <template v-if="item.contactData && item.contactData.length == 0">
               <div class="no-data">{{ item.emptyMsg }}</div>
             </template>
@@ -63,15 +63,16 @@
 </template>
 <script setup>
 import ContactSearchResult from './ContactSearchResult.vue'
-import { ref, reactive, getCurrentInstance, nextTick, onMounted, watch } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref, watch } from 'vue'
 import { useContactStateStore } from '@/stores/ContactStateStore'
+import { useMessageCountStore } from '@/stores/MessageCountStore'
+import { useRoute, useRouter } from 'vue-router'
+
+const { proxy } = getCurrentInstance()
 const contactStateStore = useContactStateStore()
 
-import { useMessageCountStore } from '@/stores/MessageCountStore'
 const messageCountStore = useMessageCountStore()
 
-import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 

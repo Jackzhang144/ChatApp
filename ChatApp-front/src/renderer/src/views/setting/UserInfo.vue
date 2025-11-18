@@ -43,9 +43,10 @@
 <script setup>
 import UserInfoEdit from './UserInfoEdit.vue'
 import UserPassword from './UserInfoPassword.vue'
-import { ref, reactive, getCurrentInstance, nextTick, watch, computed } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref } from 'vue'
 import { useRoute } from 'vue-router'
+
+const { proxy } = getCurrentInstance()
 const route = useRoute()
 
 const userInfo = ref({})

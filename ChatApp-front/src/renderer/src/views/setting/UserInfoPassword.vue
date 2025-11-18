@@ -29,10 +29,10 @@
 </template>
 
 <script setup>
-import AreaSelect from '@/components/AreaSelect.vue'
-import { ref, reactive, getCurrentInstance, nextTick, computed } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
+const { proxy } = getCurrentInstance()
 const router = useRouter()
 
 const formData = ref({})

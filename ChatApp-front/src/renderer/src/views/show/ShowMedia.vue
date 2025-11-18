@@ -2,28 +2,58 @@
   <div class="media-window">
     <div class="win-title drag"></div>
     <div class="media-op no-drag">
-      <div :class="['iconfont icon-left', currentIndex == 0 ? 'not-allow' : '']" @dblclick.stop title="上一张"
-        @click="next(-1)"></div>
-      <div :class="['iconfont icon-right', currentIndex >= allFileList.length - 1 ? 'not-allow' : '']" @dblclick.stop
-        title="下一张" @click="next(1)"></div>
+      <div
+        :class="['iconfont icon-left', currentIndex == 0 ? 'not-allow' : '']"
+        @dblclick.stop
+        title="上一张"
+        @click="next(-1)"
+      ></div>
+      <div
+        :class="['iconfont icon-right', currentIndex >= allFileList.length - 1 ? 'not-allow' : '']"
+        @dblclick.stop
+        title="下一张"
+        @click="next(1)"
+      ></div>
       <template v-if="fileList[0].fileType == 0">
         <el-divider direction="vertical" />
-        <div class="iconfont icon-enlarge" @click.stop="changeSize(0.1)" @dblclick.stop title="放大"></div>
-        <div class="iconfont icon-narrow" @click="changeSize(-0.1)" @dblclick.stop title="缩小"></div>
-        <div :class="['iconfont', isOne2One ? 'icon-resize' : 'icon-source-size']" @dblclick.stop @click="resize"
-          :title="isOne2One ? '图片适应窗口大小' : '图片原始大小'"></div>
+        <div
+          class="iconfont icon-enlarge"
+          @click.stop="changeSize(0.1)"
+          @dblclick.stop
+          title="放大"
+        ></div>
+        <div
+          class="iconfont icon-narrow"
+          @click="changeSize(-0.1)"
+          @dblclick.stop
+          title="缩小"
+        ></div>
+        <div
+          :class="['iconfont', isOne2One ? 'icon-resize' : 'icon-source-size']"
+          @dblclick.stop
+          @click="resize"
+          :title="isOne2One ? '图片适应窗口大小' : '图片原始大小'"
+        ></div>
         <div class="iconfont icon-rotate" @dblclick.stop @click="rotate" title="旋转"></div>
         <el-divider direction="vertical" />
       </template>
       <div class="iconfont icon-download" @dblclick.stop @click="saveAs" title="另存为..."></div>
     </div>
     <div class="media-panel">
-      <viewer :options="options" @inited="inited" :images="fileList"
-        v-if="fileList[0].fileType == 0 && fileList[0].status == 1">
+      <viewer
+        :options="options"
+        @inited="inited"
+        :images="fileList"
+        v-if="fileList[0].fileType == 0 && fileList[0].status == 1"
+      >
         <img :src="fileList[0].url" />
       </viewer>
-      <div ref="player" id="player" v-show="fileList[0].fileType == 1 && fileList[0].status == 1"
-        style="width: 100%; height: 100%"></div>
+      <div
+        ref="player"
+        id="player"
+        v-show="fileList[0].fileType == 1 && fileList[0].status == 1"
+        style="width: 100%; height: 100%"
+      ></div>
       <div v-if="fileList[0].fileType == 2" class="file-panel">
         <div class="file-item">文件名：{{ fileList[0].fileName }}</div>
         <div class="file-item">文件大小：{{ Utils.size2Str(fileList[0].fileSize) }}</div>
@@ -41,11 +71,12 @@
 import DPlayer from 'dplayer'
 import 'viewerjs/dist/viewer.css'
 import { component as Viewer } from 'v-viewer'
-import { ref, reactive, getCurrentInstance, nextTick, computed, onMounted, onUnmounted } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-const router = useRouter()
 import { useGlobalInfoStore } from '@/stores/GlobalInfoStore'
+
+const { proxy } = getCurrentInstance()
+const router = useRouter()
 const globalInfoStore = useGlobalInfoStore()
 
 const options = ref({

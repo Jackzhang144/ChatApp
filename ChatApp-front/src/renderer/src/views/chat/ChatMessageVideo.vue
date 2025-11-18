@@ -11,10 +11,10 @@
 </template>
 
 <script setup>
-import ChatMessageFile from './ChatMessageFile.vue'
-import { ref, reactive, getCurrentInstance, nextTick } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance } from 'vue'
 import { useGlobalInfoStore } from '@/stores/GlobalInfoStore'
+
+const { proxy } = getCurrentInstance()
 const globalInfoStore = useGlobalInfoStore()
 
 const props = defineProps({
@@ -25,5 +25,4 @@ const props = defineProps({
 })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

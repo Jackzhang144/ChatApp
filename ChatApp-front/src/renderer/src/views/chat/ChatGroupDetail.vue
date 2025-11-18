@@ -52,12 +52,13 @@
 <script setup>
 import UserSelect from './UserSelect.vue'
 import AvatarBase from '@/components/AvatarBase.vue'
-import { ref, reactive, getCurrentInstance, nextTick } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref } from 'vue'
 import { useUserInfoStore } from '@/stores/UserInfoStore'
+import { useContactStateStore } from '@/stores/ContactStateStore'
+
+const { proxy } = getCurrentInstance()
 const userInfoStore = useUserInfoStore()
 
-import { useContactStateStore } from '@/stores/ContactStateStore'
 const contactStateStore = useContactStateStore()
 
 const showDrawer = ref(false)

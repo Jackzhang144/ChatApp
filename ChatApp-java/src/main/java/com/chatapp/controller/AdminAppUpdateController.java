@@ -5,14 +5,14 @@ import com.chatapp.entity.po.AppUpdate;
 import com.chatapp.entity.query.AppUpdateQuery;
 import com.chatapp.entity.vo.ResponseVO;
 import com.chatapp.service.AppUpdateService;
+import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Resource;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**

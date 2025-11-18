@@ -10,16 +10,16 @@ import com.chatapp.service.AppUpdateService;
 import com.chatapp.utils.CopyTools;
 import com.chatapp.utils.FileDownloadUtils;
 import com.chatapp.utils.StringTools;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.util.Arrays;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController("updateController")
 @RequestMapping("/update")

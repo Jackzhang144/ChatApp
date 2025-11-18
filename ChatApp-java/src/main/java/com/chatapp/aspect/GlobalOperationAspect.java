@@ -7,6 +7,8 @@ import com.chatapp.entity.enums.ResponseCodeEnum;
 import com.chatapp.exception.BusinessException;
 import com.chatapp.redis.RedisUtils;
 import com.chatapp.utils.StringTools;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,8 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 @Slf4j

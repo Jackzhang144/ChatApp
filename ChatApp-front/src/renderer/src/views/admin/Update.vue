@@ -69,7 +69,8 @@
 <script setup>
 import UpdateEdit from './UpdateEdit.vue'
 import UpdatePost from './UpdatePost.vue'
-import { getCurrentInstance, nextTick, onMounted, ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
+
 const { proxy } = getCurrentInstance()
 
 const searchFormData = ref({})
@@ -165,5 +166,4 @@ const updatePost = (data) => {
   updatePostRef.value.showEdit(data)
 }
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

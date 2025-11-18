@@ -3,8 +3,11 @@
     <template #left-content>
       <div class="title-panel drag">设置</div>
       <div class="menu-list">
-        <div :class="['menu-item', route.path == item.path ? 'menu-active' : '']" v-for="item in settingMenuList"
-          @click="jump(item)">
+        <div
+          :class="['menu-item', route.path == item.path ? 'menu-active' : '']"
+          v-for="item in settingMenuList"
+          @click="jump(item)"
+        >
           <div :class="['iconfont', item.icon]" :style="{ background: item.bgColor }"></div>
           <div class="menu-name">{{ item.name }}</div>
         </div>
@@ -20,9 +23,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
+const { proxy } = getCurrentInstance()
 const route = useRoute()
 const router = useRouter()
 

@@ -12,9 +12,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick, computed, onMounted } from 'vue'
-const { proxy } = getCurrentInstance()
+import { computed, getCurrentInstance } from 'vue'
 import { useGlobalInfoStore } from '@/stores/GlobalInfoStore'
+
+const { proxy } = getCurrentInstance()
 const globalInfoStore = useGlobalInfoStore()
 
 const props = defineProps({

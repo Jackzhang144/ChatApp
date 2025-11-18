@@ -48,14 +48,15 @@
 import SearchAdd from '@/views/contact/SearchAdd.vue'
 import AvatarBase from './AvatarBase.vue'
 import UserBaseInfo from './UserBaseInfo.vue'
-import { ref, reactive, getCurrentInstance, nextTick, onMounted } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref } from 'vue'
 import { useAvatarInfoStore } from '@/stores/AvatarUpdateStore'
-const avatarInfoStore = useAvatarInfoStore()
 import { useRouter } from 'vue-router'
+import { useUserInfoStore } from '@/stores/UserInfoStore'
+
+const { proxy } = getCurrentInstance()
+const avatarInfoStore = useAvatarInfoStore()
 const router = useRouter()
 
-import { useUserInfoStore } from '@/stores/UserInfoStore'
 const userInfoStore = useUserInfoStore()
 
 const props = defineProps({

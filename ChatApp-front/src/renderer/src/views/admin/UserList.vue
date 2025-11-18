@@ -75,7 +75,7 @@
 </template>
 <script setup>
 import AvatarBase from '@/components/AvatarBase.vue'
-import { getCurrentInstance, nextTick, ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
 
 const { proxy } = getCurrentInstance()
 

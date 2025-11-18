@@ -68,10 +68,11 @@
 import ChatMessageVideo from './ChatMessageVideo.vue'
 import ChatMessageImage from './ChatMessageImage.vue'
 import ChatMessageFile from './ChatMessageFile.vue'
-import { ref, reactive, getCurrentInstance, nextTick, computed } from 'vue'
+import { getCurrentInstance } from 'vue'
+import { useUserInfoStore } from '@/stores/UserInfoStore'
+
 const { proxy } = getCurrentInstance()
 
-import { useUserInfoStore } from '@/stores/UserInfoStore'
 const userInfoStore = useUserInfoStore()
 
 const props = defineProps({

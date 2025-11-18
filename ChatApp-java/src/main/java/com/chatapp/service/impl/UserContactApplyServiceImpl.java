@@ -19,11 +19,11 @@ import com.chatapp.service.UserContactApplyService;
 import com.chatapp.service.UserContactService;
 import com.chatapp.utils.StringTools;
 import com.chatapp.websocket.MessageHandler;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 

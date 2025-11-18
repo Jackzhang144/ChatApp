@@ -19,7 +19,8 @@
 <script setup>
 import config from '../../../../../package.json'
 import Update from '../Update.vue'
-import { ref, reactive, getCurrentInstance, nextTick } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
+
 const { proxy } = getCurrentInstance()
 
 const updateRef = ref()
@@ -28,5 +29,4 @@ const checkUpdate = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

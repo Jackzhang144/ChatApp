@@ -3,8 +3,8 @@ package com.chatapp.service.impl;
 import com.chatapp.entity.enums.BeautyAccountStatusEnum;
 import com.chatapp.entity.enums.PageSize;
 import com.chatapp.entity.enums.ResponseCodeEnum;
-import com.chatapp.entity.po.UserInfoBeauty;
 import com.chatapp.entity.po.UserInfo;
+import com.chatapp.entity.po.UserInfoBeauty;
 import com.chatapp.entity.query.SimplePage;
 import com.chatapp.entity.query.UserInfoBeautyQuery;
 import com.chatapp.entity.query.UserInfoQuery;
@@ -14,9 +14,9 @@ import com.chatapp.mappers.UserInfoBeautyMapper;
 import com.chatapp.mappers.UserInfoMapper;
 import com.chatapp.service.UserInfoBeautyService;
 import com.chatapp.utils.StringTools;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.Resource;
 import java.util.List;
 
 

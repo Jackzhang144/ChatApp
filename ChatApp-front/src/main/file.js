@@ -7,18 +7,18 @@ const { app, ipcMain, shell } = require('electron')
 const { exec } = require("child_process");
 const FormData = require('form-data'); // 引入FormData模块（用于构建表单数据）
 const axios = require('axios'); // 引入axios库
-import store from "./store"
+import store from './store'
+import { selectByMessageId } from './db/ChatMessageModel'
+import { selectSettingInfo, updateSysSetting } from './db/UserSetting'
+
+import { getWindow } from './windowProxy'
+
 const moment = require('moment')
 moment.locale('zh-cn', {});
 const { dialog } = require('electron')
 //express服务器
 const express = require('express');
 const expressServer = express();
-
-import { selectByMessageId } from './db/ChatMessageModel'
-import { selectSettingInfo, updateSysSetting } from './db/UserSetting'
-
-import { getWindow } from "./windowProxy";
 
 //缩略图后缀
 const cover_image_suffix = "_cover.png";
@@ -256,7 +256,7 @@ expressServer.get('/file', async (req, res) => {
         let start = parseInt(parts[0], 10);
         let end = parts[1] ? parseInt(parts[1], 10) : start + 999999;
 
-        // end 在最后取值为 fileSize - 1 
+        // end 在最后取值为 fileSize - 1
         end = end > fileSize - 1 ? fileSize - 1 : end;
 
         let chunksize = (end - start) + 1;

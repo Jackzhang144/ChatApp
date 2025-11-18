@@ -28,13 +28,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick, watch } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useContactStateStore } from '@/stores/ContactStateStore'
+
+const { proxy } = getCurrentInstance()
 const route = useRoute()
 const router = useRouter()
 
-import { useContactStateStore } from '@/stores/ContactStateStore'
 const contactStateStore = useContactStateStore()
 
 const userInfo = ref({})

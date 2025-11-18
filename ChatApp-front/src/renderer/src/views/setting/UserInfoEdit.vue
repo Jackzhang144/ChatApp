@@ -5,7 +5,12 @@
         <AvatarUpload v-model="formData.avatarFile" @coverFile="saveCover"></AvatarUpload>
       </el-form-item>
       <el-form-item label="昵称" prop="nickName">
-        <el-input maxlength="150" clearable placeholder="请输入昵称" v-model.trim="formData.nickName"></el-input>
+        <el-input
+          maxlength="150"
+          clearable
+          placeholder="请输入昵称"
+          v-model.trim="formData.nickName"
+        ></el-input>
       </el-form-item>
       <!-- 下拉框 -->
       <!-- 单选 -->
@@ -23,8 +28,16 @@
         <AreaSelect v-model="formData.area"></AreaSelect>
       </el-form-item>
       <el-form-item label="个性签名" prop="personalSignature">
-        <el-input clearable placeholder="请输入个性签名" v-model.trim="formData.personalSignature" type="textarea" rows="5"
-          maxlength="30" :show-word-limit="true" resize="none"></el-input>
+        <el-input
+          clearable
+          placeholder="请输入个性签名"
+          v-model.trim="formData.personalSignature"
+          type="textarea"
+          rows="5"
+          maxlength="30"
+          :show-word-limit="true"
+          resize="none"
+        ></el-input>
       </el-form-item>
       <!--input输入-->
       <el-form-item>
@@ -39,12 +52,13 @@
 import AreaSelect from '@/components/AreaSelect.vue'
 import AvatarUpload from '@/components/AvatarUpload.vue'
 import { useAvatarInfoStore } from '@/stores/AvatarUpdateStore'
+import { useUserInfoStore } from '@/stores/UserInfoStore'
+import { computed, getCurrentInstance, ref } from 'vue'
+
 const avatarInfoStore = useAvatarInfoStore()
 
-import { useUserInfoStore } from '@/stores/UserInfoStore'
 const userInfoStore = useUserInfoStore()
 
-import { ref, reactive, getCurrentInstance, nextTick, computed } from 'vue'
 const { proxy } = getCurrentInstance()
 
 const props = defineProps({

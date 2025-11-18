@@ -45,7 +45,7 @@ ChatApp 采用「服务端 + 桌面端」的典型即时通讯方案：
 
 - `application.yml`（`ChatApp-java/src/main/resources`）定义 HTTP/WebSocket 端口、MySQL、Redis、上传大小限制、`project.folder`（文件存储目录）、`admin.emails`（默认管理员邮箱）等。
 - `AppConfig`（`entity/config/AppConfig.java`）在运行时注入这些配置，提供 `getProjectFolder()` 等工具方法。
-- `InitRun`（`InitRun.java`）实现 `ApplicationRunner`：启动前探测 MySQL/Redis 连通性，并在独立线程启动 Netty WebSocket 服务。
+- `InitRun`（`InitRun.java`）实现 `ApplicationRunner`：启动前探测 MySQL/Redis 连通性，并在 **虚拟线程** 中启动 Netty WebSocket 服务，最大化利用 Java 21 的轻量级并发。
 - 启动命令：
   ```bash
   mvn -pl ChatApp-java -am spring-boot:run
@@ -57,7 +57,7 @@ ChatApp 采用「服务端 + 桌面端」的典型即时通讯方案：
 ### 2.3 认证与全局拦截
 
 - 所有需要鉴权的接口标注 `@GlobalInterceptor`（`annotation/GlobalInterceptor.java`），默认校验登录。
-- `GlobalOperationAspect` Before 通知读取请求头 token，经 `RedisUtils` 校验 `Constants.REDIS_KEY_WS_TOKEN + token`，可额外校验管理员权限。
+- `GlobalOperationAspect` Before 通知读取请求头 token，经 `RedisUtils` 校验 `Constants.REDIS_KEY_WS_TOKEN + token`，可额外校验管理员权限；异常处理等横切逻辑基于 Java 21 模式匹配 switch，写法更简洁。
 - `ABaseController` 提供 `getTokenUserInfo()` / `resetTokenUserInfo()` 便于 Controller 层复用 token 信息、刷新过期时间。
 - Token 与用户 ID 映射也会写入 Redis（`Constants.REDIS_KEY_WS_TOKEN_USERID`），用于互踢逻辑、离线通知等。
 

@@ -49,12 +49,13 @@
 
 <script setup>
 import AvatarUpload from '@/components/AvatarUpload.vue'
-import { ref, reactive, getCurrentInstance, nextTick, onMounted } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref } from 'vue'
 import { useContactStateStore } from '@/stores/ContactStateStore'
+import { useAvatarInfoStore } from '@/stores/AvatarUpdateStore'
+
+const { proxy } = getCurrentInstance()
 const contactStateStore = useContactStateStore()
 
-import { useAvatarInfoStore } from '@/stores/AvatarUpdateStore'
 const avatarInfoStore = useAvatarInfoStore()
 
 const formData = ref({})
@@ -121,5 +122,4 @@ defineExpose({
 })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

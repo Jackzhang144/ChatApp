@@ -45,12 +45,13 @@
 
 <script setup>
 import SearchAdd from './SearchAdd.vue'
-import { ref, reactive, getCurrentInstance, nextTick, computed } from 'vue'
-const { proxy } = getCurrentInstance()
+import { computed, getCurrentInstance, ref } from 'vue'
 import { useUserInfoStore } from '@/stores/UserInfoStore'
+import { useRouter } from 'vue-router'
+
+const { proxy } = getCurrentInstance()
 const userInfoStore = useUserInfoStore()
 
-import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const contactTypeName = computed(() => {

@@ -3,7 +3,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick } from 'vue'
+import { getCurrentInstance } from 'vue'
+
 const { proxy } = getCurrentInstance()
 
 const props = defineProps({

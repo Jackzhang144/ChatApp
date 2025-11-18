@@ -11,10 +11,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick, computed } from 'vue'
-const { proxy } = getCurrentInstance()
-
+import { getCurrentInstance, ref } from 'vue'
 import AreaData from './AreaData'
+
+const { proxy } = getCurrentInstance()
 
 const props = defineProps({
   modelValue: {
@@ -43,5 +43,4 @@ const change = (e) => {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

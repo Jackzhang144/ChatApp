@@ -49,7 +49,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick } from 'vue'
+import { getCurrentInstance, nextTick, ref } from 'vue'
+
 const { proxy } = getCurrentInstance()
 
 const dialogConfig = ref({

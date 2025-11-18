@@ -5,12 +5,11 @@ import com.chatapp.entity.po.UserInfoBeauty;
 import com.chatapp.entity.query.UserInfoBeautyQuery;
 import com.chatapp.entity.vo.ResponseVO;
 import com.chatapp.service.UserInfoBeautyService;
+import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.annotation.Resource;
-import jakarta.validation.constraints.NotNull;
 
 /**
  * 靓号 Controller

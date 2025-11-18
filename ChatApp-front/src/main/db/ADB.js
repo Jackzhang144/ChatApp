@@ -3,9 +3,10 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const os = require('os');
 const NODE_ENV = process.env.NODE_ENV
-// 获取当前用户的家目录  
-import { add_tables, add_indexes, alter_tables } from "./Tables"
-const userDir = os.homedir();
+// 获取当前用户的家目录
+import { add_indexes, add_tables, alter_tables } from './Tables'
+
+const userDir = os.homedir()
 const dbFolder = userDir + (NODE_ENV === "development" ? "/.chatappdev/" : "/.chatapp/");
 if (!fs.existsSync(dbFolder)) {
     fs.mkdirSync(dbFolder);

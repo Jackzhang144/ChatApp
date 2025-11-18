@@ -1,8 +1,9 @@
 const os = require('os');
-const path = require('path');
-import { queryOne, run, insertOrIgnore, update, queryAll, insert } from "./ADB";
-import { startLocalServer } from "../file"
-import store from "../store"
+const path = require('path')
+import { insertOrIgnore, queryAll, queryOne, run, update } from './ADB'
+import { startLocalServer } from '../file'
+import store from '../store'
+
 const userDir = os.homedir();
 const defaultLocalFolder = path.join(userDir, '.chatapp', 'fileStorage');
 const normalizeFolder = (folder) => {

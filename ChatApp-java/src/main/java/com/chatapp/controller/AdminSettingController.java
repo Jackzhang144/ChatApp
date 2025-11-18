@@ -4,11 +4,11 @@ import com.chatapp.annotation.GlobalInterceptor;
 import com.chatapp.entity.dto.SysSettingDto;
 import com.chatapp.entity.vo.ResponseVO;
 import com.chatapp.service.SysSettingService;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Resource;
 import java.io.IOException;
 
 @RestController("adminSettingController")

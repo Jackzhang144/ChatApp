@@ -54,14 +54,15 @@
 
 <script setup>
 import GroupEditDialog from './GroupEditDialog.vue'
-import { ref, reactive, getCurrentInstance, nextTick, watch, onMounted } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useUserInfoStore } from '@/stores/UserInfoStore'
+import { useContactStateStore } from '@/stores/ContactStateStore'
+
+const { proxy } = getCurrentInstance()
 const route = useRoute()
 const router = useRouter()
-import { useUserInfoStore } from '@/stores/UserInfoStore'
 const userInfoStore = useUserInfoStore()
-import { useContactStateStore } from '@/stores/ContactStateStore'
 const contactStateStore = useContactStateStore()
 
 const groupInfo = ref({})

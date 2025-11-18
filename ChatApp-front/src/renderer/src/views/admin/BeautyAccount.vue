@@ -81,7 +81,7 @@
 </template>
 <script setup>
 import BeautyAccountEdit from './BeautyAccountEdit.vue'
-import { getCurrentInstance, nextTick, ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
 
 const { proxy } = getCurrentInstance()
 

@@ -5,11 +5,11 @@ import com.chatapp.entity.constants.Constants;
 import com.chatapp.entity.dto.SysSettingDto;
 import com.chatapp.redis.RedisComponent;
 import com.chatapp.service.SysSettingService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 

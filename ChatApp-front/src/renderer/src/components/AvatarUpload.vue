@@ -37,8 +37,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { computed, getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
 const { proxy } = getCurrentInstance()
 const router = useRouter()
 const route = useRoute()

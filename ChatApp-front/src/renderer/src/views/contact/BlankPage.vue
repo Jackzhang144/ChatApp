@@ -6,5 +6,4 @@
 import Blank from '@/components/Blank.vue'
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

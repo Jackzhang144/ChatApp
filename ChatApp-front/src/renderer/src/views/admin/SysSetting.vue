@@ -2,32 +2,57 @@
   <div class="form-panel">
     <el-form :model="formData" :rules="rules" ref="formDataRef" label-width="160px" @submit.prevent>
       <el-form-item label="最多可创建群组数" prop="maxGroupCount">
-        <el-input clearable placeholder="请输入每人最多可创建群组数" v-model.trim="formData.maxGroupCount">
+        <el-input
+          clearable
+          placeholder="请输入每人最多可创建群组数"
+          v-model.trim="formData.maxGroupCount"
+        >
         </el-input>
       </el-form-item>
       <el-form-item label="群组最大成员数" prop="maxGroupMemberCount">
-        <el-input clearable placeholder="请输入每个群组最大成员数" v-model.trim="formData.maxGroupMemberCount">
+        <el-input
+          clearable
+          placeholder="请输入每个群组最大成员数"
+          v-model.trim="formData.maxGroupMemberCount"
+        >
         </el-input>
       </el-form-item>
       <!--input输入-->
       <el-form-item label="图片大小" prop="maxImageSize">
-        <el-input clearable placeholder="请输入允许上传的图片大小" v-model.trim="formData.maxImageSize">
+        <el-input
+          clearable
+          placeholder="请输入允许上传的图片大小"
+          v-model.trim="formData.maxImageSize"
+        >
           <template #append>MB</template>
         </el-input>
       </el-form-item>
       <!--textarea输入-->
       <el-form-item label="视频大小" prop="maxVideoSize">
-        <el-input clearable placeholder="请输入允许上传的视频大小" v-model.trim="formData.maxVideoSize">
+        <el-input
+          clearable
+          placeholder="请输入允许上传的视频大小"
+          v-model.trim="formData.maxVideoSize"
+        >
           <template #append>MB</template>
         </el-input>
       </el-form-item>
       <el-form-item label="其他文件大小" prop="maxFileSize">
-        <el-input clearable placeholder="请输入允许上传的文件大小" v-model.trim="formData.maxFileSize">
+        <el-input
+          clearable
+          placeholder="请输入允许上传的文件大小"
+          v-model.trim="formData.maxFileSize"
+        >
           <template #append>MB</template>
         </el-input>
       </el-form-item>
       <el-form-item label="机器人昵称" prop="robotNickName">
-        <el-input clearable placeholder="请输入机器人昵称" v-model.trim="formData.robotNickName" maxlength="20">
+        <el-input
+          clearable
+          placeholder="请输入机器人昵称"
+          v-model.trim="formData.robotNickName"
+          maxlength="20"
+        >
         </el-input>
       </el-form-item>
       <!-- 下拉框 -->
@@ -35,8 +60,16 @@
         <AvatarUpload v-model="formData.robotFile" @coverFile="saveCover"></AvatarUpload>
       </el-form-item>
       <el-form-item label="欢迎消息" prop="robotWelcome">
-        <el-input clearable placeholder="请输入新用户注册机器人欢迎消息" v-model="formData.robotWelcome" type="textarea" rows="5"
-          maxlength="300" :show-word-limit="true" resize="none"></el-input>
+        <el-input
+          clearable
+          placeholder="请输入新用户注册机器人欢迎消息"
+          v-model="formData.robotWelcome"
+          type="textarea"
+          rows="5"
+          maxlength="300"
+          :show-word-limit="true"
+          resize="none"
+        ></el-input>
       </el-form-item>
       <el-form-item label="">
         <el-button type="primary" @click="saveSysSetting">保存设置</el-button>
@@ -47,7 +80,8 @@
 
 <script setup>
 import AvatarUpload from '@/components/AvatarUpload.vue'
-import { ref, reactive, getCurrentInstance, nextTick } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
+
 const { proxy } = getCurrentInstance()
 
 const formData = ref({})

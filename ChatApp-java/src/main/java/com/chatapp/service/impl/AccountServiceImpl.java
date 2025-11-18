@@ -7,9 +7,9 @@ import com.chatapp.redis.RedisUtils;
 import com.chatapp.service.AccountService;
 import com.chatapp.service.UserInfoService;
 import com.wf.captcha.ArithmeticCaptcha;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

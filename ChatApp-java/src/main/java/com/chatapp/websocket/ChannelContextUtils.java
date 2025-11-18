@@ -7,21 +7,9 @@ import com.chatapp.entity.dto.WsInitData;
 import com.chatapp.entity.enums.MessageTypeEnum;
 import com.chatapp.entity.enums.UserContactApplyStatusEnum;
 import com.chatapp.entity.enums.UserContactTypeEnum;
-import com.chatapp.entity.po.ChatMessage;
-import com.chatapp.entity.po.ChatSessionUser;
-import com.chatapp.entity.po.UserContact;
-import com.chatapp.entity.po.UserContactApply;
-import com.chatapp.entity.po.UserInfo;
-import com.chatapp.entity.query.ChatMessageQuery;
-import com.chatapp.entity.query.ChatSessionUserQuery;
-import com.chatapp.entity.query.UserContactApplyQuery;
-import com.chatapp.entity.query.UserContactQuery;
-import com.chatapp.entity.query.UserInfoQuery;
-import com.chatapp.mappers.ChatMessageMapper;
-import com.chatapp.mappers.ChatSessionUserMapper;
-import com.chatapp.mappers.UserContactApplyMapper;
-import com.chatapp.mappers.UserContactMapper;
-import com.chatapp.mappers.UserInfoMapper;
+import com.chatapp.entity.po.*;
+import com.chatapp.entity.query.*;
+import com.chatapp.mappers.*;
 import com.chatapp.redis.RedisComponent;
 import com.chatapp.utils.JsonUtils;
 import com.chatapp.utils.StringTools;
@@ -40,7 +28,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
 @Component("channelContextUtils")
 @Slf4j
@@ -105,7 +92,7 @@ public class ChannelContextUtils {
             contactQuery.setContactType(UserContactTypeEnum.GROUP.getType());
             contactQuery.setUserId(userId);
             List<UserContact> groupContactList = userContactMapper.selectList(contactQuery);
-            List<String> groupIdList = groupContactList.stream().map(UserContact::getContactId).collect(Collectors.toList());
+            List<String> groupIdList = groupContactList.stream().map(UserContact::getContactId).toList();
             groupIdList.add(userId);
 
             ChatMessageQuery messageQuery = new ChatMessageQuery();

@@ -46,12 +46,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick, watch } from 'vue'
-const { proxy } = getCurrentInstance()
+import { getCurrentInstance, ref, watch } from 'vue'
 import { useContactStateStore } from '@/stores/ContactStateStore'
+import { useMessageCountStore } from '@/stores/MessageCountStore'
+
+const { proxy } = getCurrentInstance()
 const contactStateStore = useContactStateStore()
 
-import { useMessageCountStore } from '@/stores/MessageCountStore'
 const messageCountStore = useMessageCountStore()
 
 const applyList = ref([])
