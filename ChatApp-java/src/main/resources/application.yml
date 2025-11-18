@@ -46,7 +46,7 @@ spring:
 
 # 项目目录
 project:
-  folder: /Users/jackzhang/Code/IdeaProjects/ChatApp/folder
+  folder: ${PROJECT_FOLDER:./folder}
 
 # 日志级别配置
 logging:

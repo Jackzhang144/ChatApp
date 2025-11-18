@@ -307,20 +307,36 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     }
 
 
+        /**
+     * 下载文件
+     *
+     * @param tokenUserInfoDto 用户认证信息DTO对象，包含当前用户ID等信息
+     * @param messageId 消息ID，用于定位要下载的文件
+     * @param showCover 是否显示封面图片的标识
+     * @return 返回要下载的目标文件对象
+     * @throws BusinessException 当消息不存在、无权限访问或文件不存在时抛出业务异常
+     */
     @Override
     public File downloadFile(TokenUserInfoDto tokenUserInfoDto, Long messageId, Boolean showCover) {
+        // 获取聊天消息信息
         ChatMessage chatMessage = this.getChatMessageByMessageId(messageId);
         if (chatMessage == null) {
             throw new BusinessException(ResponseCodeEnum.CODE_602);
         }
+
+        // 验证用户权限：如果是用户联系人类型，检查是否为好友关系
         if (chatMessage.getContactType().equals(UserContactTypeEnum.USER.getType())) {
             UserContact userContact = userContactMapper.selectByUserIdAndContactId(tokenUserInfoDto.getUserId(), chatMessage.getSendUserId());
             if (userContact == null || !UserContactStatusEnum.FRIEND.getStatus().equals(userContact.getStatus())) {
                 throw new BusinessException(ResponseCodeEnum.CODE_902);
             }
         }
+
+        // 构建文件存储路径
         String folder = appConfig.getProjectFolder() + Constants.FILE_FOLDER_FILE;
         File targetFile;
+
+        // 判断是否需要获取封面图片
         boolean needCover = Boolean.TRUE.equals(showCover) &&
                 (MediaFileTypeEnum.IMAGE.getType().equals(chatMessage.getFileType()) ||
                         MediaFileTypeEnum.VIDEO.getType().equals(chatMessage.getFileType()));
@@ -329,11 +345,15 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         } else {
             targetFile = new File(folder, messageId.toString());
         }
+
+        // 检查目标文件是否存在
         if (!targetFile.exists()) {
             throw new BusinessException(ResponseCodeEnum.CODE_602);
         }
+
         return targetFile;
     }
+
 
     @Override
     public File buildDownloadFile(TokenUserInfoDto tokenUserInfoDto, String fileId, Boolean showCover) {
