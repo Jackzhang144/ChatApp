@@ -3,18 +3,31 @@
 *.iml
 *.iws
 *.ipr
+.vscode/
 
 # OS generated files
 .DS_Store
 Thumbs.db
 
-# Build output
+# Java build output
 **/target/
 out/
 
-# Logs & temp
+# Node / Electron build output
+**/node_modules/
+**/.vite/
+**/dist/
+easychat-front/out/
+easychat-front/installPackages/
+
+# Runtime & temp data
 *.log
 *.tmp
 tmp/
+logs/
+folder/
 
-/.idea/
+# Environment & local overrides
+.env
+.env.*
+*.local
