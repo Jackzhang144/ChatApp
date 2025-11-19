@@ -120,10 +120,8 @@
     </select>
 
     <!-- 插入 （匹配有值的字段）-->
-    <insert id="insert" parameterType="com.chatapp.entity.po.UserContactApply">
-        <selectKey keyProperty="bean.applyId" resultType="Integer" order="AFTER">
-            SELECT currval(pg_get_serial_sequence('user_contact_apply','apply_id'))
-        </selectKey>
+    <insert id="insert" parameterType="com.chatapp.entity.po.UserContactApply"
+            useGeneratedKeys="true" keyProperty="bean.applyId" keyColumn="apply_id">
         INSERT INTO user_contact_apply
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="bean.applyUserId != null">

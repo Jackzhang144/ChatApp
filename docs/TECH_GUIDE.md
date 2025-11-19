@@ -108,7 +108,13 @@ ChatApp 采用「服务端 + 桌面端」的典型即时通讯方案：
 - `Constants.REDIS_KEY_SYS_SETTING`：`SysSettingDto` 缓存（水印、允许注册开关等）。
 - `RedisComponent` 还缓存联系人 ID 列表、群成员、消息未读计数等。
 
-### 2.6 扩展建议
+### 2.6 PostgreSQL 特性与性能优化
+
+- **原生 Upsert**：Mapper XML 大量使用 `ON CONFLICT ... DO UPDATE`（例如 `chat_session`、`chat_message`、`user_contact`、`group_info` 等）来合并插入/更新逻辑，避免 MySQL 风格的“先查再写”，这也是迁移到 PostgreSQL 后才能利用的语法。
+- **序列回填优化（本次更新）**：`ChatMessageMapper`、`UserContactApplyMapper`、`UserInfoBeautyMapper`、`AppUpdateMapper` 的 `insert` 语句已经切换为 `useGeneratedKeys + keyColumn`，直接使用 PostgreSQL JDBC 的 `RETURNING` 能力回填 `message_id/apply_id/id`，不再额外执行 `SELECT currval(pg_get_serial_sequence(...))`。这样可以减少每条消息、好友申请、靓号、版本发布时的数据库往返延迟，并避免序列缓存导致的跨连接可见性问题。
+- **连接池设置**：`application.yml` 中针对 PostgreSQL 调优了 HikariCP（`idle-timeout`、`max-lifetime`、`connection-test-query=SELECT 1`），结合上述写入路径优化，可在高并发聊天/群事件下更充分发挥 PG 的连接与事务能力。
+
+### 2.7 扩展建议
 
 - **消息类型扩展**：`MessageTypeEnum` 中新增类型 -> 更新前端 `wsClient`、`ChatMessageServiceImpl` 以及 UI 展示模板。
 - **文件存储**：若迁移到对象存储，可改造 `ChatMessageService.saveMessageFile` 与 `FileDownloadUtils`，并更新前端下载逻辑。

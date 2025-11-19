@@ -143,10 +143,8 @@
     </select>
 
     <!-- 插入 （匹配有值的字段）-->
-    <insert id="insert" parameterType="com.chatapp.entity.po.ChatMessage">
-        <selectKey keyProperty="bean.messageId" resultType="Long" order="AFTER">
-            SELECT currval(pg_get_serial_sequence('chat_message','message_id'))
-        </selectKey>
+    <insert id="insert" parameterType="com.chatapp.entity.po.ChatMessage"
+            useGeneratedKeys="true" keyProperty="bean.messageId" keyColumn="message_id">
         INSERT INTO chat_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="bean.sessionId != null">
