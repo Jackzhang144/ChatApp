@@ -4,17 +4,26 @@
 
 ---
 
+## 0. 快速上手路线
+
+1. **准备环境**：安装 JDK 21、PostgreSQL 15、Redis 6/7、Node.js 18；可选安装 `ffmpeg/ffprobe` 以在 macOS/Linux 下启用多媒体处理。
+2. **初始化数据库**：`createdb chatapp && psql -U <user> -d chatapp -f db/ChatApp.sql`。
+3. **配置后端**：在 `ChatApp-java/src/main/resources/application.yml` 设置 `spring.datasource.*`、`spring.data.redis.*`、`project.folder`（默认 `./folder`）与 `admin.emails`。
+4. **启动服务端**：`mvn -pl ChatApp-java -am spring-boot:run`，日志出现 `Netty websocket started` 表示 WS 已就绪。
+5. **启动客户端**：进入 `ChatApp-front` 执行 `npm install && npm run dev`，在登录页左下角填写后端 HTTP/WebSocket 地址后注册/登录。
+6. **构建交付**：后端 `mvn -pl ChatApp-java -am clean package`；客户端 `npm run build && npm run build:<platform>` 产出安装包与 `latest.yml`。
+
 ## 1. 总体架构
 
 ChatApp 采用「服务端 + 桌面端」的典型即时通讯方案：
 
-| 组件 | 说明 |
-| --- | --- |
-| Spring Boot Web 应用 (`ChatApp-java`) | 暴露 REST API、WebSocket 接入、文件/资源管理，并通过 Redis 做会话/Token/限流辅助。 |
-| Netty WebSocket 服务 (`NettyWebSocketStarter`) | 负责长连接、消息推送与心跳检测，伴随 Spring Boot 进程启动。 |
-| Electron 主进程 (`ChatApp-front/src/main`) | 管理窗口、托盘、IPC 通道、本地缓存(SQLite)、WebSocket 客户端、文件下载/生成。 |
-| Vue3 渲染进程 (`ChatApp-front/src/renderer`) | 负责 UI、业务交互、调用 REST 接口（通过 Axios）以及和主进程 IPC 联动。 |
-| PostgreSQL + Redis | PostgreSQL 存储账号、群组、消息等结构化数据；Redis 缓存登录状态、系统参数与在线会话。 |
+| 组件                                           | 说明                                                         |
+|----------------------------------------------|------------------------------------------------------------|
+| Spring Boot Web 应用 (`ChatApp-java`)          | 暴露 REST API、WebSocket 接入、文件/资源管理，并通过 Redis 做会话/Token/限流辅助。 |
+| Netty WebSocket 服务 (`NettyWebSocketStarter`) | 负责长连接、消息推送与心跳检测，伴随 Spring Boot 进程启动。                       |
+| Electron 主进程 (`ChatApp-front/src/main`)      | 管理窗口、托盘、IPC 通道、本地缓存(SQLite)、WebSocket 客户端、文件下载/生成。         |
+| Vue3 渲染进程 (`ChatApp-front/src/renderer`)     | 负责 UI、业务交互、调用 REST 接口（通过 Axios）以及和主进程 IPC 联动。              |
+| PostgreSQL + Redis                           | PostgreSQL 存储账号、群组、消息等结构化数据；Redis 缓存登录状态、系统参数与在线会话。        |
 
 主要交互流程：
 
@@ -333,5 +342,15 @@ npm run build:mac  # electron-builder 生成对应安装包，win/linux 对应 b
 3. **验收回归**：
    - 完整跑一遍「注册 → 登录 → 添加联系人 → 单聊/群聊 → 上传文件 → 重启客户端」。
    - 观察后端日志（`folder/logs/`）与 Electron 日志（`~/.chatapp(dev)/logs/`）确保无异常。
+
+## 6. 调试与排障清单
+
+- **健康检查**：`GET /account/config`（HTTP）与 `wscat -c ws://<host>:5051`（WebSocket）可确认端口与协议是否可用。
+- **路径与权限**：`project.folder`（默认 `./folder`）必须可写，macOS/Linux 请确保 `~/.chatapp(dev)/` 也可写，否则 SQLite 初始化会失败。
+- **常见错误定位**：
+  - 登录/鉴权异常：查看 Redis 中是否写入 `Constants.REDIS_KEY_WS_TOKEN*`，并确认客户端 token 是否被续期。
+  - 文件/多媒体处理失败：检查 `ffmpeg/ffprobe` 是否在 PATH 或在 `file.js` 指向正确二进制。
+  - WebSocket 断连：关注前端日志中的重连计数，服务端观察 Netty 连接是否被 IdleStateHandler 关闭。
+- **质量检查**：后端 `mvn -pl ChatApp-java -am test` 或 `-q validate`，前端 `npm run lint && npm run build`；打包前先清理 `folder/` 与本地缓存以减少脏数据干扰。
 
 通过上述流程，你可以把 ChatApp 在任何环境中从零跑到可交付状态，同时掌握运行期的关键节点，便于排查与扩展。

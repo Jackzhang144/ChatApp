@@ -24,12 +24,20 @@ public class ChatAppApplication {
         SpringApplication.run(ChatAppApplication.class, args);
     }
 
+    /**
+     * 创建并配置MultipartConfigElement bean，用于处理文件上传配置
+     *
+     * @return MultipartConfigElement 配置好的多部分配置元素
+     */
     @Bean
     @DependsOn("applicationContextProvider")
     public MultipartConfigElement multipartConfigElement() {
+        // 获取应用配置信息
         AppConfig appConfig = (AppConfig) ApplicationContextProvider.getBean("appConfig");
         MultipartConfigFactory factory = new MultipartConfigFactory();
+        // 设置临时文件存储位置
         factory.setLocation(appConfig.getProjectFolder() + Constants.FILE_FOLDER_TEMP);
         return factory.createMultipartConfig();
     }
+
 }

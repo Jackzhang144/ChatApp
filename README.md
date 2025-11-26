@@ -42,6 +42,26 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 - Redis 6.x/7.x
 - 可选：`pnpm`/`yarn`、`docker`、`ffmpeg`/`ffprobe`
 
+## 快速开始（开发模式）
+
+1. 安装依赖并初始化数据库：
+   ```bash
+   createdb chatapp
+   psql -U <user> -d chatapp -f db/ChatApp.sql
+   ```
+2. 配置后端：在 `ChatApp-java/src/main/resources/application.yml` 中写入数据库、Redis 与 `project.folder`（默认 `./folder`）。
+3. 拉起后端：
+   ```bash
+   mvn -pl ChatApp-java -am spring-boot:run
+   ```
+4. 拉起客户端：
+   ```bash
+   cd ChatApp-front
+   npm install
+   npm run dev
+   ```
+5. 在登录页左下角填写后端 HTTP/WebSocket 地址，注册/登录后开始联调。若在 macOS/Linux 使用多媒体功能，请先安装系统级 `ffmpeg`/`ffprobe`。
+
 ## 数据库初始化
 
 1. 创建数据库与基础数据：
@@ -84,9 +104,9 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 ## 开发流程建议
 
 1. 启动 PostgreSQL 与 Redis，并导入 `db/ChatApp.sql`。
-2. 配置 `ChatApp-java/src/main/resources/application.yml`，保证数据库、Redis 以及 `project.folder` 指向可写路径。
+2. 配置 `ChatApp-java/src/main/resources/application.yml`，保证数据库、Redis 以及 `project.folder`（运行期文件目录）指向可写路径。
 3. 在根目录运行 `mvn -pl ChatApp-java -am spring-boot:run` 启动服务端。
-4. 进入 `ChatApp-front` 执行 `npm run dev`，打开桌面客户端进行调试。
+4. 进入 `ChatApp-front` 执行 `npm run dev`，在登录页设置服务器地址后开始调试。
 5. 需要产物时，通过 `npm run build:<platform>` 与 `mvn package` 生成安装包与后端发布包。
 
 ## 其他说明
@@ -94,3 +114,5 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 - `.gitignore` 已忽略常见的 IDE、Maven、Electron 构建产物以及运行期数据，若需要提交某些目录（例如 `folder/`）请在其中放置 `.gitkeep` 并更新忽略策略。
 - `project.folder` 指向的目录会存储上传的头像、文件以及日志，如部署到服务器请调整到合适的挂载点，并确保具备可写权限。
 - 默认管理员邮箱由 `application.yml` 的 `admin.emails` 控制，可在初始化脚本中一并修改。
+- 常用质量检查：后端 `mvn -pl ChatApp-java test` 或 `mvn -pl ChatApp-java -q validate`，前端 `npm run lint && npm run build`。
+- 生产部署时可将 `application.yml` 外置并通过环境变量覆盖敏感配置（如数据库密码、`PROJECT_FOLDER`）。
