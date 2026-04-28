@@ -120,13 +120,13 @@ ChatApp 采用「服务端 + 桌面端」的典型即时通讯方案：
 
 ### 3.1 技术栈与目录
 
-- **主进程**：Electron 28、express（本地静态服务）、ws（WebSocket 客户端）、sqlite3（本地缓存）、electron-store（KV 持久化）、fluent-ffmpeg（缩略图/转码）。
+- **主进程**：Electron 28、express（本地静态服务）、ws（WebSocket 客户端）、sqlite3（本地缓存）、electron-store（KV 持久化）、FFmpeg/FFprobe（缩略图/转码，安装阶段由 npm 包提供）。
 - **渲染进程**：Vue 3.5、Vite 4、Pinia、Vue Router、Element Plus、Axios、DPlayer、v-viewer、moment。
 - **目录结构**：
   - `src/main`：主进程入口 (`index.js`)、IPC 定义 (`ipc.js`)、本地数据库 (`db/*.js`)、文件工具 (`file.js`)、WebSocket 客户端 (`wsClient.js`)、窗口注册 (`windowProxy.js`)。
   - `src/renderer`：Vue 应用（`App.vue`、`router`、`stores`、`views/*`）、全局组件与样式。
   - `src/preload`：暴露 `ipcRenderer`/Electron API。
-  - `assets/ffmpeg.exe|ffprobe.exe`：Windows 自带二进制，macOS/Linux 需自备。
+  - `assets/404.png|user.png`：文件/头像获取失败时的占位资源；FFmpeg/FFprobe 不放入该目录。
 
 ### 3.2 主进程职责
 
@@ -160,7 +160,7 @@ ChatApp 采用「服务端 + 桌面端」的典型即时通讯方案：
 
 #### 3.2.5 文件处理与本地服务（`src/main/file.js`）
 
-- 负责将选取的文件复制到本地、生成缩略图（ffmpeg/ffprobe）、保存聊天附件、头像裁切等。
+- 负责将选取的文件复制到本地、生成缩略图（通过 npm 安装的 ffmpeg/ffprobe）、保存聊天附件、头像裁切等。
 - 提供 Express 本地服务以供渲染层访问缓存文件；同时支持更换/打开文件夹、保存剪切板文件等操作。
 - 文件上传流转：渲染层 -> `ipcRenderer.send("addLocalMessage")` -> 主进程复制/压缩/生成封面 -> `axios` POST `/api/chat/uploadFile` -> 更新消息状态。
 
@@ -222,13 +222,13 @@ npm run build:mac  # electron-builder 生成对应安装包，win/linux 对应 b
 ```
 
 - `electron-vite` 在开发模式会启动两个进程（主进程 + Vite Renderer），`npm run dev` 前请保证后端 API 可达。
-- 构建阶段 `electron-builder` 会将 `assets/**` 作为额外资源打包，确保 Windows 附带 ffmpeg/ffprobe。
+- 构建阶段 `electron-builder` 会将 `assets/**` 作为额外资源打包，并把 `@ffmpeg-installer/*`、`@ffprobe-installer/*` 从 asar 中解包，确保 FFmpeg/FFprobe 可执行。
 - 如果需要调试主进程，可使用 `--inspect=5858`（在 `package.json` 的 `dev` 脚本中已配置）。
 
 ### 3.5 常见问题与排查
 
 1. **WebSocket 无法连接**：检查 `store` 中的 `devWsDomain/prodWsDomain` 是否正确，确保 5051 端口可访问。
-2. **文件缩略图失败**：macOS/Linux 必须安装系统级 `ffmpeg`/`ffprobe`，并保证 PATH 可找到。
+2. **文件缩略图失败**：重新执行 `npm install`，确认 `node_modules/@ffmpeg-installer` 与 `node_modules/@ffprobe-installer` 下存在当前平台的可执行文件；若包不可用，客户端会回退查找系统 PATH 中的 `ffmpeg`/`ffprobe`。
 3. **SQLite 表缺失**：首次运行若 `.chatapp/` 权限不足会导致创建失败，可在 `db/ADB.js` 中查看日志并手动清理。
 4. **登录超时频繁**：后端 Redis TTL 由 `Constants.REDIS_KEY_TOKEN_EXPIRES` 控制，注意客户端是否在后台运行导致 token 过期。
 
@@ -252,7 +252,7 @@ npm run build:mac  # electron-builder 生成对应安装包，win/linux 对应 b
 
 ### 5.1 基础设施准备
 
-1. **安装依赖**：准备 MySQL 8.x、Redis 6.x/7.x、JDK 21、Maven 3.9+、Node.js 18+（Electron/Vite）以及可选的 `pnpm`、`ffmpeg`/`ffprobe`。
+1. **安装依赖**：准备 MySQL 8.x、Redis 6.x/7.x、JDK 21、Maven 3.9+、Node.js 18+（Electron/Vite）以及可选的 `pnpm`。
 2. **数据库初始化**：
    - 创建数据库（示例名 `chatapp`），执行 `mysql -u <user> -p < db/ChatApp.sql`。
    - 如使用不同的库名或账号，请同步修改 `db/ChatApp.sql` 与 `ChatApp-java/src/main/resources/application.yml`。
@@ -283,13 +283,13 @@ npm run build:mac  # electron-builder 生成对应安装包，win/linux 对应 b
 
 1. **安装依赖与构建资源**：
    - 在 `ChatApp-front` 执行 `npm install`（或 `pnpm install`）。
-   - 如果在非 Windows 平台需要多媒体能力，请确保系统 PATH 中可找到 ffmpeg/ffprobe，或编辑 `src/main/file.js` 指向本地二进制。
+   - FFmpeg/FFprobe 由 `@ffmpeg-installer/ffmpeg`、`@ffprobe-installer/ffprobe` 随 `npm install` 安装；无需把 `.exe` 或其他平台二进制提交到仓库。
 2. **开发模式**：
    - 运行 `npm run dev`，electron-vite 会同时拉起主进程与渲染进程，并自动打开应用窗口。
    - 登录页左下角的设置按钮可填写后端 HTTP/WebSocket 域名，此配置通过 Electron Store (`store.js`) 持久化。
 3. **生产构建**：
    - `npm run build` 先编译渲染进程。
-   - 根据平台执行 `npm run build:mac` / `build:win` / `build:linux`，由 `electron-builder` 生成安装包并把 `assets/**`（如 ffmpeg）一并打包。
+   - 根据平台执行 `npm run build:mac` / `build:win` / `build:linux`，由 `electron-builder` 生成安装包并打包占位资源，同时解包 npm 安装的 FFmpeg/FFprobe 可执行文件。
 4. **首登流程**：
    - 用户注册/登录成功后，主进程会在 `~/.chatapp(dev)/` 初始化 SQLite（`db/ADB.js`），建立 WebSocket 连接，并同步历史会话。
    - 如果需要重置服务器地址，可在登录页重新打开设置或删除本地配置目录。

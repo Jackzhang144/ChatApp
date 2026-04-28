@@ -40,7 +40,7 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 - Node.js 18+ 与 npm（Electron/Vite 构建依赖）
 - MySQL 8.x
 - Redis 6.x/7.x
-- 可选：`pnpm`/`yarn`、`docker`、`ffmpeg`/`ffprobe`
+- 可选：`pnpm`/`yarn`、`docker`
 
 ## 数据库初始化
 
@@ -66,7 +66,7 @@ ChatApp 是一个包含桌面端与服务端的即时通讯项目：后端提供
 ## 桌面客户端（ChatApp-front）
 
 - 核心栈：**Electron 28 + Vue 3.5 + Vite 4 + Element Plus 2.11**，配合 Pinia、Vue Router 构建多视图应用。
-- 项目内置 Windows 版 FFmpeg/FFprobe，可自备 macOS/Linux 版本确保视频转码与截图等能力可用。
+- 视频转码与截图依赖 `@ffmpeg-installer/ffmpeg`、`@ffprobe-installer/ffprobe` 在安装阶段提供当前平台的 FFmpeg/FFprobe 可执行文件，仓库不再提交二进制。
 - 安装依赖与调试：
   ```bash
   cd ChatApp-front

@@ -20,6 +20,12 @@ out/
 ChatApp-front/out/
 ChatApp-front/installPackages/
 
+# Large media tool binaries are installed from npm packages at install/build time.
+ChatApp-front/assets/ffmpeg*
+ChatApp-front/assets/ffprobe*
+easychat-front/assets/ffmpeg*
+easychat-front/assets/ffprobe*
+
 # Runtime & temp data
 *.log
 *.tmp
