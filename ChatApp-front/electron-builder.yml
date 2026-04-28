@@ -10,6 +10,11 @@ files:
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
 asarUnpack:
   - resources/**
+  - node_modules/@ffmpeg-installer/**
+  - node_modules/@ffprobe-installer/**
+extraResources:
+  - from: assets
+    to: assets
 win:
   executableName: ChatApp
 nsis:

@@ -3,7 +3,7 @@ const fse = require('fs-extra')
 const NODE_ENV = process.env.NODE_ENV
 const path = require('path')
 const { app, ipcMain, shell } = require('electron')
-const { exec } = require('child_process')
+const { execFile } = require('child_process')
 const FormData = require('form-data') // 引入FormData模块（用于构建表单数据）
 const axios = require('axios') // 引入axios库
 import store from './store'
@@ -23,10 +23,6 @@ const expressServer = express()
 const cover_image_suffix = '_cover.png'
 const image_suffix = '.png'
 
-const ffprobePathWin = '/assets/ffprobe.exe'
-const ffmpegPathWin = '/assets/ffmpeg.exe'
-const isWindows = process.platform === 'win32'
-
 const mkdirs = (dir) => {
   if (!fs.existsSync(dir)) {
     // 如果目录不存在则进行创建
@@ -39,50 +35,64 @@ const mkdirs = (dir) => {
   }
 }
 
-const getResourcesPath = () => {
-  let resourcesPath = app.getAppPath()
-  if (NODE_ENV !== 'development') {
-    resourcesPath = path.dirname(app.getPath('exe')) + '/resources'
+const resolveAsarUnpackedPath = (binaryPath) => {
+  return binaryPath.replace(`${path.sep}app.asar${path.sep}`, `${path.sep}app.asar.unpacked${path.sep}`)
+}
+
+const resolveInstalledBinary = (packageName, fallbackCommand) => {
+  try {
+    const binaryInfo = require(packageName)
+    return resolveAsarUnpackedPath(binaryInfo.path)
+  } catch (error) {
+    console.warn(`未找到 ${packageName}，回退到系统命令 ${fallbackCommand}`, error)
+    return fallbackCommand
   }
-  return resourcesPath
 }
 
 const getFFprobePath = () => {
-  if (isWindows) {
-    return path.join(getResourcesPath(), ffprobePathWin)
-  }
-  return 'ffprobe'
+  return resolveInstalledBinary('@ffprobe-installer/ffprobe', 'ffprobe')
 }
 
-const getFFmegPath = () => {
-  if (isWindows) {
-    return path.join(getResourcesPath(), ffmpegPathWin)
-  }
-  return 'ffmpeg'
+const getFFmpegPath = () => {
+  return resolveInstalledBinary('@ffmpeg-installer/ffmpeg', 'ffmpeg')
 }
 
 const saveFile2Local = async (messageId, filePath, fileType) => {
   return new Promise(async (resolve, reject) => {
-    let ffmpegPath = getFFmegPath()
+    let ffmpegPath = getFFmpegPath()
     let savePath = await getLocalFilePath('chat', false, messageId)
     let coverPath = null
     fs.copyFileSync(filePath, savePath)
     //生成缩略图
     if (fileType != 2) {
       //判断视频格式
-      let command = `${getFFprobePath()} -v error -select_streams v:0 -show_entries stream=codec_name "${filePath}"`
-      let result = await execCommand(command)
-      result = result.replaceAll('\r\n', '')
-      result = result.substring(result.indexOf('=') + 1)
-      let codec = result.substring(0, result.indexOf('['))
+      let result = await execCommand(getFFprobePath(), [
+        '-v',
+        'error',
+        '-select_streams',
+        'v:0',
+        '-show_entries',
+        'stream=codec_name',
+        '-of',
+        'default=noprint_wrappers=1:nokey=1',
+        filePath
+      ])
+      let codec = result.trim().split(/\s+/)[0]
       if ('hevc' === codec) {
-        command = `${ffmpegPath}  -y -i "${filePath}" -c:v libx264 -crf 20 "${savePath}"`
-        await execCommand(command)
+        await execCommand(ffmpegPath, ['-y', '-i', filePath, '-c:v', 'libx264', '-crf', '20', savePath])
       }
       //生成缩略图
       coverPath = savePath + cover_image_suffix
-      command = `${ffmpegPath} -i "${savePath}" -y -vframes 1 -vf "scale=min(170\\,iw*min(170/iw\\,170/ih)):min(170\\,ih*min(170/iw\\,170/ih))" "${coverPath}"`
-      await execCommand(command)
+      await execCommand(ffmpegPath, [
+        '-i',
+        savePath,
+        '-y',
+        '-vframes',
+        '1',
+        '-vf',
+        'scale=min(170\\,iw*min(170/iw\\,170/ih)):min(170\\,ih*min(170/iw\\,170/ih))',
+        coverPath
+      ])
     }
     //上传文件
     uploadFile(messageId, savePath, coverPath)
@@ -114,14 +124,21 @@ const uploadFile = (messageId, savePath, coverPath) => {
 
 const createCover = (filePath) => {
   return new Promise(async (resolve, reject) => {
-    let ffmpegPath = getFFmegPath()
+    let ffmpegPath = getFFmpegPath()
     let avatarPath = await getLocalFilePath('avatar', false, store.getUserId() + '_temp')
-    let command = `${ffmpegPath} -i "${filePath}" "${avatarPath}" -y`
-    await execCommand(command)
+    await execCommand(ffmpegPath, ['-i', filePath, avatarPath, '-y'])
 
     let coverPath = await getLocalFilePath('avatar', false, store.getUserId() + '_temp_cover')
-    command = `${ffmpegPath} -i "${filePath}" -y -vframes 1 -vf "scale=min(60\\,iw*min(60/iw\\,60/ih)):min(60\\,ih*min(60/iw\\,60/ih))" "${coverPath}"`
-    await execCommand(command)
+    await execCommand(ffmpegPath, [
+      '-i',
+      filePath,
+      '-y',
+      '-vframes',
+      '1',
+      '-vf',
+      'scale=min(60\\,iw*min(60/iw\\,60/ih)):min(60\\,ih*min(60/iw\\,60/ih))',
+      coverPath
+    ])
 
     resolve({
       avatarStream: fs.readFileSync(avatarPath),
@@ -130,12 +147,12 @@ const createCover = (filePath) => {
   })
 }
 
-const execCommand = (command) => {
+const execCommand = (command, args) => {
   return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
-      console.log('ffmpeg命令:', command)
+    execFile(command, args, { windowsHide: true }, (error, stdout, stderr) => {
+      console.log('ffmpeg命令:', command, args)
       if (error) {
-        console.error('执行命令失败', error)
+        console.error('执行命令失败', error, stderr)
       }
       console.log('ffmpeg命令:', command, stdout)
       resolve(stdout)
